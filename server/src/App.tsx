@@ -1,11 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { FaHeartbeat, FaSearch, FaFileAlt, FaProjectDiagram, FaExchangeAlt } from 'react-icons/fa';
-import QueryGenerator from './components/QueryGenerator';
-import DocumentAnalysis from './components/DocumentAnalysis';
-import FilteringDiagram from './components/FilteringDiagram';
-import DuplicateAnalysis from './components/DuplicateAnalysis';
-import logo from './utils/Image1.png';
-
+import { FaHome } from 'react-icons/fa';
+import LandingPage from './components/LandingPage';
+import logo from './utils/quinten-health-logo.png'; 
 // Add these type definitions
 export interface SavedQuery {
   id: string;
@@ -17,6 +13,7 @@ export interface SavedQuery {
   collectedDocuments: {
     pubmed: number;
     semanticScholar: number;
+    removedDuplicates?: number;
   };
   paperCount: number;
   freeFullTextCount: number;
@@ -30,10 +27,11 @@ export interface AnalysisData {
     title: string;
     abstract: string;
     date: string;
-    authors: string[]; // Add this line
+    authors: string[];
+    citationCount: number; // Add this line
     selected: boolean;
     abstractExpanded: boolean;
-     studyType: 'Meta-analysis' | 'Systematic Review' | 'RCT' | 'Cohort study' | 'Case-control study' | 'Case report' | 'Case series' | 'Expert opinion' | 'Narrative review' | 'Animal study' | 'In vitro study';
+    studyType: 'Meta-analysis' | 'Systematic Review' | 'RCT' | 'Cohort study' | 'Case-control study' | 'Case report' | 'Case series' | 'Expert opinion' | 'Narrative review' | 'Animal study' | 'In vitro study';
     pico: {
       population: string;
       intervention: string;
@@ -41,7 +39,6 @@ export interface AnalysisData {
       outcome: string;
       expanded: boolean;
     };
-    pubmedLink: string;
   }>;
   criteria: Array<{
     id: number;
@@ -55,130 +52,76 @@ export interface AnalysisData {
 }
 
 const App: React.FC = () => {
-  const [activeTab, setActiveTab] = useState('query');
-  const [savedQueries, setSavedQueries] = useState<SavedQuery[]>([]);
+  const [savedQueries, setSavedQueries] = useState<SavedQuery[]>(() => {
+    // Load saved queries from localStorage on initial render
+    const saved = localStorage.getItem('savedQueries');
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  // Update localStorage whenever savedQueries changes
+  useEffect(() => {
+    localStorage.setItem('savedQueries', JSON.stringify(savedQueries));
+  }, [savedQueries]);
+
   const [analysisData, setAnalysisData] = useState<AnalysisData>({
     selectedQuery: null,
     documents: [],
     criteria: [],
-    analysisResults: {},
+    analysisResults: {}
   });
 
-  // Load saved queries from localStorage on component mount
-  useEffect(() => {
-    const storedQueries = localStorage.getItem('savedQueries');
-    if (storedQueries) {
-      setSavedQueries(JSON.parse(storedQueries));
-    }
-  }, []);
-
   const handleSaveQuery = (query: SavedQuery) => {
-    const updatedQueries = [...savedQueries, query];
-    setSavedQueries(updatedQueries);
-    // Save to localStorage
-    localStorage.setItem('savedQueries', JSON.stringify(updatedQueries));
+    setSavedQueries(prev => [...prev, query]);
   };
 
-  const handleClearQueries = () => {
-    localStorage.removeItem('savedQueries');
-    setSavedQueries([]);
+  const handleRemoveQuery = (queryId: string) => {
+    setSavedQueries(prev => prev.filter(q => q.id !== queryId));
+  };
+
+  const handleClearAllQueries = () => {
+    if (window.confirm('Are you sure you want to remove all saved queries?')) {
+      setSavedQueries([]);
+    }
   };
 
   const updateAnalysisData = (newData: Partial<AnalysisData>) => {
-    setAnalysisData(prevData => ({ ...prevData, ...newData }));
+    setAnalysisData(prev => ({ ...prev, ...newData }));
+  };
+
+  const handleUpdateQuery = (updatedQuery: SavedQuery) => {
+    setSavedQueries(prev => 
+      prev.map(q => q.id === updatedQuery.id ? updatedQuery : q)
+    );
   };
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      <header className="shadow-md" style={{
-        background: 'linear-gradient(115deg, white 0%, #d0f5e6 75%, #ffd6a5 85%, #F05251 100%)'
-      }}>
-        <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+    <div className="min-h-screen bg-white">
+      <header className="bg-white border-b fixed w-full top-0 z-50 h-12"> {/* Added h-12 for fixed height */}
+        <div className="container mx-auto h-full px-4 flex items-center justify-between">
           <div className="flex items-center">
-            <FaHeartbeat className="text-teal-700 text-3xl mr-4" />
-            <h1 className="text-2xl font-semibold text-teal-700">Systematic Literature Review Assistant</h1>
+            <button 
+              onClick={() => window.location.href = '/'}
+              className="bg-[#62B6CB] p-1.5 rotate-45 hover:bg-[#62B6CB]/80 transition-colors mr-3 rounded-lg"
+            >
+              <div className="-rotate-45">
+                <FaHome className="w-4 h-4 text-black" />
+              </div>
+            </button>
+            <h1 className="text-xl font-bold text-[#62B6CB]-700">Systematic Review AI Assistant</h1>
           </div>
-            <img src={logo} alt="Logo" className="h-12 w-auto" />
-            </div>
-      </header> 
-      <main className="container mx-auto px-4 py-8">
-        <div className="bg-white shadow-md rounded-lg overflow-hidden">
-          <div className="border-b border-gray-200">
-            <ul className="flex flex-wrap -mb-px text-sm font-medium text-center">
-              <li className="mr-2">
-                <button
-                  className={`inline-flex items-center p-4 border-b-2 rounded-t-lg ${
-                    activeTab === 'query'
-                      ? 'text-teal-600 border-teal-600'
-                      : 'border-transparent hover:text-gray-600 hover:border-gray-300'
-                  }`}
-                  onClick={() => setActiveTab('query')}
-                >
-                  <FaSearch className="mr-2" />
-                  Query Generator
-                </button>
-              </li>
-              <li className="mr-2">
-                <button
-                  className={`inline-flex items-center p-4 border-b-2 rounded-t-lg ${
-                    activeTab === 'duplicate'
-                      ? 'text-teal-600 border-teal-600'
-                      : 'border-transparent hover:text-gray-600 hover:border-gray-300'
-                  }`}
-                  onClick={() => setActiveTab('duplicate')}
-                >
-                  <FaExchangeAlt className="mr-2" />
-                  Duplicate Analysis
-                </button>
-              </li>
-              <li className="mr-2">
-                <button
-                  className={`inline-flex items-center p-4 border-b-2 rounded-t-lg ${
-                    activeTab === 'analysis'
-                      ? 'text-teal-600 border-teal-600'
-                      : 'border-transparent hover:text-gray-600 hover:border-gray-300'
-                  }`}
-                  onClick={() => setActiveTab('analysis')}
-                >
-                  <FaFileAlt className="mr-2" />
-                  Document Screening
-                </button>
-              </li>
-              <li className="mr-2">
-                <button
-                  className={`inline-flex items-center p-4 border-b-2 rounded-t-lg ${
-                    activeTab === 'diagram'
-                      ? 'text-teal-600 border-teal-600'
-                      : 'border-transparent hover:text-gray-600 hover:border-gray-300'
-                  }`}
-                  onClick={() => setActiveTab('diagram')}
-                >
-                  <FaProjectDiagram className="mr-2" />
-                  PRISM Diagram
-                </button>
-              </li>
-            </ul>
-          </div>
-          {activeTab === 'query' && (
-            <QueryGenerator
-              initialData={null}
-              onSaveQuery={handleSaveQuery}
-              savedQueries={savedQueries}
-              onClearQueries={handleClearQueries}
-            />
-          )}
-          {activeTab === 'duplicate' && (
-            <DuplicateAnalysis savedQueries={savedQueries} />
-          )}
-          {activeTab === 'analysis' && (
-            <DocumentAnalysis
-              analysisData={analysisData}
-              updateAnalysisData={updateAnalysisData}
-              savedQueries={savedQueries}
-            />
-          )}
-          {activeTab === 'diagram' && <FilteringDiagram selectedQuery={analysisData.selectedQuery} />}
+          <img src={logo} alt="Logo" className="h-10 w-auto my-1" />
         </div>
+      </header>
+      <main className="pt-16"> {/* Add padding-top to account for fixed header */}
+        <LandingPage
+          savedQueries={savedQueries}
+          onSaveQuery={handleSaveQuery}
+          onRemoveQuery={handleRemoveQuery}
+          onClearQueries={handleClearAllQueries}
+          onUpdateQuery={handleUpdateQuery}
+          analysisData={analysisData}
+          updateAnalysisData={updateAnalysisData}
+        />
       </main>
     </div>
   );
