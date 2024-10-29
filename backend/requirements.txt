@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+pydantic
+mistralai
+plotly
+kaleido
+python-dotenv
+numpy==1.23.5
+matplotlib==3.7.0

@@ -1,0 +1,14 @@
+modules = ["nodejs-20", "web", "python-3.10"]
+run = "bash start.sh"
+
+[nix]
+channel = "stable-24_05"
+
+[deployment]
+deploymentTarget = "cloudrun"
+build = ["sh", "-c", "pip install -r backend/requirements.txt && cd server && npm install && npm run build && cd .."]
+run = ["sh", "-c", "uvicorn backend.app:app --host 0.0.0.0 --port $PORT"]
+
+[[ports]]
+localPort = 8000
+externalPort = 80
