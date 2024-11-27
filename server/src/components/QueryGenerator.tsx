@@ -67,7 +67,7 @@ const QueryGenerator: React.FC<QueryGeneratorProps> = ({ initialData, onSaveQuer
     switch(step) {
       case 0: return '27%';
       case 1: return '54%';
-      case 2: return '81%';
+      case 2: return '79%';
       default: return '0%';
     }
   };
@@ -79,21 +79,21 @@ const QueryGenerator: React.FC<QueryGeneratorProps> = ({ initialData, onSaveQuer
       if (stepId === 1) return 'current';       // "Questions" is current
       return '';                                // Other steps are default
     }
-    
+
     // Step 1: New query and Questions accomplished, Pubmed query current
     if (step === 1) {
       if (stepId <= 1) return 'accomplished';   // First two steps accomplished
       if (stepId === 2) return 'current';       // Pubmed query is current
       return '';                                // Last step is default
     }
-    
+
     // Step 2: All previous accomplished, Saving current
     if (step === 2) {
       if (stepId <= 2) return 'accomplished';   // First three steps accomplished
       if (stepId === 3) return 'current';       // Saving is current
       return '';
     }
-    
+
     return '';  // Default state
   };
 
@@ -115,18 +115,53 @@ const QueryGenerator: React.FC<QueryGeneratorProps> = ({ initialData, onSaveQuer
   }, [initialData]);
 
   const generateQuestions = async (query: string) => {
-    const response = await axios.post('http://localhost:8000/generate_questions', { query });
+    const response = await axios.post('/generate_questions', { query });
     return response.data;
   };
 
   const generatePubMedQuery = async (query: string, answers: Record<string, string>) => {
-    const response = await axios.post('http://localhost:8000/generate_pubmed_query', { query, answers });
-    return response.data;
+    try {
+      const response = await axios.post('/generate_pubmed_query', { query, answers });
+
+      // Format the received query with proper structure
+      const rawQuery = response.data.query.replace(/```/g, '').trim();
+
+      // Split the query into main groups (split by AND)
+      const mainGroups: string[] = rawQuery.split(/\bAND\b/).map((group: string) => group.trim());
+
+      // Format each group
+      const formattedGroups: string[] = mainGroups.map((group: string) => {
+        // Remove extra parentheses
+        let cleanGroup: string = group.replace(/^\(+|\)+$/g, '').trim();
+
+        // Split by OR and clean up each term
+        const terms: string[] = cleanGroup.split(/\bOR\b/).map((term: string) => {
+          // Remove extra quotes and trim
+          let cleanTerm: string = term.trim().replace(/^["']+|["']+$/g, '');
+          // Only add quotes if term contains spaces and isn't already quoted
+          if (cleanTerm.includes(' ') && !cleanTerm.includes('"')) {
+            cleanTerm = `"${cleanTerm}"`;
+          }
+          return cleanTerm;
+        });
+
+        // Join terms with OR and wrap in parentheses
+        return `(${terms.join(' OR ')})`;
+      });
+
+      // Join groups with AND
+      const formattedQuery = formattedGroups.join('\n\nAND\n\n');
+
+      return { query: formattedQuery };
+    } catch (error) {
+      console.error('Error generating PubMed query:', error);
+      throw error;
+    }
   };
 
   const estimateDocuments = async (query: string) => {
     try {
-      const response = await axios.post('http://localhost:8000/estimate_documents', { query });
+      const response = await axios.post('/estimate_documents', { query });
       setEstimatedDocuments(response.data.estimatedDocuments);
     } catch (error) {
       console.error('Error estimating documents:', error);
@@ -173,7 +208,7 @@ const QueryGenerator: React.FC<QueryGeneratorProps> = ({ initialData, onSaveQuer
         setTimeout(async () => {
           setIsGeneratingSynonyms(true);
           try {
-            const synonymsResponse = await axios.post('http://localhost:8000/generate_synonyms', {
+            const synonymsResponse = await axios.post('/generate_synonyms', {
               description: naturalLanguageQuery,
               questions: questions,
               answers: answers,
@@ -201,7 +236,7 @@ const QueryGenerator: React.FC<QueryGeneratorProps> = ({ initialData, onSaveQuer
   const handleSaveQuery = () => {
     const currentYear = new Date().getFullYear();
     const mockYearDistribution: Record<number, number> = {};
-    
+
     // Generate mock data for the last 10 years
     for (let year = currentYear - 9; year <= currentYear; year++) {
       mockYearDistribution[year] = Math.floor(Math.random() * 100);
@@ -242,7 +277,7 @@ const QueryGenerator: React.FC<QueryGeneratorProps> = ({ initialData, onSaveQuer
   const handleGetSynonyms = async () => {
     setIsSynonymsLoading(true);
     try {
-      const response = await axios.post('http://localhost:8000/generate_synonyms', {
+      const response = await axios.post('/generate_synonyms', {
         description: naturalLanguageQuery,
         questions: questions,
         answers: answers,
@@ -357,7 +392,7 @@ const QueryGenerator: React.FC<QueryGeneratorProps> = ({ initialData, onSaveQuer
             )}
           </div>
         );
-      case 1:  // Changed from case 2
+      case 1:  // PubMed Query step
         return (
           <div>
             <h2 className="text-2xl font-semibold mb-8 text-black text-center">Generated PubMed Query</h2>
@@ -372,13 +407,37 @@ const QueryGenerator: React.FC<QueryGeneratorProps> = ({ initialData, onSaveQuer
             ) : (
               <div className="flex flex-col gap-8">
                 <div className="w-full">
-                  <textarea
-                    value={pubMedQuery}
-                    onChange={(e) => setPubMedQuery(e.target.value)}
-                    className="text-base w-full px-3 py-2 border border-[#BDBDBD] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#62B6CB] focus:ring-offset-2 flex items-center justify-center"
-                    rows={5}
-                    placeholder="Generated PubMed query..."
-                  />
+                  <div className="bg-white p-4 rounded-xl border-2 border-[#62B6CB] shadow-sm">
+
+                    {pubMedQuery.split('\n\nAND\n\n').map((part, index, array) => (
+                      <React.Fragment key={index}>
+                        {index > 0 && (
+                          <div className="flex items-center my-2">
+                            <span className="px-4 py-1 text-[#62B6CB] rounded-full font-bold">
+                              AND
+                            </span>
+                            <div className="flex-grow  border-gray-200 ml-2"></div>
+                          </div>
+                        )}
+                        <textarea
+                          value={part}
+                          onChange={(e) => {
+                            const newParts = [...pubMedQuery.split('\n\nAND\n\n')];
+                            newParts[index] = e.target.value;
+                            setPubMedQuery(newParts.join('\n\nAND\n\n'));
+                          }}
+                          className="w-full font-mono  text-base text-gray-700 focus:outline-none resize-none"
+                          style={{
+                            lineHeight: '1.5',
+                            minHeight: '50px',
+                            height: '50px',
+                            padding: '12px'
+
+                          }}
+                        />
+                      </React.Fragment>
+                    ))}
+                  </div>
                   {estimatedDocuments !== null && (
                     <p className="mt-2 text-[#62B6CB]">
                       Estimated number of documents: <span className="font-bold">{estimatedDocuments}</span>
@@ -405,7 +464,7 @@ const QueryGenerator: React.FC<QueryGeneratorProps> = ({ initialData, onSaveQuer
                     />
                   </div>
                 )}
-                
+
                 <div className="mt-4">
                   <button
                     onClick={handleCollectDocuments}
@@ -520,7 +579,7 @@ const QueryGenerator: React.FC<QueryGeneratorProps> = ({ initialData, onSaveQuer
                     {stepItem.name}
                   </span>
                 </div>
-              
+
               ))}
             </div>
             </div>
