@@ -96,7 +96,7 @@ const FilteringDiagram: React.FC<FilteringDiagramProps> = ({ savedQueries }) => 
   const handleExport = async () => {
     setIsExporting(true);
     try {
-      const response = await axios.get('http://localhost:8000/export_prisma', { responseType: 'blob' });
+      const response = await axios.get('/export_prisma', { responseType: 'blob' });
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement('a');
       link.href = url;

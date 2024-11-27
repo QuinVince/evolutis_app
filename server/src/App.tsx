@@ -10,12 +10,14 @@ export interface SavedQuery {
   questions: string[];
   answers: Record<string, string>;
   pubmedQuery: string;
+
   collectedDocuments: {
     pubmed: number;
     semanticScholar: number;
     removedDuplicates?: number;
   };
   paperCount: number;
+
   freeFullTextCount: number;
   yearDistribution: Record<number, number>;
 }
@@ -29,6 +31,7 @@ export interface AnalysisData {
     date: string;
     authors: string[];
     citationCount: number; // Add this line
+    pubmedLink?: string;  // Add this line
     selected: boolean;
     abstractExpanded: boolean;
     studyType: 'Meta-analysis' | 'Systematic Review' | 'RCT' | 'Cohort study' | 'Case-control study' | 'Case report' | 'Case series' | 'Expert opinion' | 'Narrative review' | 'Animal study' | 'In vitro study';

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FaSearch, FaExchangeAlt, FaFileAlt, FaArrowRight, FaChevronDown, FaChevronUp, FaFileAlt as FaFileAltIcon, FaUnlock, FaTrash } from 'react-icons/fa';
+import {  FaExchangeAlt, FaFileAlt, FaArrowRight, FaChevronDown, FaChevronUp, FaFileAlt as FaFileAltIcon, FaUnlock, FaTrash } from 'react-icons/fa';
 import {FaDiagramNext} from "react-icons/fa6"
 import { PiStackPlusFill } from "react-icons/pi";
 import QueryGenerator from './QueryGenerator';
@@ -124,7 +124,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ savedQueries, onSaveQuery, on
       {!showQueryGenerator && !showComponent && (
         <>
           <h2 className="text-center text-black text-2xl font-bold mb-10">
-            Que souhaitez-vous faire ?
+            What would you like to do ?
           </h2>
 
           {activeComponent === 'query' && (
@@ -135,7 +135,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ savedQueries, onSaveQuery, on
                   onChange={(e) => setDescription(e.target.value)}
                   onKeyPress={handleKeyPress}
                   className="w-full h-14 rounded-xl  border-2 border-[#62B6CB] shadow text-lg pl-5 pr-16 flex items-center"
-                  placeholder="Décrivez votre recherche en langage naturel"
+                  placeholder="Describe your search in natural language"
                   style={{paddingTop: '14px'}} 
                 />
               </div>
@@ -158,7 +158,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ savedQueries, onSaveQuery, on
               }`}
             >
               <PiStackPlusFill className="w-6 h-6 mr-4" />
-              Nouvelle query
+              New query
             </button>
 
             <button

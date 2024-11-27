@@ -34,7 +34,7 @@ const SynonymList: React.FC<SynonymListProps> = ({
       <div className="flex items-center mb-4">
         <div className="flex items-center w-1/2">
           <label className="text-lg  font-large text-black mr-3 font-bold">
-            Select keywords:
+            Keywords suggestions:
           </label>
           <select
             value={selectedConceptIndex}
@@ -64,10 +64,11 @@ const SynonymList: React.FC<SynonymListProps> = ({
             <button
               key={index}
               onClick={() => onSynonymClick(synonym)}
-              className="inline-flex items-center px-3 py-1 rounded-full bg-[#C2E2EB] text-black hover:bg-[#62B6CB] transition-colors"
-            >
-              <FaPlusCircle className="mr-1 text-[#62B6CB] bg-white rounded-full" />
+              className="inline-flex items-center px-3 py-1 rounded-full bg-[#C2E2EB] text-black hover:bg-[#62B6CB] transition-colors">
               {synonym}
+              <span className="ml-2">
+                <FaPlusCircle className="text-[#62B6CB] bg-white rounded-full" />
+              </span>
             </button>
           ))}
         </div>
