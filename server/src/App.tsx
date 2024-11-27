@@ -1,7 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { FaHome } from 'react-icons/fa';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React, { useState } from 'react';
 import LandingPage from './components/LandingPage';
-import logo from './utils/quinten-health-logo.png'; 
+import NewProject from './components/NewProject';
+import QueryGenerator from './components/QueryGenerator';
+import Layout from './components/Layout';
+
 // Add these type definitions
 export interface SavedQuery {
   id: string;
@@ -54,79 +57,49 @@ export interface AnalysisData {
   };
 }
 
+// Update LayoutProps to match Layout component requirements
+interface LayoutProps {
+  children: React.ReactNode;
+  projectTitle: string;
+  onProjectTitleChange: (title: string) => void;
+}
+
 const App: React.FC = () => {
-  const [savedQueries, setSavedQueries] = useState<SavedQuery[]>(() => {
-    // Load saved queries from localStorage on initial render
-    const saved = localStorage.getItem('savedQueries');
-    return saved ? JSON.parse(saved) : [];
-  });
-
-  // Update localStorage whenever savedQueries changes
-  useEffect(() => {
-    localStorage.setItem('savedQueries', JSON.stringify(savedQueries));
-  }, [savedQueries]);
-
-  const [analysisData, setAnalysisData] = useState<AnalysisData>({
-    selectedQuery: null,
-    documents: [],
-    criteria: [],
-    analysisResults: {}
-  });
-
-  const handleSaveQuery = (query: SavedQuery) => {
-    setSavedQueries(prev => [...prev, query]);
-  };
-
-  const handleRemoveQuery = (queryId: string) => {
-    setSavedQueries(prev => prev.filter(q => q.id !== queryId));
-  };
-
-  const handleClearAllQueries = () => {
-    if (window.confirm('Are you sure you want to remove all saved queries?')) {
-      setSavedQueries([]);
+  const [savedQueries, setSavedQueries] = useState<SavedQuery[]>([]);
+  const [projectTitle, setProjectTitle] = useState('New project');
+  
+  const handleSaveQuery = (query: SavedQuery | null) => {
+    if (query) {
+      setSavedQueries(prev => [...prev, query]);
     }
   };
 
-  const updateAnalysisData = (newData: Partial<AnalysisData>) => {
-    setAnalysisData(prev => ({ ...prev, ...newData }));
-  };
-
-  const handleUpdateQuery = (updatedQuery: SavedQuery) => {
-    setSavedQueries(prev => 
-      prev.map(q => q.id === updatedQuery.id ? updatedQuery : q)
-    );
+  const handleClearQueries = () => {
+    setSavedQueries([]);
   };
 
   return (
-    <div className="min-h-screen bg-white">
-      <header className="bg-white border-b fixed w-full top-0 z-50 h-12"> {/* Added h-12 for fixed height */}
-        <div className="container mx-auto h-full px-4 flex items-center justify-between">
-          <div className="flex items-center">
-            <button 
-              onClick={() => window.location.href = '/'}
-              className="bg-[#62B6CB] p-1.5 rotate-45 hover:bg-[#62B6CB]/80 transition-colors mr-3 rounded-lg"
-            >
-              <div className="-rotate-45">
-                <FaHome className="w-4 h-4 text-black" />
-              </div>
-            </button>
-            <h1 className="text-xl font-bold text-[#62B6CB]-700">Systematic Review AI Assistant</h1>
-          </div>
-          <img src={logo} alt="Logo" className="h-10 w-auto my-1" />
-        </div>
-      </header>
-      <main className="pt-16"> {/* Add padding-top to account for fixed header */}
-        <LandingPage
-          savedQueries={savedQueries}
-          onSaveQuery={handleSaveQuery}
-          onRemoveQuery={handleRemoveQuery}
-          onClearQueries={handleClearAllQueries}
-          onUpdateQuery={handleUpdateQuery}
-          analysisData={analysisData}
-          updateAnalysisData={updateAnalysisData}
-        />
-      </main>
-    </div>
+    <Router>
+      <Layout 
+        projectTitle={projectTitle} 
+        onProjectTitleChange={setProjectTitle}
+      >
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/new-project" element={<NewProject />} />
+          <Route 
+            path="/query-generator" 
+            element={
+              <QueryGenerator 
+                onSaveQuery={handleSaveQuery}
+                savedQueries={savedQueries}
+                onClearQueries={handleClearQueries}
+              />
+            } 
+          />
+        </Routes>
+      </Layout>
+    </Router>
   );
 };
 

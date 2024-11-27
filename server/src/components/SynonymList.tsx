@@ -14,6 +14,8 @@ interface SynonymListProps {
   onConceptSelect: (index: number) => void;
   onGetSynonyms: () => void;
   isSynonymsLoading: boolean;
+  position?: { top: number; left: number };
+  onClose: () => void;
 }
 
 const SynonymList: React.FC<SynonymListProps> = ({
@@ -22,14 +24,29 @@ const SynonymList: React.FC<SynonymListProps> = ({
   onSynonymClick,
   onConceptSelect,
   onGetSynonyms,
-  isSynonymsLoading
+  isSynonymsLoading,
+  position,
+  onClose,
 }) => {
   if (isSynonymsLoading) {
     return <div>Loading synonyms...</div>;
   }
 
   return (
-    <div>
+    <div 
+      className="absolute bg-white p-4 rounded-xl shadow-lg border border-[#62B6CB]"
+      style={{ 
+        top: position?.top || 0, 
+        left: position?.left || 0,
+        zIndex: 1000 
+      }}
+    >
+      <button
+        onClick={onClose}
+        className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
+      >
+        ×
+      </button>
       {/* Concepts Selection with Dropdown */}
       <div className="flex items-center mb-4">
         <div className="flex items-center w-1/2">

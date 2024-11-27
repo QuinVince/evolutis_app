@@ -11,6 +11,7 @@ from dotenv import load_dotenv
 #For production in replit, replace by: 
 #from .prisma_generator import generate_prisma_diagram
 from prisma_generator import generate_prisma_diagram
+import tempfile
 
 # Load environment variables from .env file
 load_dotenv()
@@ -67,8 +68,9 @@ async def generate_questions(request: Request):
         # Check if MISTRAL_API_KEY is set
         if not os.getenv("MISTRAL_API_KEY"):
             raise HTTPException(status_code=500, detail="MISTRAL_API_KEY environment variable not set")
-
-        result = subprocess.run(['python', 'backend/generate_questions.py', query], capture_output=True, text=True)
+        #For production in replit, replace by:
+        #result = subprocess.run(['python', 'backend/generate_questions.py', query], capture_output=True, text=True)
+        result = subprocess.run(['python', 'generate_questions.py', query], capture_output=True, text=True)
         logger.info(f"generate_questions.py output: {result.stdout}")
         if result.stderr:
             logger.error(f"generate_questions.py error: {result.stderr}")
@@ -88,11 +90,34 @@ async def generate_pubmed_query(request: PubMedQueryRequest):
     logger.info(f"Received PubMed query request: {request}")
     try:
         logger.info("Running generate_pubmed_query.py")
-        result = subprocess.run(['python', 'backend/generate_pubmed_query.py', request.query, json.dumps(request.answers)], capture_output=True, text=True)
-        logger.info(f"generate_pubmed_query.py output: {result.stdout}")
+        
+        # Create a temporary file for the output
+        with tempfile.NamedTemporaryFile(suffix='.json', delete=False) as tmp_file:
+            output_path = tmp_file.name
+        
+        result = subprocess.run(
+            ['python', 'generate_pubmed_query.py', request.query, json.dumps(request.answers), output_path], 
+            capture_output=True, 
+            text=True
+        )
+        
         if result.stderr:
             logger.warning(f"generate_pubmed_query.py stderr: {result.stderr}")
-        return {"query": result.stdout.strip()}
+        
+        # Read the result from the temporary file
+        try:
+            with open(output_path, 'r', encoding='utf-8') as f:
+                query_data = json.load(f)
+            
+            # Clean up the temporary file
+            os.unlink(output_path)
+            
+            return query_data
+            
+        except Exception as e:
+            logger.error(f"Error reading query result: {str(e)}")
+            raise HTTPException(status_code=500, detail=f"Failed to read query result: {str(e)}")
+            
     except Exception as e:
         logger.error(f"Error in generate_pubmed_query: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
