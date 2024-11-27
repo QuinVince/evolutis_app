@@ -8,7 +8,9 @@ import json
 import logging
 import os
 from dotenv import load_dotenv
-from .prisma_generator import generate_prisma_diagram
+#For production in replit, replace by: 
+#from .prisma_generator import generate_prisma_diagram
+from prisma_generator import generate_prisma_diagram
 
 # Load environment variables from .env file
 load_dotenv()
@@ -156,7 +158,9 @@ for route in app.routes:
 
 # Mount the static directory
 frontend_dir = os.path.join(os.path.dirname(__file__), '..', 'server', 'build')
-app.mount("/", StaticFiles(directory=frontend_dir, html=True), name="static")
+#For production in replit, replace by:
+#app.mount("/", StaticFiles(directory=frontend_dir, html=True), name="static")
+app.mount("/static", StaticFiles(directory="static"), name="static")
 logger.debug(f"Serving static files from {frontend_dir}")
 
 
