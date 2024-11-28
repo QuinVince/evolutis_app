@@ -1,0 +1,3 @@
+REmove localhost in path an axios API call
+suppress .env / update secrets
+update python import if needed

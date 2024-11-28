@@ -6,6 +6,9 @@ import DuplicateAnalysisTable from './DuplicateAnalysisTable';
 import { mockDuplicatePairs } from '../utils/mockData';
 import { DuplicatePair } from './DuplicateAnalysis';
 import DocumentStats from '../utils/DocumentStats';
+import { useDispatch } from 'react-redux';
+import { saveQuery } from '../store/querySlice';
+import { SavedQuery } from '../App';
 
 interface PubMedQueryBuilderProps {
   query: string;
@@ -23,6 +26,9 @@ interface PubMedQueryBuilderProps {
     duplicates: number;
   };
   onCollect?: () => void;
+  description: string;
+  questions: string[];
+  answers: Record<string, string>;
 }
 
 interface Subquery {
@@ -38,7 +44,10 @@ const PubMedQueryBuilder: React.FC<PubMedQueryBuilderProps> = ({
   estimatedDocuments,
   synonymGroups,
   documentStats = { files: 873, duplicates: 144 },
-  onCollect
+  onCollect,
+  description,
+  questions,
+  answers
 }) => {
   const [subqueries, setSubqueries] = React.useState<Subquery[]>([]);
   const [activeSynonymIndex, setActiveSynonymIndex] = React.useState<number | null>(null);
@@ -52,6 +61,7 @@ const PubMedQueryBuilder: React.FC<PubMedQueryBuilderProps> = ({
   const [remainingDuplicates, setRemainingDuplicates] = useState(documentStats.duplicates);
   const [statsNeedUpdate, setStatsNeedUpdate] = useState(false);
   const [currentStatsId, setCurrentStatsId] = useState('');
+  const dispatch = useDispatch();
 
   React.useEffect(() => {
     try {
@@ -198,14 +208,59 @@ const PubMedQueryBuilder: React.FC<PubMedQueryBuilderProps> = ({
   };
 
   const handleCollectClick = () => {
-    setShowDuplicateModal(true);
-    if (onCollect) onCollect();
+    // If duplicates are already treated, proceed directly to save
+    if (duplicatesTreated) {
+      // Create a new query object
+      const newQuery: SavedQuery = {
+        id: Date.now().toString(),
+        name: 'Query ' + new Date().toLocaleDateString(),
+        description: description,
+        questions: questions,
+        answers: answers,
+        pubmedQuery: query,
+        collectedDocuments: {
+          pubmed: documentStats.files - documentStats.duplicates,
+          semanticScholar: 0,
+          removedDuplicates: remainingDuplicates
+        },
+        paperCount: documentStats.files - remainingDuplicates,
+        freeFullTextCount: Math.floor((documentStats.files - remainingDuplicates) * 0.4),
+        yearDistribution: {} // You might want to generate this based on your data
+      };
+
+      // Save to Redux store
+      dispatch(saveQuery(newQuery));
+    } else {
+      // Show duplicate modal only if duplicates haven't been treated
+      setShowDuplicateModal(true);
+      if (onCollect) onCollect();
+    }
   };
 
   const handleSaveDuplicates = () => {
     setDuplicatesTreated(true);
     setShowDuplicateModal(false);
     setRemainingDuplicates(selectedPairs.size);
+
+    // Create a new query object
+    const newQuery: SavedQuery = {
+      id: Date.now().toString(),
+      name: 'Query ' + new Date().toLocaleDateString(),
+      description: '', // You'll need to pass this from QueryGenerator
+      questions: [], // You'll need to pass this from QueryGenerator
+      answers: {}, // You'll need to pass this from QueryGenerator
+      pubmedQuery: query,
+      collectedDocuments: {
+        pubmed: documentStats.files - documentStats.duplicates,
+        semanticScholar: 0
+      },
+      paperCount: documentStats.files,
+      freeFullTextCount: Math.floor(documentStats.files * 0.4),
+      yearDistribution: {} // You might want to generate this based on your data
+    };
+
+    // Save to Redux store
+    dispatch(saveQuery(newQuery));
   };
 
   const handleUpdateStats = () => {
@@ -349,7 +404,7 @@ const PubMedQueryBuilder: React.FC<PubMedQueryBuilderProps> = ({
                 <div className="flex items-center gap-2">
                   <span className="text-gray-700 font-medium">Papers</span>
                   <span className="px-3 py-1 bg-[#DCF8FF] text-[#296A7A] rounded-full font-semibold">
-                    {documentStats.files}
+                    {documentStats.files - (duplicatesTreated ? remainingDuplicates : 0)}
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
@@ -363,17 +418,13 @@ const PubMedQueryBuilder: React.FC<PubMedQueryBuilderProps> = ({
                       <span className="px-3 py-1 bg-[#FFF4DB] text-[#B98900] rounded-full font-semibold">
                         {documentStats.duplicates}
                       </span>
-                      {subqueries.length > 0 && (
+                      {statsNeedUpdate && (
                         <button
                           onClick={handleUpdateStats}
-                          className={`p-1.5 rounded-full transition-colors ${
-                            statsNeedUpdate 
-                              ? 'text-[#62B6CB] hover:text-white hover:bg-[#C2E2EB]' 
-                              : 'text-gray-400 hover:text-[#62B6CB]'
-                          }`}
+                          className="p-1.5 rounded-full transition-colors text-[#62B6CB] hover:text-white hover:bg-[#C2E2EB]"
                           title="Update statistics"
                         >
-                          <FaSync className={`w-3.5 h-3.5 ${statsNeedUpdate ? 'animate-pulse' : ''}`} />
+                          <FaSync className="w-3.5 h-3.5 animate-pulse" />
                         </button>
                       )}
                     </div>
@@ -382,9 +433,19 @@ const PubMedQueryBuilder: React.FC<PubMedQueryBuilderProps> = ({
               </div>
               <button
                 onClick={handleCollectClick}
-                className="px-6 py-2 bg-[#068EF1] text-white rounded-full font-semibold hover:bg-[#0576C8] transition-colors"
+                className={`px-6 py-2 ${
+                  duplicatesTreated 
+                    ? 'bg-[#408038] hover:bg-[#346C2E]' 
+                    : 'bg-[#068EF1] hover:bg-[#0576C8]'
+                } text-white rounded-full font-semibold transition-colors flex items-center gap-2`}
               >
-                {duplicatesTreated ? 'Save' : 'Collect'}
+                {duplicatesTreated ? (
+                  <>
+                    Save <FaCheck className="w-4 h-4" />
+                  </>
+                ) : (
+                  'Collect'
+                )}
               </button>
             </div>
           </>

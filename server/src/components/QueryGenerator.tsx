@@ -800,6 +800,9 @@ const QueryGenerator: React.FC<QueryGeneratorProps> = ({ initialData, onSaveQuer
               duplicates: DocumentStats.getStats(projectId).duplicates
             }}
             onCollect={handleCollectDocuments}
+            description={naturalLanguageQuery}
+            questions={questions}
+            answers={answers}
           />
         </div>
       </div>

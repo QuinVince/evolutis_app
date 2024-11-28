@@ -4,6 +4,9 @@ import LandingPage from './components/LandingPage';
 import NewProject from './components/NewProject';
 import QueryGenerator from './components/QueryGenerator';
 import Layout from './components/Layout';
+import { Provider } from 'react-redux';
+import { store } from './store/store';
+import ProjectsPage from './components/ProjectsPage';
 
 // Add these type definitions
 export interface SavedQuery {
@@ -79,27 +82,30 @@ const App: React.FC = () => {
   };
 
   return (
-    <Router>
-      <Layout 
-        projectTitle={projectTitle} 
-        onProjectTitleChange={setProjectTitle}
-      >
-        <Routes>
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/new-project" element={<NewProject />} />
-          <Route 
-            path="/query-generator" 
-            element={
-              <QueryGenerator 
-                onSaveQuery={handleSaveQuery}
-                savedQueries={savedQueries}
-                onClearQueries={handleClearQueries}
-              />
-            } 
-          />
-        </Routes>
-      </Layout>
-    </Router>
+    <Provider store={store}>
+      <Router>
+        <Layout 
+          projectTitle={projectTitle} 
+          onProjectTitleChange={setProjectTitle}
+        >
+          <Routes>
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/new-project" element={<NewProject />} />
+            <Route path="/projects" element={<ProjectsPage />} />
+            <Route 
+              path="/query-generator" 
+              element={
+                <QueryGenerator 
+                  onSaveQuery={handleSaveQuery}
+                  savedQueries={savedQueries}
+                  onClearQueries={handleClearQueries}
+                />
+              } 
+            />
+          </Routes>
+        </Layout>
+      </Router>
+    </Provider>
   );
 };
 
