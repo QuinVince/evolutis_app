@@ -559,6 +559,7 @@ const PubMedQueryBuilder: React.FC<PubMedQueryBuilderProps> = ({
           }}
           onSynonymClick={(synonym, isAdded) => handleSynonymClick(activeSynonymIndex, synonym, isAdded)}
           addedSynonyms={addedSynonyms.get(activeSynonymIndex) || new Set()}
+          abstraction={synonymGroups[activeSynonymIndex]?.abstraction || ''}
         />
       )}
 
