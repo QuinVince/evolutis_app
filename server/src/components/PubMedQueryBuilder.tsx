@@ -9,6 +9,7 @@ import DocumentStats from '../utils/DocumentStats';
 import { useDispatch } from 'react-redux';
 import { saveQuery } from '../store/querySlice';
 import { SavedQuery } from '../App';
+import axios from 'axios';
 
 interface PubMedQueryBuilderProps {
   query: string;
@@ -61,7 +62,49 @@ const PubMedQueryBuilder: React.FC<PubMedQueryBuilderProps> = ({
   const [remainingDuplicates, setRemainingDuplicates] = useState(documentStats.duplicates);
   const [statsNeedUpdate, setStatsNeedUpdate] = useState(false);
   const [currentStatsId, setCurrentStatsId] = useState('');
+  const [localDocumentStats, setLocalDocumentStats] = useState({
+    files: documentStats.files,
+    duplicates: documentStats.duplicates
+  });
   const dispatch = useDispatch();
+  const [lastStatsQuery, setLastStatsQuery] = useState('');
+  const [needsSave, setNeedsSave] = useState(false);
+  const [isCollecting, setIsCollecting] = useState(false);
+  const [collectionProgress, setCollectionProgress] = useState(0);
+
+  const generateStats = async (projectId: string) => {
+    try {
+      const response = await axios.post('http://localhost:8000/generate_stats', {
+        projectId: projectId
+      }, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      console.log('Stats response:', response.data);
+      return response.data;
+    } catch (error) {
+      console.error('Error generating stats:', error);
+      return null;
+    }
+  };
+
+  const generateStatsForQuery = async (query: string) => {
+    try {
+      const response = await axios.post('http://localhost:8000/generate_stats_for_query', {
+        query: query
+      }, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      console.log('Query stats response:', response.data);
+      return response.data;
+    } catch (error) {
+      console.error('Error generating stats for query:', error);
+      return null;
+    }
+  };
 
   React.useEffect(() => {
     try {
@@ -69,6 +112,7 @@ const PubMedQueryBuilder: React.FC<PubMedQueryBuilderProps> = ({
         const queryData = JSON.parse(query);
         if (queryData.subqueries && Array.isArray(queryData.subqueries)) {
           setSubqueries(queryData.subqueries);
+          setStatsNeedUpdate(true);
         }
       }
     } catch (e) {
@@ -77,18 +121,36 @@ const PubMedQueryBuilder: React.FC<PubMedQueryBuilderProps> = ({
   }, [query]);
 
   useEffect(() => {
+    const loadInitialStats = async () => {
+      if (currentStatsId) {
+        const stats = await generateStats(currentStatsId);
+        if (stats) {
+          setLocalDocumentStats({
+            files: stats.total,
+            duplicates: stats.duplicates
+          });
+        }
+      }
+    };
+    
+    loadInitialStats();
+  }, [currentStatsId]);
+
+  useEffect(() => {
     if (subqueries.length > 0) {
-      const queryId = btoa(JSON.stringify(subqueries)).slice(0, 10);
-      if (queryId !== currentStatsId) {
+      const currentQueryString = JSON.stringify(subqueries);
+      
+      if (currentQueryString !== lastStatsQuery) {
         setStatsNeedUpdate(true);
-        setCurrentStatsId(queryId);
       }
     }
-  }, [subqueries, currentStatsId]);
+  }, [subqueries, lastStatsQuery]);
 
   const handleSubqueryChange = (index: number, content: string) => {
     const newSubqueries = [...subqueries];
     newSubqueries[index].content = content;
+    setStatsNeedUpdate(true);
+    setNeedsSave(true);
     updateQuery(newSubqueries);
   };
 
@@ -207,10 +269,33 @@ const PubMedQueryBuilder: React.FC<PubMedQueryBuilderProps> = ({
     setShowDuplicateModal(false);
   };
 
+  const simulateCollection = () => {
+    setIsCollecting(true);
+    setCollectionProgress(0);
+    
+    const startTime = Date.now();
+    const duration = 3000; // 3 seconds
+
+    const updateProgress = () => {
+      const elapsed = Date.now() - startTime;
+      const progress = Math.min((elapsed / duration) * 100, 100);
+      
+      setCollectionProgress(progress);
+
+      if (progress < 100) {
+        requestAnimationFrame(updateProgress);
+      } else {
+        setIsCollecting(false);
+        setShowDuplicateModal(true);
+        if (onCollect) onCollect();
+      }
+    };
+
+    requestAnimationFrame(updateProgress);
+  };
+
   const handleCollectClick = () => {
-    // If duplicates are already treated, proceed directly to save
     if (duplicatesTreated) {
-      // Create a new query object
       const newQuery: SavedQuery = {
         id: Date.now().toString(),
         name: 'Query ' + new Date().toLocaleDateString(),
@@ -219,21 +304,19 @@ const PubMedQueryBuilder: React.FC<PubMedQueryBuilderProps> = ({
         answers: answers,
         pubmedQuery: query,
         collectedDocuments: {
-          pubmed: documentStats.files - documentStats.duplicates,
+          pubmed: localDocumentStats.files - localDocumentStats.duplicates,
           semanticScholar: 0,
           removedDuplicates: remainingDuplicates
         },
-        paperCount: documentStats.files - remainingDuplicates,
-        freeFullTextCount: Math.floor((documentStats.files - remainingDuplicates) * 0.4),
-        yearDistribution: {} // You might want to generate this based on your data
+        paperCount: localDocumentStats.files - remainingDuplicates,
+        freeFullTextCount: Math.floor((localDocumentStats.files - remainingDuplicates) * 0.4),
+        yearDistribution: {}
       };
 
-      // Save to Redux store
       dispatch(saveQuery(newQuery));
+      setNeedsSave(false);
     } else {
-      // Show duplicate modal only if duplicates haven't been treated
-      setShowDuplicateModal(true);
-      if (onCollect) onCollect();
+      simulateCollection();
     }
   };
 
@@ -246,43 +329,45 @@ const PubMedQueryBuilder: React.FC<PubMedQueryBuilderProps> = ({
     const newQuery: SavedQuery = {
       id: Date.now().toString(),
       name: 'Query ' + new Date().toLocaleDateString(),
-      description: '', // You'll need to pass this from QueryGenerator
-      questions: [], // You'll need to pass this from QueryGenerator
-      answers: {}, // You'll need to pass this from QueryGenerator
+      description: description,
+      questions: questions,
+      answers: answers,
       pubmedQuery: query,
       collectedDocuments: {
-        pubmed: documentStats.files - documentStats.duplicates,
-        semanticScholar: 0
+        pubmed: localDocumentStats.files - localDocumentStats.duplicates,
+        semanticScholar: 0,
+        removedDuplicates: remainingDuplicates
       },
-      paperCount: documentStats.files,
-      freeFullTextCount: Math.floor(documentStats.files * 0.4),
-      yearDistribution: {} // You might want to generate this based on your data
+      paperCount: localDocumentStats.files - remainingDuplicates,
+      freeFullTextCount: Math.floor((localDocumentStats.files - remainingDuplicates) * 0.4),
+      yearDistribution: {}
     };
 
     // Save to Redux store
     dispatch(saveQuery(newQuery));
+    setNeedsSave(false);
   };
 
-  const handleUpdateStats = () => {
-    if (subqueries.length > 0) {
-      const newStatsId = Date.now().toString();
-      
-      const newStats = DocumentStats.generateInitialStats(newStatsId);
-      
-      if (onQueryChange) {
-        onQueryChange(JSON.stringify({
-          subqueries,
-          stats: {
-            files: newStats.total,
-            duplicates: newStats.duplicates
-          }
-        }));
-      }
+  const handleUpdateStats = async () => {
+    if (!statsNeedUpdate || subqueries.length === 0) return;
 
-      setCurrentStatsId(newStatsId);
-      setStatsNeedUpdate(false);
+    try {
+      const queryString = JSON.stringify(subqueries);
+      const newStats = await generateStatsForQuery(queryString);
       
-      if (onCollect) onCollect();
+      if (newStats) {
+        setLocalDocumentStats({
+          files: newStats.total,
+          duplicates: newStats.duplicates
+        });
+        setStatsNeedUpdate(false);
+        setLastStatsQuery(queryString);
+        setDuplicatesTreated(false);
+        setRemainingDuplicates(newStats.duplicates);
+        setNeedsSave(true);
+      }
+    } catch (error) {
+      console.error('Failed to update stats:', error);
     }
   };
 
@@ -402,9 +487,11 @@ const PubMedQueryBuilder: React.FC<PubMedQueryBuilderProps> = ({
             <div className="mt-8 flex items-center justify-between bg-white rounded-xl border border-[#BDBDBD] p-4">
               <div className="flex items-center gap-8">
                 <div className="flex items-center gap-2">
-                  <span className="text-gray-700 font-medium">Papers</span>
+                  <span className="text-gray-700 font-medium">
+                    {duplicatesTreated ? "Collected papers" : "Papers"}
+                  </span>
                   <span className="px-3 py-1 bg-[#DCF8FF] text-[#296A7A] rounded-full font-semibold">
-                    {documentStats.files - (duplicatesTreated ? remainingDuplicates : 0)}
+                    {localDocumentStats.files - (duplicatesTreated ? remainingDuplicates : 0)}
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
@@ -414,39 +501,48 @@ const PubMedQueryBuilder: React.FC<PubMedQueryBuilderProps> = ({
                       <FaCheck className="w-4 h-4" />
                     </span>
                   ) : (
-                    <div className="flex items-center gap-2">
-                      <span className="px-3 py-1 bg-[#FFF4DB] text-[#B98900] rounded-full font-semibold">
-                        {documentStats.duplicates}
-                      </span>
-                      {statsNeedUpdate && (
-                        <button
-                          onClick={handleUpdateStats}
-                          className="p-1.5 rounded-full transition-colors text-[#62B6CB] hover:text-white hover:bg-[#C2E2EB]"
-                          title="Update statistics"
-                        >
-                          <FaSync className="w-3.5 h-3.5 animate-pulse" />
-                        </button>
-                      )}
-                    </div>
+                    <span className="px-3 py-1 bg-[#FFF4DB] text-[#B98900] rounded-full font-semibold">
+                      {localDocumentStats.duplicates}
+                    </span>
                   )}
                 </div>
               </div>
-              <button
-                onClick={handleCollectClick}
-                className={`px-6 py-2 ${
-                  duplicatesTreated 
-                    ? 'bg-[#408038] hover:bg-[#346C2E]' 
-                    : 'bg-[#068EF1] hover:bg-[#0576C8]'
-                } text-white rounded-full font-semibold transition-colors flex items-center gap-2`}
-              >
-                {duplicatesTreated ? (
-                  <>
-                    Save <FaCheck className="w-4 h-4" />
-                  </>
-                ) : (
-                  'Collect'
-                )}
-              </button>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={handleUpdateStats}
+                  disabled={!statsNeedUpdate}
+                  className={`px-3 py-2 rounded-full font-semibold transition-colors flex items-center gap-2
+                    ${statsNeedUpdate 
+                      ? 'text-[#62B6CB] hover:bg-[#DCF8FF]' 
+                      : 'text-gray-400 cursor-not-allowed'
+                    }`}
+                  title={statsNeedUpdate ? "Refresh statistics" : "No changes to refresh"}
+                >
+                  <FaSync className={`w-4 h-4 ${statsNeedUpdate ? 'animate-pulse' : ''}`} />
+                </button>
+                <button
+                  onClick={handleCollectClick}
+                  className={`px-6 py-2 ${
+                    duplicatesTreated 
+                      ? needsSave 
+                        ? 'bg-[#068EF1] hover:bg-[#0576C8]'  // Blue when needs save
+                        : 'bg-[#408038] hover:bg-[#346C2E]'   // Green when saved
+                      : 'bg-[#068EF1] hover:bg-[#0576C8]'     // Blue for collect
+                  } text-white rounded-full font-semibold transition-colors flex items-center gap-2`}
+                >
+                  {duplicatesTreated ? (
+                    <>
+                      {needsSave ? 'Save' : (
+                        <>
+                          Saved <FaCheck className="w-4 h-4" />
+                        </>
+                      )}
+                    </>
+                  ) : (
+                    'Collect'
+                  )}
+                </button>
+              </div>
             </div>
           </>
         )}
@@ -494,6 +590,38 @@ const PubMedQueryBuilder: React.FC<PubMedQueryBuilderProps> = ({
               onSave={handleSaveDuplicates}
               remainingDuplicates={remainingDuplicates}
             />
+          </div>
+        </div>
+      )}
+
+      {/* Add Collection Progress Bar */}
+      {isCollecting && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-xl p-8 max-w-md w-full mx-4">
+            <h2 className="text-xl font-bold mb-6">Collecting Documents</h2>
+            <div className="relative pt-1">
+              <div className="flex mb-2 items-center justify-between">
+                <div>
+                  <span className="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-[#296A7A] bg-[#DCF8FF]">
+                    Progress
+                  </span>
+                </div>
+                <div className="text-right">
+                  <span className="text-xs font-semibold inline-block text-[#296A7A]">
+                    {Math.round(collectionProgress)}%
+                  </span>
+                </div>
+              </div>
+              <div className="overflow-hidden h-2 mb-4 text-xs flex rounded bg-[#DCF8FF]">
+                <div
+                  style={{ width: `${collectionProgress}%` }}
+                  className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-[#62B6CB] transition-all duration-100"
+                />
+              </div>
+              <p className="text-sm text-gray-600 text-center">
+                Retrieving {localDocumentStats.files} documents...
+              </p>
+            </div>
           </div>
         </div>
       )}
