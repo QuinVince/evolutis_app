@@ -1,5 +1,6 @@
 import React from 'react';
 import { FaPlus, FaMinus } from 'react-icons/fa';
+import bulbIcon from '../assets/image_bulb.png';
 
 interface SynonymTooltipProps {
   synonyms: string[];
@@ -26,7 +27,10 @@ const SynonymTooltip: React.FC<SynonymTooltipProps> = ({
       }}
     >
       <div className="flex justify-between items-center mb-3">
-        <h3 className="font-semibold text-gray-700">Synonyms</h3>
+        <div className="flex items-center gap-2">
+          <img src={bulbIcon} alt="Synonyms" className="w-5 h-5" />
+          <h3 className="font-semibold text-gray-700">Synonyms</h3>
+        </div>
         <button
           onClick={onClose}
           className="text-gray-400 hover:text-gray-600"

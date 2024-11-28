@@ -14,6 +14,8 @@ interface DuplicateAnalysisTableProps {
   modalOpen: boolean;
   selectedPair: DuplicatePair | null;
   onCloseModal: () => void;
+  onSave: () => void;
+  remainingDuplicates: number;
 }
 
 const DuplicateAnalysisTable: React.FC<DuplicateAnalysisTableProps> = ({
@@ -28,6 +30,8 @@ const DuplicateAnalysisTable: React.FC<DuplicateAnalysisTableProps> = ({
   modalOpen,
   selectedPair,
   onCloseModal,
+  onSave,
+  remainingDuplicates
 }) => {
   // Helper function to get color based on proximity score
   const getProximityScoreColor = (score: number) => {
@@ -54,7 +58,10 @@ const DuplicateAnalysisTable: React.FC<DuplicateAnalysisTableProps> = ({
   return (
     <div>
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-semibold text-black">Potential duplicates comparison ({duplicatePairs.length})</h2>
+        <div>
+          <h2 className="text-xl font-semibold text-black">Potential duplicates comparison ({duplicatePairs.length})</h2>
+          <p className="text-sm text-gray-600 mt-1">Exact duplicates have been removed, you need to manually confirm potential duplicates suppression</p>
+        </div>
         <button
           onClick={onRemoveDuplicates}
           disabled={selectedPairs.size === 0}
@@ -128,6 +135,15 @@ const DuplicateAnalysisTable: React.FC<DuplicateAnalysisTableProps> = ({
       )}
 
       <Modal isOpen={modalOpen} onClose={onCloseModal} pair={selectedPair} />
+
+      <div className="mt-8 flex justify-center">
+        <button
+          onClick={onSave}
+          className="px-8 py-3 bg-[#068EF1] text-white rounded-full font-semibold hover:bg-[#0576C8] transition-colors"
+        >
+          {remainingDuplicates > 0 ? 'Save' : 'Close'}
+        </button>
+      </div>
     </div>
   );
 };

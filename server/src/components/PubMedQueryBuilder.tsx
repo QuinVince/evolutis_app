@@ -1,6 +1,11 @@
-import React from 'react';
-import { FaLightbulb, FaPlus, FaTimes } from 'react-icons/fa';
+import React, { useState, useEffect } from 'react';
+import { FaPlus, FaTimes, FaCheck, FaSync } from 'react-icons/fa';
+import bulbIcon from '../assets/image_bulb.png';
 import SynonymTooltip from './SynonymTooltip';
+import DuplicateAnalysisTable from './DuplicateAnalysisTable';
+import { mockDuplicatePairs } from '../utils/mockData';
+import { DuplicatePair } from './DuplicateAnalysis';
+import DocumentStats from '../utils/DocumentStats';
 
 interface PubMedQueryBuilderProps {
   query: string;
@@ -13,6 +18,11 @@ interface PubMedQueryBuilderProps {
     abstraction: string;
     synonyms: string[];
   }>;
+  documentStats?: {
+    files: number;
+    duplicates: number;
+  };
+  onCollect?: () => void;
 }
 
 interface Subquery {
@@ -26,12 +36,22 @@ const PubMedQueryBuilder: React.FC<PubMedQueryBuilderProps> = ({
   onLightbulbClick,
   isGeneratingPubMed,
   estimatedDocuments,
-  synonymGroups
+  synonymGroups,
+  documentStats = { files: 873, duplicates: 144 },
+  onCollect
 }) => {
   const [subqueries, setSubqueries] = React.useState<Subquery[]>([]);
   const [activeSynonymIndex, setActiveSynonymIndex] = React.useState<number | null>(null);
   const [tooltipPosition, setTooltipPosition] = React.useState<{ top: number; left: number } | null>(null);
   const [addedSynonyms, setAddedSynonyms] = React.useState<Map<number, Set<string>>>(new Map());
+  const [showDuplicateModal, setShowDuplicateModal] = useState(false);
+  const [selectedPairs, setSelectedPairs] = useState<Set<number>>(new Set());
+  const [displayedPairs, setDisplayedPairs] = useState(5);
+  const [selectedPair, setSelectedPair] = useState<DuplicatePair | null>(null);
+  const [duplicatesTreated, setDuplicatesTreated] = useState(false);
+  const [remainingDuplicates, setRemainingDuplicates] = useState(documentStats.duplicates);
+  const [statsNeedUpdate, setStatsNeedUpdate] = useState(false);
+  const [currentStatsId, setCurrentStatsId] = useState('');
 
   React.useEffect(() => {
     try {
@@ -45,6 +65,16 @@ const PubMedQueryBuilder: React.FC<PubMedQueryBuilderProps> = ({
       console.error('Error parsing query:', e);
     }
   }, [query]);
+
+  useEffect(() => {
+    if (subqueries.length > 0) {
+      const queryId = btoa(JSON.stringify(subqueries)).slice(0, 10);
+      if (queryId !== currentStatsId) {
+        setStatsNeedUpdate(true);
+        setCurrentStatsId(queryId);
+      }
+    }
+  }, [subqueries, currentStatsId]);
 
   const handleSubqueryChange = (index: number, content: string) => {
     const newSubqueries = [...subqueries];
@@ -132,6 +162,75 @@ const PubMedQueryBuilder: React.FC<PubMedQueryBuilderProps> = ({
     updateQuery(newSubqueries);
   };
 
+  const handleCheckAbstracts = (id: number) => {
+    const pair = mockDuplicatePairs.find(p => p.id === id);
+    setSelectedPair(pair || null);
+  };
+
+  const handleTogglePair = (id: number) => {
+    setSelectedPairs(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(id)) {
+        newSet.delete(id);
+      } else {
+        newSet.add(id);
+      }
+      return newSet;
+    });
+  };
+
+  const handleSelectAllPairs = () => {
+    if (selectedPairs.size === mockDuplicatePairs.length) {
+      setSelectedPairs(new Set());
+    } else {
+      setSelectedPairs(new Set(mockDuplicatePairs.map(p => p.id)));
+    }
+  };
+
+  const handleSeeMore = () => {
+    setDisplayedPairs(prev => prev + 5);
+  };
+
+  const handleRemoveDuplicates = () => {
+    // Implement duplicate removal logic
+    setSelectedPairs(new Set());
+    setShowDuplicateModal(false);
+  };
+
+  const handleCollectClick = () => {
+    setShowDuplicateModal(true);
+    if (onCollect) onCollect();
+  };
+
+  const handleSaveDuplicates = () => {
+    setDuplicatesTreated(true);
+    setShowDuplicateModal(false);
+    setRemainingDuplicates(selectedPairs.size);
+  };
+
+  const handleUpdateStats = () => {
+    if (subqueries.length > 0) {
+      const newStatsId = Date.now().toString();
+      
+      const newStats = DocumentStats.generateInitialStats(newStatsId);
+      
+      if (onQueryChange) {
+        onQueryChange(JSON.stringify({
+          subqueries,
+          stats: {
+            files: newStats.total,
+            duplicates: newStats.duplicates
+          }
+        }));
+      }
+
+      setCurrentStatsId(newStatsId);
+      setStatsNeedUpdate(false);
+      
+      if (onCollect) onCollect();
+    }
+  };
+
   if (isGeneratingPubMed) {
     return (
       <div className="flex items-center justify-center p-8 bg-gray-50 rounded-xl border-2 border-[#62B6CB] border-dashed">
@@ -143,7 +242,7 @@ const PubMedQueryBuilder: React.FC<PubMedQueryBuilderProps> = ({
 
   return (
     <div className="bg-white rounded-xl border border-[#BDBDBD] p-6 border-b-4 shadow-sm">
-      <div className="space-y">
+      <div className="space-y-6">
         {subqueries.length > 0 ? (
           <>
             {subqueries.map((subquery, index) => (
@@ -177,10 +276,14 @@ const PubMedQueryBuilder: React.FC<PubMedQueryBuilderProps> = ({
                   </div>
                   <button
                     onClick={(e) => handleLightbulbClick(index, e)}
-                    className="p-2 text-[#62B6CB] hover:text-white rounded-full hover:bg-[#62B6CB] transition-colors"
+                    className="p-2 text-[#62B6CB] hover:text-white rounded-full hover:bg-[#C2E2EB] transition-colors"
                     title="Show synonyms"
                   >
-                    <FaLightbulb className="w-5 h-5" />
+                    <img 
+                      src={bulbIcon} 
+                      alt="Show synonyms" 
+                      className="w-5 h-5"
+                    />
                   </button>
                 </div>
 
@@ -227,14 +330,64 @@ const PubMedQueryBuilder: React.FC<PubMedQueryBuilderProps> = ({
           </div>
         )}
 
-        {/* Estimated Documents */}
-        {estimatedDocuments !== null && (
-          <div className="flex items-center mt-4">
-            <span className="text-sm text-black font-bold">Estimated documents</span>
-            <span className="px-3 py-1 rounded-xl bg-[#D5F7FF] text-[#296A7A] text-sm font-bold ml-2">
-              {estimatedDocuments}
-            </span>
-          </div>
+        {/* Show stats only when there's a query */}
+        {subqueries.length > 0 && (
+          <>
+            {/* Estimated Documents */}
+            {estimatedDocuments !== null && (
+              <div className="flex items-center mt-4">
+                <span className="text-sm text-black font-bold">Estimated documents</span>
+                <span className="px-3 py-1 rounded-xl bg-[#D5F7FF] text-[#296A7A] text-sm font-bold ml-2">
+                  {estimatedDocuments}
+                </span>
+              </div>
+            )}
+
+            {/* Document Stats Box */}
+            <div className="mt-8 flex items-center justify-between bg-white rounded-xl border border-[#BDBDBD] p-4">
+              <div className="flex items-center gap-8">
+                <div className="flex items-center gap-2">
+                  <span className="text-gray-700 font-medium">Papers</span>
+                  <span className="px-3 py-1 bg-[#DCF8FF] text-[#296A7A] rounded-full font-semibold">
+                    {documentStats.files}
+                  </span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-gray-700 font-medium">Duplicates</span>
+                  {duplicatesTreated ? (
+                    <span className="w-8 h-8 flex items-center justify-center bg-[#D7ECD4] text-[#408038] rounded-full">
+                      <FaCheck className="w-4 h-4" />
+                    </span>
+                  ) : (
+                    <div className="flex items-center gap-2">
+                      <span className="px-3 py-1 bg-[#FFF4DB] text-[#B98900] rounded-full font-semibold">
+                        {documentStats.duplicates}
+                      </span>
+                      {subqueries.length > 0 && (
+                        <button
+                          onClick={handleUpdateStats}
+                          className={`p-1.5 rounded-full transition-colors ${
+                            statsNeedUpdate 
+                              ? 'text-[#62B6CB] hover:text-white hover:bg-[#C2E2EB]' 
+                              : 'text-gray-400 hover:text-[#62B6CB]'
+                          }`}
+                          title="Update statistics"
+                        >
+                          <FaSync className={`w-3.5 h-3.5 ${statsNeedUpdate ? 'animate-pulse' : ''}`} />
+                        </button>
+                      )}
+                    </div>
+                  )}
+                </div>
+              </div>
+              <button
+                onClick={handleCollectClick}
+                className="px-6 py-2 bg-[#068EF1] text-white rounded-full font-semibold hover:bg-[#0576C8] transition-colors"
+              >
+                {duplicatesTreated ? 'Save' : 'Collect'}
+              </button>
+            </div>
+          </>
         )}
       </div>
 
@@ -250,6 +403,38 @@ const PubMedQueryBuilder: React.FC<PubMedQueryBuilderProps> = ({
           onSynonymClick={(synonym, isAdded) => handleSynonymClick(activeSynonymIndex, synonym, isAdded)}
           addedSynonyms={addedSynonyms.get(activeSynonymIndex) || new Set()}
         />
+      )}
+
+      {/* Duplicate Analysis Modal */}
+      {showDuplicateModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-xl p-8 w-[90%] max-w-6xl max-h-[90vh] overflow-y-auto">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-2xl font-bold">Duplicate Analysis</h2>
+              <button
+                onClick={() => setShowDuplicateModal(false)}
+                className="text-gray-500 hover:text-gray-700"
+              >
+                <FaTimes className="w-5 h-5" />
+              </button>
+            </div>
+            <DuplicateAnalysisTable
+              duplicatePairs={mockDuplicatePairs}
+              onCheckAbstracts={handleCheckAbstracts}
+              onTogglePair={handleTogglePair}
+              selectedPairs={selectedPairs}
+              onSelectAllPairs={handleSelectAllPairs}
+              onRemoveDuplicates={handleRemoveDuplicates}
+              displayedPairs={displayedPairs}
+              onSeeMore={handleSeeMore}
+              modalOpen={!!selectedPair}
+              selectedPair={selectedPair}
+              onCloseModal={() => setSelectedPair(null)}
+              onSave={handleSaveDuplicates}
+              remainingDuplicates={remainingDuplicates}
+            />
+          </div>
+        </div>
       )}
     </div>
   );

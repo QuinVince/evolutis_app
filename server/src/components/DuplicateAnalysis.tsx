@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { FaSearch, FaExchangeAlt, FaFolder, FaCheck, FaCheckDouble } from 'react-icons/fa';
 import { HiMiniArrowUturnLeft } from "react-icons/hi2";
 import { SavedQuery } from '../App';
-import { mockDuplicatePairs } from '../mockData';
+import { mockDuplicatePairs } from '../utils/mockData';
 import DuplicateAnalysisTable from './DuplicateAnalysisTable';
 
 interface DuplicateAnalysisProps {
@@ -34,6 +34,7 @@ const DuplicateAnalysis: React.FC<DuplicateAnalysisProps> = ({ savedQueries, onR
   const [removedDuplicates, setRemovedDuplicates] = useState(0);
   const [isSaved, setIsSaved] = useState(false);
   const [hasChanges, setHasChanges] = useState(false);
+  const [remainingDuplicates, setRemainingDuplicates] = useState(0);
 
   const handleQuerySelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const query = savedQueries.find(q => q.id === event.target.value);
@@ -125,6 +126,19 @@ const DuplicateAnalysis: React.FC<DuplicateAnalysisProps> = ({ savedQueries, onR
       setTimeout(() => {
         setIsSaved(false);
       }, 2000);
+    }
+  };
+
+  const handleSave = () => {
+    if (selectedQuery) {
+      const updatedQuery = {
+        ...selectedQuery,
+        collectedDocuments: {
+          ...selectedQuery.collectedDocuments,
+          removedDuplicates: selectedPairs.size
+        }
+      };
+      onUpdateQuery(updatedQuery);
     }
   };
 
@@ -227,6 +241,8 @@ const DuplicateAnalysis: React.FC<DuplicateAnalysisProps> = ({ savedQueries, onR
               modalOpen={modalOpen}
               selectedPair={selectedPair}
               onCloseModal={() => setModalOpen(false)}
+              onSave={handleSave}
+              remainingDuplicates={remainingDuplicates}
             />
           ) : (
             <div className="flex flex-col items-center justify-center p-8 bg-gray-50 rounded-xl border-2 border-[#62B6CB] border-dashed">

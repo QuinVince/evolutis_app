@@ -10,6 +10,8 @@ import "react-step-progress-bar/styles.css";
 import '../styles/progressBar.css';
 import { useLocation } from 'react-router-dom';
 import PubMedQueryBuilder from './PubMedQueryBuilder';
+import userPlaceholder from '../assets/scientifique.png'; // Add this placeholder image to your assets
+import DocumentStats from '../utils/DocumentStats';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
@@ -177,21 +179,31 @@ const QueryGenerator: React.FC<QueryGeneratorProps> = ({ initialData, onSaveQuer
     }
   };
 
+  const [projectId] = useState(() => Date.now().toString());
+
   const handleCollectDocuments = async () => {
     setIsCollecting(true);
     try {
-      // Mock total number of documents to be collected
-      const mockTotalDocuments = Math.floor(Math.random() * 1000) + 500; // Random number between 500 and 1500
-      setTotalDocuments(mockTotalDocuments);
-
-      // Simulate document collection process with increased speed
-      for (let i = 0; i <= mockTotalDocuments; i += 25) {
-        const pubmedDocs = Math.floor(i * 0.6); // 60% from PubMed
-        const semanticScholarDocs = i - pubmedDocs; // Remaining from Semantic Scholar
-        setCollectedDocuments({ pubmed: pubmedDocs, semanticScholar: semanticScholarDocs });
+      // Generate or get existing stats
+      const stats = DocumentStats.getStats(projectId);
+      
+      // Simulate collection process
+      const steps = 20;
+      for (let i = 0; i <= steps; i++) {
         await new Promise(resolve => setTimeout(resolve, 50));
+        const progress = i / steps;
+        setCollectedDocuments({
+          pubmed: Math.floor(stats.pubmed * progress),
+          semanticScholar: Math.floor(stats.semanticScholar * progress)
+        });
       }
 
+      // Set final numbers
+      setCollectedDocuments({
+        pubmed: stats.pubmed,
+        semanticScholar: stats.semanticScholar
+      });
+      setTotalDocuments(stats.total);
       setIsCollected(true);
     } catch (error) {
       console.error('Error collecting documents:', error);
@@ -665,105 +677,117 @@ const QueryGenerator: React.FC<QueryGeneratorProps> = ({ initialData, onSaveQuer
       <div className="flex gap-8">
         {/* Left column */}
         <div className="w-1/2">
-          {/* Description input */}
-          <div className="mb-8">
-            <h2 className="text-xl font-semibold mb-4 text-black">Description</h2>
-            <div className="flex gap-2">
-              <textarea
-                value={naturalLanguageQuery}
-                onChange={(e) => setNaturalLanguageQuery(e.target.value)}
-                onKeyPress={(e) => {
-                  if (e.key === 'Enter' && !e.shiftKey) {
-                    e.preventDefault();
-                    handleGenerateQuestions();
-                  }
-                }}
-                className="w-full px-4 py-3 border border-[#BDBDBD] rounded-md focus:outline-none focus:ring-2 focus:ring-[#62B6CB] focus:ring-offset-2"
-                placeholder="Describe your research..."
-                rows={4}
-              />
+          {/* Description box */}
+          <div className="bg-white rounded-xl border border-[#BDBDBD] border-b-4 p-6 mb-8">
+            <div className="flex items-start gap-4">
+              {/* User Avatar */}
+              <div className="w-12 h-12 rounded-full overflow-hidden flex-shrink-0 bg-gray-100">
+                <img
+                  src={userPlaceholder}
+                  alt="User"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              
+              {/* Description Input and Refresh Button */}
+              <div className="flex-grow">
+                <div className="flex gap-2">
+                  <textarea
+                    value={naturalLanguageQuery}
+                    onChange={(e) => setNaturalLanguageQuery(e.target.value)}
+                    onKeyPress={(e) => {
+                      if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        handleGenerateQuestions();
+                      }
+                    }}
+                    className="flex-grow px-4 py-3 border border-[#BDBDBD]rounded-md focus:outline-none focus:ring-2 focus:ring-[#62B6CB] focus:ring-offset-2"
+                    placeholder="Describe your research..."
+                    rows={4}
+                  />
+                  {questions.length > 0 && (
+                    <button
+                      onClick={() => handleGenerateQuestions()}
+                      className="p-2 text-[#62B6CB] hover:text-white rounded-full hover:bg-[#C2E2EB] transition-colors self-start"
+                      disabled={isGeneratingQuestions}
+                    >
+                      <FaSync className={`w-4 h-4 ${isGeneratingQuestions ? 'animate-spin' : ''}`} />
+                    </button>
+                  )}
+                </div>
+              </div>
             </div>
           </div>
 
-          {/* Info Message */}
-          {showInfoMessage && (
-            <div className="mb-6 bg-[#E7F6FF] text-[#006298] px-4 py-3 rounded-lg flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <svg className="w-5 h-5 text-[#006298]" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
-                </svg>
-                <span>Answering questions helps generating more precise queries.</span>
-              </div>
-              <button
-                onClick={() => setShowInfoMessage(false)}
-                className="text-[#006298] hover:text-[#004970] ml-4"
-              >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-            </div>
-          )}
-
-          {/* Questions section */}
-          <div>
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-semibold text-black">Generated Questions</h2>
-              {questions.length > 0 && (
+          {/* Questions Box */}
+          <div className="bg-white rounded-xl border border-[#BDBDBD] border-b-4 p-6">
+            {/* Info Message */}
+            {showInfoMessage && (
+              <div className="mb-6 bg-[#DCF8FF] text-[#006298] px-4 py-3 rounded-lg flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <svg className="w-5 h-5 text-[#006298]" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+                  </svg>
+                  <span>Answering questions helps generating more precise queries.</span>
+                </div>
                 <button
-                  onClick={() => handleGenerateQuestions()}
-                  className="text-[#62B6CB] hover:text-white p-2 rounded-full hover:bg-[#C2E2EB] transition-colors"
-                  disabled={isGeneratingQuestions}
+                  onClick={() => setShowInfoMessage(false)}
+                  className="text-[#006298] hover:text-[#004970] ml-4"
                 >
-                  <FaSync className={`w-4 h-4 ${isGeneratingQuestions ? 'animate-spin' : ''}`} />
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
                 </button>
-              )}
-            </div>
-
-            {isGeneratingQuestions ? (
-              <div className="flex items-center justify-center p-8 bg-gray-50 rounded-lg">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#62B6CB]" />
-                <span className="ml-3 text-gray-600">Generating questions...</span>
-              </div>
-            ) : (
-              <div className="space-y-4">
-                {questions.map((question, index) => (
-                  <div key={index} className="mb-4">
-                    <p className="font-semibold mb-2">{question}</p>
-                    <input
-                      type="text"
-                      value={answers[question] || ''}
-                      onChange={(e) => handleAnswerChange(question, e.target.value)}
-                      className="w-full px-4 py-3 border border-[#BDBDBD] rounded-md focus:outline-none focus:ring-2 focus:ring-[#62B6CB] focus:ring-offset-2"
-                      placeholder="Your answer..."
-                    />
-                  </div>
-                ))}
-                
-                {questions.length > 0 && (
-                  <button
-                    onClick={handleGenerateQuery}
-                    className="mt-4 w-full px-4 py-2 bg-[#62B6CB] text-white rounded-md hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-[#62B6CB] focus:ring-offset-2 flex items-center justify-center"
-                    disabled={isGeneratingPubMed || isGeneratingSynonyms}
-                  >
-                    {(isGeneratingPubMed || isGeneratingSynonyms) ? (
-                      <div className="flex items-center">
-                        <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-3" />
-                        Generating query...
-                      </div>
-                    ) : (
-                      <>Generate Query <FaArrowRight className="ml-2" /></>
-                    )}
-                  </button>
-                )}
               </div>
             )}
+
+            {/* Questions Section */}
+            <div>
+              <h2 className="text-xl font-semibold text-black mb-6">Generated Questions</h2>
+              {isGeneratingQuestions ? (
+                <div className="flex items-center justify-center p-8 bg-gray-50 rounded-lg">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#62B6CB]" />
+                  <span className="ml-3 text-gray-600">Generating questions...</span>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {questions.map((question, index) => (
+                    <div key={index} className="mb-4">
+                      <p className="font-semibold mb-2">{question}</p>
+                      <input
+                        type="text"
+                        value={answers[question] || ''}
+                        onChange={(e) => handleAnswerChange(question, e.target.value)}
+                        className="w-full px-4 py-3 border border-[#BDBDBD] rounded-md focus:outline-none focus:ring-2 focus:ring-[#62B6CB] focus:ring-offset-2"
+                        placeholder="Your answer..."
+                      />
+                    </div>
+                  ))}
+                  
+                  {questions.length > 0 && (
+                    <button
+                      onClick={handleGenerateQuery}
+                      className="mt-4 w-full px-4 py-2 bg-[#62B6CB] text-white rounded-md hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-[#62B6CB] focus:ring-offset-2 flex items-center justify-center"
+                      disabled={isGeneratingPubMed || isGeneratingSynonyms}
+                    >
+                      {(isGeneratingPubMed || isGeneratingSynonyms) ? (
+                        <div className="flex items-center">
+                          <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-3" />
+                          Generating query...
+                        </div>
+                      ) : (
+                        <>Generate Query <FaArrowRight className="ml-2" /></>
+                      )}
+                    </button>
+                  )}
+                </div>
+              )}
+            </div>
           </div>
         </div>
 
         {/* Right column */}
         <div className="w-1/2">
-          <h2 className="text-xl font-semibold mb-4 text-black">Generated PubMed Query</h2>
           <PubMedQueryBuilder
             query={pubMedQuery}
             onQueryChange={setPubMedQuery}
@@ -771,6 +795,11 @@ const QueryGenerator: React.FC<QueryGeneratorProps> = ({ initialData, onSaveQuer
             isGeneratingPubMed={isGeneratingPubMed}
             estimatedDocuments={estimatedDocuments}
             synonymGroups={synonymGroups}
+            documentStats={{
+              files: DocumentStats.getStats(projectId).total,
+              duplicates: DocumentStats.getStats(projectId).duplicates
+            }}
+            onCollect={handleCollectDocuments}
           />
         </div>
       </div>

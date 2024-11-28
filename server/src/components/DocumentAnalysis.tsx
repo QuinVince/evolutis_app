@@ -4,7 +4,7 @@ import ReactSlider from 'react-slider';
 import styled from 'styled-components';
 import { SavedQuery, AnalysisData } from '../App'; // Import SavedQuery from App.tsx
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend} from 'chart.js';
-import { mockDocuments } from '../mockData';
+import { mockDocuments } from '../utils/mockData';
 import  CriteriaExample  from './CriteriaExample';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
