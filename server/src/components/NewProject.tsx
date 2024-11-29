@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import booksIcon from '../assets/image_books.png';
-import { FaArrowRight, FaCheck } from 'react-icons/fa';
+import { FaArrowRight, FaCheck, FaExchangeAlt } from 'react-icons/fa';
 
 interface Source {
   id: string;
@@ -9,8 +9,11 @@ interface Source {
   selected: boolean;
 }
 
+type Mode = 'description' | 'query';
+
 const NewProject: React.FC = () => {
-  const [query, setQuery] = useState('');
+  const [mode, setMode] = useState<Mode>('description');
+  const [input, setInput] = useState('');
   const [showSourcesDropdown, setShowSourcesDropdown] = useState(false);
   const [sources, setSources] = useState<Source[]>([
     { id: 'pubmed', name: 'PubMed', selected: true },
@@ -23,13 +26,19 @@ const NewProject: React.FC = () => {
     
     const selectedSources = sources.filter(source => source.selected);
     const project = {
-      description: query,
+      description: input,
       answers: {},
-      sources: selectedSources.map(s => s.id)
+      sources: selectedSources.map(s => s.id),
+      mode: mode // Save the mode to handle differently in query generation
     };
     localStorage.setItem('currentProject', JSON.stringify(project));
     
-    navigate('/query-generator', { state: { description: query } });
+    navigate('/query-generator', { state: { description: input, mode } });
+  };
+
+  const toggleMode = () => {
+    setMode(mode === 'description' ? 'query' : 'description');
+    setInput(''); // Clear input when switching modes
   };
 
   const toggleSource = (sourceId: string) => {
@@ -53,15 +62,15 @@ const NewProject: React.FC = () => {
     <div className="min-h-screen bg-white flex items-center justify-center">
       <div className="max-w-xl w-full px-6">
         <h1 className="text-2xl font-bold text-center mb-8 text-black">
-          Start a new project
+          {mode === 'description' ? 'Start from a description' : 'Start from an existing PubMed query'}
         </h1>
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="relative">
             <textarea
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
               className="w-full px-4 py-3 border border-[#BDBDBD] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#62B6CB] focus:ring-offset-2 pr-14"
-              placeholder="Describe your research..."
+              placeholder={mode === 'description' ? "Describe your research..." : "Paste your PubMed query..."}
               rows={4}
             />
             <button
@@ -82,7 +91,6 @@ const NewProject: React.FC = () => {
                   {getSelectedSourcesText()}
                 </button>
 
-                {/* Dropdown Menu */}
                 {showSourcesDropdown && (
                   <div className="absolute bottom-full mb-2 left-0 w-48 bg-white border border-gray-200 rounded-lg shadow-lg py-2 z-10">
                     {sources.map(source => (
@@ -104,17 +112,19 @@ const NewProject: React.FC = () => {
             </div>
           </div>
 
-          <div className="flex flex-col items-start gap-4">
-            <button
-              type="button"
-              onClick={() => navigate('/projects')}
-              className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 
-                transition-colors duration-200 flex items-center gap-3 text-gray-700 font-semibold text-lg"
-            >
-              <img src={booksIcon} alt="" className="w-6 h-6" />
-              <span>Start from an existing query</span>
-            </button>
-          </div>
+          {/* Mode Switch Button */}
+          <button
+            type="button"
+            onClick={toggleMode}
+            className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 
+              transition-colors duration-200 flex items-center gap-3 text-gray-700 font-semibold text-lg"
+          >
+            <img src={booksIcon} alt="" className="w-6 h-6" />
+            <span className="flex-grow text-left">
+              {mode === 'description' ? 'Start from an existing PubMed query' : 'Start from a description'}
+            </span>
+            <FaExchangeAlt className="w-4 h-4 text-gray-400" />
+          </button>
         </form>
       </div>
     </div>
