@@ -29,7 +29,7 @@ const ProjectsPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
+    <div className="h-[calc(100vh-4rem)] bg-gray-50 p-8 overflow-auto">
       <div className="max-w-4xl mx-auto">
         <h1 className="text-3xl font-bold mb-8 text-gray-800">Your Projects</h1>
         
@@ -44,7 +44,7 @@ const ProjectsPage: React.FC = () => {
             </button>
           </div>
         ) : (
-          <div className="space-y-4">
+          <div className="space-y-4 max-h-[calc(100vh-12rem)] overflow-auto">
             {savedQueries.map((project) => (
               <div key={project.id} className="bg-white rounded-xl border border-gray-200 overflow-hidden">
                 <div 

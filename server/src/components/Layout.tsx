@@ -47,19 +47,19 @@ const Layout: React.FC<LayoutProps> = ({ children, projectTitle, onProjectTitleC
   };
 
   return (
-    <div className="min-h-screen bg-white flex">
+    <div className="h-screen flex overflow-hidden bg-white">
       {/* Left Sidebar */}
-      <div className="w-12 bg-white border-r fixed h-full flex flex-col items-center pt-4">
+      <div className="w-12 bg-white border-r flex-shrink-0 flex flex-col items-center pt-4">
         <button className="text-[#62B6CB] hover:text-[#62B6CB]/80 p-2">
           <FaBars className="w-5 h-5" />
         </button>
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 ml-12">
+      <div className="flex-1 flex flex-col h-screen">
         {/* Top Bar */}
-        <header className="bg-white border-b fixed w-full top-0 z-50 h-12">
-          <div className="container mx-auto h-full px-4 flex items-center justify-between">
+        <header className="bg-white border-b h-12 flex-shrink-0">
+          <div className="h-full px-4 flex items-center justify-between max-w-[1920px] mx-auto w-full">
             <div className="flex items-center gap-4">
               <button 
                 onClick={() => navigate('/')}
@@ -95,13 +95,17 @@ const Layout: React.FC<LayoutProps> = ({ children, projectTitle, onProjectTitleC
                 </div>
               )}
             </div>
-            <img src={logo} alt="Logo" className="h-10 w-auto my-1" />
+            <div className="flex-shrink-0 pr-4">
+              <img src={logo} alt="Logo" className="h-10 w-auto my-1" />
+            </div>
           </div>
         </header>
 
-        {/* Main Content */}
-        <main className="pt-16">
-          {children}
+        {/* Main Content Area */}
+        <main className="flex-1 overflow-auto px-6">
+          <div className="h-full max-h-[calc(100vh-4rem)]">
+            {children}
+          </div>
         </main>
       </div>
     </div>
