@@ -4,11 +4,13 @@ import { SavedQuery } from '../App';
 interface QueryState {
   savedQueries: SavedQuery[];
   currentQuery: SavedQuery | null;
+  currentProjectTitle: string;
 }
 
 const initialState: QueryState = {
   savedQueries: [],
-  currentQuery: null
+  currentQuery: null,
+  currentProjectTitle: 'New project'
 };
 
 const querySlice = createSlice({
@@ -18,9 +20,15 @@ const querySlice = createSlice({
     saveQuery: (state: QueryState, action: PayloadAction<SavedQuery>) => {
       const index = state.savedQueries.findIndex((q: SavedQuery) => q.id === action.payload.id);
       if (index !== -1) {
-        state.savedQueries[index] = action.payload;
+        state.savedQueries[index] = {
+          ...action.payload,
+          name: state.currentProjectTitle
+        };
       } else {
-        state.savedQueries.push(action.payload);
+        state.savedQueries.push({
+          ...action.payload,
+          name: state.currentProjectTitle
+        });
       }
       state.currentQuery = action.payload;
     },
@@ -36,9 +44,12 @@ const querySlice = createSlice({
       if (state.currentQuery?.id === action.payload) {
         state.currentQuery = null;
       }
+    },
+    setCurrentProjectTitle: (state: QueryState, action: PayloadAction<string>) => {
+      state.currentProjectTitle = action.payload;
     }
   }
 });
 
-export const { saveQuery, setCurrentQuery, clearQueries, deleteQuery } = querySlice.actions;
+export const { saveQuery, setCurrentQuery, clearQueries, deleteQuery, setCurrentProjectTitle } = querySlice.actions;
 export default querySlice.reducer; 
