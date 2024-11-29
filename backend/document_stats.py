@@ -9,9 +9,10 @@ class DocumentStats:
     def generate_stats(project_id: str) -> dict:
         try:
             logger.info(f"Generating stats for project: {project_id}")
-            # Create seeded random number generator
-            seed = int(''.join(filter(str.isdigit, project_id))) if project_id else 0
-            random.seed(seed)
+            # Use the project_id (which is actually our query hash) as seed
+            # Convert each character to its ASCII value and sum them
+            seed = sum(ord(c) for c in project_id)
+            random.seed()
             
             # Calculate total papers (800-1500)
             total = random.randint(800, 1500)
@@ -45,7 +46,7 @@ class DocumentStats:
     def generate_stats_for_query(query: str) -> dict:
         try:
             logger.info(f"Generating stats for query: {query}")
-            # Use query string as seed
+            # Use the query string itself as seed
             seed = sum(ord(c) for c in query)
             random.seed(seed)
             

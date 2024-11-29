@@ -141,7 +141,7 @@ const DuplicateAnalysisTable: React.FC<DuplicateAnalysisTableProps> = ({
           onClick={onSave}
           className="px-8 py-3 bg-[#068EF1] text-white rounded-full font-semibold hover:bg-[#0576C8] transition-colors"
         >
-          {remainingDuplicates > 0 ? 'Save' : 'Close'}
+          Save and close
         </button>
       </div>
     </div>

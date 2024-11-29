@@ -8,6 +8,7 @@ import json
 import logging
 import os
 from dotenv import load_dotenv
+from document_stats import DocumentStats
 #For production in replit, replace by: 
 #from .prisma_generator import generate_prisma_diagram
 from prisma_generator import generate_prisma_diagram
@@ -171,6 +172,21 @@ async def export_prisma(data: PrismaData):
         return FileResponse(image_path, media_type="image/png", filename="prisma_diagram.png")
     except Exception as e:
         logger.error(f"Error in export_prisma: {str(e)}", exc_info=True)
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/generate_stats")
+async def generate_stats(request: Request):
+    try:
+        body = await request.json()
+        project_id = body.get('projectId')
+        if not project_id:
+            raise HTTPException(status_code=400, detail="Project ID is required")
+        
+        stats = DocumentStats.generate_stats(project_id)
+        logger.info(f"Generated stats for project {project_id}: {stats}")
+        return stats
+    except Exception as e:
+        logger.error(f"Error generating stats: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
 # Add this at the end of the file

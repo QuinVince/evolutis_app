@@ -266,7 +266,6 @@ const PubMedQueryBuilder: React.FC<PubMedQueryBuilderProps> = ({
   const handleRemoveDuplicates = () => {
     // Implement duplicate removal logic
     setSelectedPairs(new Set());
-    setShowDuplicateModal(false);
   };
 
   const simulateCollection = () => {
@@ -352,18 +351,25 @@ const PubMedQueryBuilder: React.FC<PubMedQueryBuilderProps> = ({
     if (!statsNeedUpdate || subqueries.length === 0) return;
 
     try {
-      const queryString = JSON.stringify(subqueries);
-      const newStats = await generateStatsForQuery(queryString);
-      
-      if (newStats) {
+      // Use projectId as a hash of the current query
+      const projectId = btoa(JSON.stringify(subqueries)).slice(0, 10);
+      const response = await axios.post('http://localhost:8000/generate_stats', {
+        projectId: projectId
+      }, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (response.data) {
         setLocalDocumentStats({
-          files: newStats.total,
-          duplicates: newStats.duplicates
+          files: response.data.total,
+          duplicates: response.data.duplicates
         });
         setStatsNeedUpdate(false);
-        setLastStatsQuery(queryString);
+        setLastStatsQuery(JSON.stringify(subqueries));
         setDuplicatesTreated(false);
-        setRemainingDuplicates(newStats.duplicates);
+        setRemainingDuplicates(response.data.duplicates);
         setNeedsSave(true);
       }
     } catch (error) {

@@ -765,20 +765,22 @@ const QueryGenerator: React.FC<QueryGeneratorProps> = ({ initialData, onSaveQuer
                   ))}
                   
                   {questions.length > 0 && (
-                    <button
-                      onClick={handleGenerateQuery}
-                      className="mt-4 w-full px-4 py-2 bg-[#62B6CB] text-white rounded-md hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-[#62B6CB] focus:ring-offset-2 flex items-center justify-center"
-                      disabled={isGeneratingPubMed || isGeneratingSynonyms}
-                    >
-                      {(isGeneratingPubMed || isGeneratingSynonyms) ? (
-                        <div className="flex items-center">
-                          <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-3" />
-                          Generating query...
-                        </div>
-                      ) : (
-                        <>Generate Query <FaArrowRight className="ml-2" /></>
-                      )}
-                    </button>
+                    <div className="flex justify-end">
+                      <button
+                        onClick={handleGenerateQuery}
+                        className="mt-4 px-6 py-2 bg-gray-200 text-gray-700 hover:bg-[#62B6CB] hover:text-white rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#62B6CB] focus:ring-offset-2 flex items-center justify-center"
+                        disabled={isGeneratingPubMed || isGeneratingSynonyms}
+                      >
+                        {(isGeneratingPubMed || isGeneratingSynonyms) ? (
+                          <div className="flex items-end">
+                            <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-3" />
+                            Generating query...
+                          </div>
+                        ) : (
+                          <>Apply</>
+                        )}
+                      </button>
+                    </div>
                   )}
                 </div>
               )}
