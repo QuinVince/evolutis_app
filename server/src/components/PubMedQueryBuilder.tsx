@@ -517,14 +517,14 @@ const PubMedQueryBuilder: React.FC<PubMedQueryBuilderProps> = ({
                 <button
                   onClick={handleUpdateStats}
                   disabled={!statsNeedUpdate}
-                  className={`px-3 py-2 rounded-full font-semibold transition-colors flex items-center gap-2
+                  className={`px-3 py-2 rounded-lg font-medium transition-colors flex items-center gap-2
                     ${statsNeedUpdate 
-                      ? 'text-[#62B6CB] hover:bg-[#DCF8FF]' 
-                      : 'text-gray-400 cursor-not-allowed'
+                      ? 'bg-[#DCF8FF] text-[#296A7A] hover:bg-[#C2E2EB]' 
+                      : 'bg-gray-100 text-gray-400 cursor-not-allowed'
                     }`}
                   title={statsNeedUpdate ? "Refresh statistics" : "No changes to refresh"}
                 >
-                  <FaSync className={`w-4 h-4 ${statsNeedUpdate ? 'animate-pulse' : ''}`} />
+                  Refresh
                 </button>
                 <button
                   onClick={handleCollectClick}

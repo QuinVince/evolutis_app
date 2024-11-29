@@ -7,6 +7,7 @@ import Layout from './components/Layout';
 import { Provider } from 'react-redux';
 import { store } from './store/store';
 import ProjectsPage from './components/ProjectsPage';
+import QueryParser from './components/QueryParser';
 
 // Add these type definitions
 export interface SavedQuery {
@@ -92,6 +93,7 @@ const App: React.FC = () => {
             <Route path="/" element={<LandingPage />} />
             <Route path="/new-project" element={<NewProject />} />
             <Route path="/projects" element={<ProjectsPage />} />
+            <Route path="/query-parser" element={<QueryParser />} />
             <Route 
               path="/query-generator" 
               element={

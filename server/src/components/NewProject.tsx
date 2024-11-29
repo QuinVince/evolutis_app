@@ -29,11 +29,15 @@ const NewProject: React.FC = () => {
       description: input,
       answers: {},
       sources: selectedSources.map(s => s.id),
-      mode: mode // Save the mode to handle differently in query generation
+      mode: mode
     };
     localStorage.setItem('currentProject', JSON.stringify(project));
     
-    navigate('/query-generator', { state: { description: input, mode } });
+    if (mode === 'description') {
+      navigate('/query-generator', { state: { description: input, mode } });
+    } else {
+      navigate('/query-parser', { state: { description: input, mode } });
+    }
   };
 
   const toggleMode = () => {
