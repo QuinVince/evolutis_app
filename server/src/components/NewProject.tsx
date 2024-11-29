@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import booksIcon from '../assets/image_books.png';
 import { FaArrowRight, FaCheck, FaExchangeAlt } from 'react-icons/fa';
+import { Typewriter } from 'react-simple-typewriter';
 
 interface Source {
   id: string;
@@ -62,11 +63,23 @@ const NewProject: React.FC = () => {
     return selectedSources.map(s => s.name).join(', ');
   };
 
+  const titles = [
+    'Start from a description',
+    'Start from an existing PubMed query'
+  ];
+
   return (
     <div className="min-h-screen bg-white flex items-center justify-center">
       <div className="max-w-xl w-full px-6">
-        <h1 className="text-2xl font-bold text-center mb-8 text-black">
-          {mode === 'description' ? 'Start from a description' : 'Start from an existing PubMed query'}
+        <h1 className="text-2xl font-bold text-center mb-8 text-black h-8">
+          <Typewriter
+            words={[mode === 'description' ? titles[0] : titles[1]]}
+            cursorStyle='|'
+            typeSpeed={20}
+            deleteSpeed={50}
+            delaySpeed={600}
+            key={mode}
+          />
         </h1>
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="relative">
