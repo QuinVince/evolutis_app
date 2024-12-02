@@ -11,7 +11,6 @@ import '../styles/progressBar.css';
 import { useLocation } from 'react-router-dom';
 import PubMedQueryBuilder from './PubMedQueryBuilder';
 import userPlaceholder from '../assets/scientifique.png'; // Add this placeholder image to your assets
-import DocumentStats from '../utils/DocumentStats';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
@@ -76,39 +75,6 @@ const QueryGenerator: React.FC<QueryGeneratorProps> = ({ initialData, onSaveQuer
     { id: 3, name: 'Saving' }
   ];
 
-  const getProgressWidth = () => {
-    switch(step) {
-      case 0: return '27%';
-      case 1: return '54%';
-      case 2: return '79%';
-      default: return '0%';
-    }
-  };
-
-  const getStepStatus = (stepId: number) => {
-    // Initial state (step 0): New query accomplished, Questions current
-    if (step === 0) {
-      if (stepId === 0) return 'accomplished';  // "New query" is accomplished
-      if (stepId === 1) return 'current';       // "Questions" is current
-      return '';                                // Other steps are default
-    }
-
-    // Step 1: New query and Questions accomplished, Pubmed query current
-    if (step === 1) {
-      if (stepId <= 1) return 'accomplished';   // First two steps accomplished
-      if (stepId === 2) return 'current';       // Pubmed query is current
-      return '';                                // Last step is default
-    }
-
-    // Step 2: All previous accomplished, Saving current
-    if (step === 2) {
-      if (stepId <= 2) return 'accomplished';   // First three steps accomplished
-      if (stepId === 3) return 'current';       // Saving is current
-      return '';
-    }
-
-    return '';  // Default state
-  };
 
   // Remove or modify the useEffect that was automatically generating questions
   // useEffect(() => {
@@ -167,34 +133,31 @@ const QueryGenerator: React.FC<QueryGeneratorProps> = ({ initialData, onSaveQuer
     }
   };
 
-  const estimateDocuments = async (query: string) => {
-    try {
-      //For production in replit, replace by:
-      //const response = await axios.post('/estimate_documents', { query });
-      const response = await axios.post('http://localhost:8000/estimate_documents', { query });
-      setEstimatedDocuments(response.data.estimatedDocuments);
-    } catch (error) {
-      console.error('Error estimating documents:', error);
-      setEstimatedDocuments(null);
-    }
-  };
+
 
   const [projectId] = useState(() => Date.now().toString());
 
   const handleCollectDocuments = async () => {
     setIsCollecting(true);
+    const projectId = Date.now().toString();
+
     try {
-      // Generate or get existing stats
-      const stats = DocumentStats.getStats(projectId);
+      // Get stats from backend instead of DocumentStats
+      const response = await axios.post('http://localhost:8000/generate_stats', {
+        projectId: projectId
+      });
+      
+      const stats = response.data;
       
       // Simulate collection process
       const steps = 20;
+      const stepSize = stats.total / steps;
+      
       for (let i = 0; i <= steps; i++) {
         await new Promise(resolve => setTimeout(resolve, 50));
-        const progress = i / steps;
         setCollectedDocuments({
-          pubmed: Math.floor(stats.pubmed * progress),
-          semanticScholar: Math.floor(stats.semanticScholar * progress)
+          pubmed: Math.round(i * stepSize * 0.6),
+          semanticScholar: Math.round(i * stepSize * 0.4)
         });
       }
 
@@ -220,7 +183,6 @@ const QueryGenerator: React.FC<QueryGeneratorProps> = ({ initialData, onSaveQuer
         const data = await generatePubMedQuery(naturalLanguageQuery, answers);
         const cleanedQuery = data.query.replace(/```/g, '').trim();
         setPubMedQuery(cleanedQuery);
-        await estimateDocuments(cleanedQuery);
         setIsGeneratingPubMed(false);
         setStep(1);
 
@@ -459,8 +421,7 @@ const QueryGenerator: React.FC<QueryGeneratorProps> = ({ initialData, onSaveQuer
         setSynonymGroups(synonymsResponse.data.synonym_groups);
       }
 
-      // Estimate documents
-      await estimateDocuments(JSON.stringify(queryResponse.data));
+
 
     } catch (error) {
       console.error('Error generating query and synonyms:', error);
@@ -798,8 +759,8 @@ const QueryGenerator: React.FC<QueryGeneratorProps> = ({ initialData, onSaveQuer
             estimatedDocuments={estimatedDocuments}
             synonymGroups={synonymGroups}
             documentStats={{
-              files: DocumentStats.getStats(projectId).total,
-              duplicates: DocumentStats.getStats(projectId).duplicates
+              files: totalDocuments,
+              duplicates: Math.round(totalDocuments * 0.15) // Default 15% duplicates
             }}
             onCollect={handleCollectDocuments}
             description={naturalLanguageQuery}

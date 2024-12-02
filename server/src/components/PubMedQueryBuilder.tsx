@@ -5,7 +5,6 @@ import SynonymTooltip from './SynonymTooltip';
 import DuplicateAnalysisTable from './DuplicateAnalysisTable';
 import { mockDuplicatePairs } from '../utils/mockData';
 import { DuplicatePair } from './DuplicateAnalysis';
-import DocumentStats from '../utils/DocumentStats';
 import { useDispatch } from 'react-redux';
 import { saveQuery } from '../store/querySlice';
 import { SavedQuery } from '../App';
@@ -72,36 +71,23 @@ const PubMedQueryBuilder: React.FC<PubMedQueryBuilderProps> = ({
   const [isCollecting, setIsCollecting] = useState(false);
   const [collectionProgress, setCollectionProgress] = useState(0);
 
-  const generateStats = async (projectId: string) => {
+  const generateStats = async (queryString: string) => {
     try {
+      const projectId = btoa(queryString).slice(0, 10);
       const response = await axios.post('http://localhost:8000/generate_stats', {
-        projectId: projectId
+        projectId
       }, {
         headers: {
           'Content-Type': 'application/json'
         }
       });
-      console.log('Stats response:', response.data);
-      return response.data;
+
+      return {
+        files: response.data.total,
+        duplicates: response.data.duplicates
+      };
     } catch (error) {
       console.error('Error generating stats:', error);
-      return null;
-    }
-  };
-
-  const generateStatsForQuery = async (query: string) => {
-    try {
-      const response = await axios.post('http://localhost:8000/generate_stats_for_query', {
-        query: query
-      }, {
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      });
-      console.log('Query stats response:', response.data);
-      return response.data;
-    } catch (error) {
-      console.error('Error generating stats for query:', error);
       return null;
     }
   };
@@ -125,10 +111,7 @@ const PubMedQueryBuilder: React.FC<PubMedQueryBuilderProps> = ({
       if (currentStatsId) {
         const stats = await generateStats(currentStatsId);
         if (stats) {
-          setLocalDocumentStats({
-            files: stats.total,
-            duplicates: stats.duplicates
-          });
+          setLocalDocumentStats(stats);
         }
       }
     };
@@ -351,25 +334,15 @@ const PubMedQueryBuilder: React.FC<PubMedQueryBuilderProps> = ({
     if (!statsNeedUpdate || subqueries.length === 0) return;
 
     try {
-      // Use projectId as a hash of the current query
-      const projectId = btoa(JSON.stringify(subqueries)).slice(0, 10);
-      const response = await axios.post('http://localhost:8000/generate_stats', {
-        projectId: projectId
-      }, {
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      });
-
-      if (response.data) {
-        setLocalDocumentStats({
-          files: response.data.total,
-          duplicates: response.data.duplicates
-        });
+      const queryString = JSON.stringify(subqueries);
+      const newStats = await generateStats(queryString);
+      
+      if (newStats) {
+        setLocalDocumentStats(newStats);
         setStatsNeedUpdate(false);
-        setLastStatsQuery(JSON.stringify(subqueries));
+        setLastStatsQuery(queryString);
         setDuplicatesTreated(false);
-        setRemainingDuplicates(response.data.duplicates);
+        setRemainingDuplicates(newStats.duplicates);
         setNeedsSave(true);
       }
     } catch (error) {
