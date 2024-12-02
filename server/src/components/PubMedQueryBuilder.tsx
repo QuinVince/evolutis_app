@@ -74,7 +74,7 @@ const PubMedQueryBuilder: React.FC<PubMedQueryBuilderProps> = ({
   const generateStats = async (queryString: string) => {
     try {
       const projectId = btoa(queryString).slice(0, 10);
-      const response = await axios.post('http://localhost:8000/generate_stats', {
+      const response = await axios.post('/generate_stats', {
         projectId
       }, {
         headers: {
