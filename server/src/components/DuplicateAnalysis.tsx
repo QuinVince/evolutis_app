@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FaSearch, FaExchangeAlt, FaFolder, FaCheck, FaCheckDouble } from 'react-icons/fa';
-import { HiMiniArrowUturnLeft } from "react-icons/hi2";
+import { FaFolder, FaCheck, FaCheckDouble } from 'react-icons/fa';
 import { SavedQuery } from '../App';
 import { mockDuplicatePairs } from '../utils/mockData';
 import DuplicateAnalysisTable from './DuplicateAnalysisTable';
@@ -149,7 +148,7 @@ const DuplicateAnalysis: React.FC<DuplicateAnalysisProps> = ({ savedQueries, onR
     if (!hasChanges) {
       return "flex items-center px-6 py-3 bg-gray-200 text-gray-400 rounded-xl transition-colors duration-200 font-semibold cursor-not-allowed";
     }
-    return "flex items-center px-6 py-3 bg-[#62B6CB] text-white rounded-xl hover:bg-[#5AA3B7] transition-colors duration-200 font-semibold focus:outline-none focus:ring-2 focus:ring-[#62B6CB] focus:ring-offset-2";
+    return "flex items-center px-6 py-3 bg-[#068EF1] text-white rounded-xl hover:bg-[#5AA3B7] transition-colors duration-200 font-semibold focus:outline-none focus:ring-2 focus:ring-[#068EF1] focus:ring-offset-2";
   };
 
   return (
@@ -165,7 +164,7 @@ const DuplicateAnalysis: React.FC<DuplicateAnalysisProps> = ({ savedQueries, onR
             value={selectedQuery?.id || ''}
             onChange={handleQuerySelect}
             className="w-full h-[50px] pl-10 pr-8 py-2 border border-[#BDBDBD] rounded-xl 
-            focus:outline-none focus:ring-2 focus:ring-[#62B6CB] appearance-none border-b-4 
+            focus:outline-none focus:ring-2 focus:ring-[#068EF1] appearance-none border-b-4 
             font-bold bg-white hover:bg-gray-50 transition-colors duration-200
             cursor-pointer shadow-sm hover:shadow-md"
           >
@@ -183,10 +182,10 @@ const DuplicateAnalysis: React.FC<DuplicateAnalysisProps> = ({ savedQueries, onR
             ))}
           </select>
           <div className="absolute top-4 left-3">
-            <FaFolder className="text-[#62B6CB]" />
+            <FaFolder className="text-[#068EF1]" />
           </div>
           <div className="absolute top-4 right-3">
-            <svg className="w-4 h-4 text-[#62B6CB]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-4 h-4 text-[#068EF1]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
             </svg>
           </div>
@@ -245,7 +244,7 @@ const DuplicateAnalysis: React.FC<DuplicateAnalysisProps> = ({ savedQueries, onR
               remainingDuplicates={remainingDuplicates}
             />
           ) : (
-            <div className="flex flex-col items-center justify-center p-8 bg-gray-50 rounded-xl border-2 border-[#62B6CB] border-dashed">
+            <div className="flex flex-col items-center justify-center p-8 bg-gray-50 rounded-xl border-2 border-[#068EF1] border-dashed">
               <FaCheck className="w-12 h-12 text-[#296A7A] mb-4" />
               <p className="text-lg font-semibold text-gray-600">No duplicates detected</p>
               <p className="text-sm text-gray-500 mt-2">All duplicate papers have been removed from this query</p>

@@ -126,7 +126,7 @@ const FilteringDiagram: React.FC<FilteringDiagramProps> = ({ savedQueries }) => 
             value={selectedQuery?.id || ''}
             onChange={handleQuerySelect}
             className="w-full h-[50px] pl-10 pr-8 py-2 border border-[#BDBDBD] rounded-xl 
-            focus:outline-none focus:ring-2 focus:ring-[#62B6CB] appearance-none border-b-4 
+            focus:outline-none focus:ring-2 focus:ring-[#068EF1] appearance-none border-b-4 
             font-bold bg-white hover:bg-gray-50 transition-colors duration-200
             cursor-pointer shadow-sm hover:shadow-md"
           >
@@ -138,10 +138,10 @@ const FilteringDiagram: React.FC<FilteringDiagramProps> = ({ savedQueries }) => 
             ))}
           </select>
           <div className="absolute top-4 left-3">
-            <FaFolder className="text-[#62B6CB]" />
+            <FaFolder className="text-[#068EF1]" />
           </div>
           <div className="absolute top-4 right-3">
-            <svg className="w-4 h-4 text-[#62B6CB]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-4 h-4 text-[#068EF1]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
             </svg>
           </div>
@@ -154,25 +154,25 @@ const FilteringDiagram: React.FC<FilteringDiagramProps> = ({ savedQueries }) => 
             {steps.map((step, index) => (
               <div key={index} className="mb-2 flex items-start">
                 <div className="w-1/3 pr-4">
-                  <div className="border-2 border-[#62B6CB] p-3 rounded-lg bg-white h-full">
+                  <div className="border-2 border-[#068EF1] p-3 rounded-lg bg-white h-full">
                     <p className="text-sm text-gray-600">{step.description}</p>
                   </div>
                 </div>
                 <div className="w-1/3 px-4">
-                  <div className="border-2 border-[#62B6CB] p-3 rounded-lg bg-white relative flex items-center justify-center">
+                  <div className="border-2 border-[#068EF1] p-3 rounded-lg bg-white relative flex items-center justify-center">
                     <div className="flex items-center">
-                      <div className="w-12 h-12 bg-[#62B6CB] rounded-full flex items-center justify-center text-white text-2xl mr-3">
+                      <div className="w-12 h-12 bg-[#068EF1] rounded-full flex items-center justify-center text-white text-2xl mr-3">
                         {step.icon}
                       </div>
                       <div>
-                        <h3 className="font-bold text-[#62B6CB]">{step.title}</h3>
+                        <h3 className="font-bold text-[#068EF1]">{step.title}</h3>
                         <p className="font-semibold">(n = {step.count})</p>
                       </div>
                     </div>
                     {step.excluded && (
                       <button
                         onClick={() => toggleExpand(index)}
-                        className="absolute top-1 right-1 text-[#62B6CB] hover:text-[#62B6CB]"
+                        className="absolute top-1 right-1 text-[#068EF1] hover:text-[#068EF1]"
                       >
                         <FaInfoCircle size={20} />
                       </button>
@@ -180,14 +180,14 @@ const FilteringDiagram: React.FC<FilteringDiagramProps> = ({ savedQueries }) => 
                   </div>
                   {index < steps.length - 1 && (
                     <div className="flex justify-center my-2">
-                      <FaArrowDown className="text-[#62B6CB] text-2xl" />
+                      <FaArrowDown className="text-[#068EF1] text-2xl" />
                     </div>
                   )}
                 </div>
                 <div className="w-1/3 pl-4">
                   {expandedStep === index && step.excluded && (
-                    <div className="border-2 border-[#62B6CB] p-3 rounded-lg bg-white">
-                      <h4 className="font-bold text-[#62B6CB] mb-1">Records excluded</h4>
+                    <div className="border-2 border-[#068EF1] p-3 rounded-lg bg-white">
+                      <h4 className="font-bold text-[#068EF1] mb-1">Records excluded</h4>
                       {step.excluded.map((reason, idx) => (
                         <div key={idx} className="mb-1">
                           <p className="text-xs">{reason.reason}: <span className="font-semibold">{reason.count}</span></p>
@@ -203,8 +203,8 @@ const FilteringDiagram: React.FC<FilteringDiagramProps> = ({ savedQueries }) => 
             <button
               onClick={handleExport}
               disabled={isExporting}
-              className="px-4 py-2 bg-[#62B6CB] text-white rounded-xl hover:bg-[#5AA3B7] 
-              focus:outline-none focus:ring-2 focus:ring-[#62B6CB] focus:ring-offset-2 
+              className="px-4 py-2 bg-[#068EF1] text-white rounded-xl hover:bg-[#5AA3B7] 
+              focus:outline-none focus:ring-2 focus:ring-[#068EF1] focus:ring-offset-2 
               flex items-center transition-colors duration-200"
             >
               <FaDownload className="mr-2" />

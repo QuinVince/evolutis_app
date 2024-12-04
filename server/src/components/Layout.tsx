@@ -50,7 +50,7 @@ const Layout: React.FC<LayoutProps> = ({ children, projectTitle, onProjectTitleC
     <div className="h-screen flex overflow-hidden bg-white">
       {/* Left Sidebar */}
       <div className="w-12 bg-white border-r flex-shrink-0 flex flex-col items-center pt-4">
-        <button className="text-[#62B6CB] hover:text-[#62B6CB]/80 p-2">
+        <button className="text-[#068EF1] hover:text-[#068EF1]/80 p-2">
           <FaBars className="w-5 h-5" />
         </button>
       </div>
@@ -63,7 +63,7 @@ const Layout: React.FC<LayoutProps> = ({ children, projectTitle, onProjectTitleC
             <div className="flex items-center gap-4">
               <button 
                 onClick={() => navigate('/')}
-                className="bg-[#62B6CB] p-1.5 rotate-45 hover:bg-[#62B6CB]/80 transition-colors rounded-lg"
+                className="bg-[#068EF1] p-1.5 rotate-45 hover:bg-[#068EF1]/80 transition-colors rounded-lg"
               >
                 <div className="-rotate-45">
                   <FaHome className="w-4 h-4 text-black" />

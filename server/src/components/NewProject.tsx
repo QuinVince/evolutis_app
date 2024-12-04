@@ -86,13 +86,13 @@ const NewProject: React.FC = () => {
             <textarea
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              className="w-full px-4 py-3 border border-[#BDBDBD] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#62B6CB] focus:ring-offset-2 pr-14"
+              className="w-full px-4 py-3 border border-[#BDBDBD] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#068EF1] focus:ring-offset-2 pr-14"
               placeholder={mode === 'description' ? "Describe your research..." : "Paste your PubMed query..."}
               rows={4}
             />
             <button
               type="submit"
-              className="absolute bottom-3 right-3 p-2 bg-[#62B6CB] text-white rounded-lg hover:bg-[#5AA3B7] transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#62B6CB] focus:ring-offset-2"
+              className="absolute bottom-3 right-3 p-2 bg-[#068EF1] text-white rounded-lg hover:bg-[#5AA3B7] transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#068EF1] focus:ring-offset-2"
             >
               <FaArrowRight className="w-5 h-5" />
             </button>
@@ -103,7 +103,7 @@ const NewProject: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setShowSourcesDropdown(!showSourcesDropdown)}
-                  className="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#62B6CB] flex items-center gap-2"
+                  className="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#068EF1] flex items-center gap-2"
                 >
                   {getSelectedSourcesText()}
                 </button>
@@ -119,7 +119,7 @@ const NewProject: React.FC = () => {
                       >
                         {source.name}
                         {source.selected && (
-                          <FaCheck className="w-3 h-3 text-[#62B6CB]" />
+                          <FaCheck className="w-3 h-3 text-[#068EF1]" />
                         )}
                       </button>
                     ))}

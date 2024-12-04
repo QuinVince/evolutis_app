@@ -117,7 +117,7 @@ Example: (covid OR coronavirus) AND (vaccine OR vaccination) AND (efficacy OR ef
                   <textarea
                     value={currentQuery}
                     onChange={(e) => setCurrentQuery(e.target.value)}
-                    className="flex-grow px-4 py-3 border border-[#BDBDBD] rounded-md focus:outline-none focus:ring-2 focus:ring-[#62B6CB] focus:ring-offset-2"
+                    className="flex-grow px-4 py-3 border border-[#BDBDBD] rounded-md focus:outline-none focus:ring-2 focus:ring-[#068EF1] focus:ring-offset-2"
                     rows={8}
                     placeholder="Enter your PubMed query in the format: (term1 OR term2) AND (term3 OR term4) AND (...)"
                   />
@@ -131,7 +131,7 @@ Example: (covid OR coronavirus) AND (vaccine OR vaccination) AND (efficacy OR ef
 
                   <button
                     onClick={handleApply}
-                    className="mt-4 px-6 py-2 bg-gray-200 text-gray-700 hover:bg-[#62B6CB] hover:text-white rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#62B6CB] focus:ring-offset-2 flex items-center justify-center"
+                    className="mt-4 px-6 py-2 bg-gray-200 text-gray-700 hover:bg-[#068EF1] hover:text-white rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#068EF1] focus:ring-offset-2 flex items-center justify-center"
                   >
                     Apply
                   </button>

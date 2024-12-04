@@ -38,7 +38,7 @@ const ProjectsPage: React.FC = () => {
             <p className="text-gray-500">No projects found. Start a new project to begin.</p>
             <button
               onClick={() => navigate('/new-project')}
-              className="mt-4 px-6 py-2 bg-[#62B6CB] text-white rounded-lg hover:bg-opacity-90"
+              className="mt-4 px-6 py-2 bg-[#068EF1] text-white rounded-lg hover:bg-opacity-90"
             >
               Start New Project
             </button>
@@ -63,7 +63,7 @@ const ProjectsPage: React.FC = () => {
                         e.stopPropagation();
                         // Handle edit
                       }}
-                      className="p-2 text-gray-500 hover:text-[#62B6CB]"
+                      className="p-2 text-gray-500 hover:text-[#068EF1]"
                     >
                       <FaEdit />
                     </button>
