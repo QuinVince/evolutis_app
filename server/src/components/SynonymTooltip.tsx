@@ -20,7 +20,7 @@ const SynonymTooltip: React.FC<SynonymTooltipProps> = ({
 }) => {
   return (
     <div 
-      className="absolute bg-white p-4 rounded-xl shadow-lg border border-[#62B6CB] z-50"
+      className="absolute bg-white p-4 rounded-xl shadow-lg border border-[#068EF1] z-50"
       style={{ 
         top: position.top,
         left: position.left,

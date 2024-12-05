@@ -352,8 +352,8 @@ const PubMedQueryBuilder: React.FC<PubMedQueryBuilderProps> = ({
 
   if (isGeneratingPubMed) {
     return (
-      <div className="flex items-center justify-center p-8 bg-gray-50 rounded-xl border-2 border-[#62B6CB] border-dashed">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#62B6CB]" />
+      <div className="flex items-center justify-center p-8 bg-gray-50 rounded-xl border-2 border-[#068EF1] border-dashed">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#068EF1]" />
         <span className="ml-3 text-gray-600 font-medium">Generating PubMed query...</span>
       </div>
     );
@@ -395,7 +395,7 @@ const PubMedQueryBuilder: React.FC<PubMedQueryBuilderProps> = ({
                   </div>
                   <button
                     onClick={(e) => handleLightbulbClick(index, e)}
-                    className="p-2 text-[#62B6CB] hover:text-white rounded-full hover:bg-[#C2E2EB] transition-colors"
+                    className="p-2 text-[#068EF1] hover:text-white rounded-full hover:bg-[#C2E2EB] transition-colors"
                     title="Show synonyms"
                   >
                     <img 
@@ -412,11 +412,11 @@ const PubMedQueryBuilder: React.FC<PubMedQueryBuilderProps> = ({
                     <select
                       value={subquery.operator}
                       onChange={(e) => handleOperatorChange(index, e.target.value as 'AND' | 'OR')}
-                      className="w-24 px-4 py-1.5 rounded-xl border border-[#62B6CB] text-[#62B6CB] bg-white 
-                        focus:outline-none focus:ring-2 focus:ring-[#62B6CB] text-center font-semibold
+                      className="w-24 px-4 py-1.5 rounded-xl border border-[#068EF1] text-[#068EF1] bg-white 
+                        focus:outline-none focus:ring-2 focus:ring-[#068EF1] text-center font-semibold
                         appearance-none cursor-pointer relative ml-2 mb-3"
                       style={{
-                        backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2362B6CB'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`,
+                        backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23068EF1'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`,
                         backgroundRepeat: 'no-repeat',
                         backgroundPosition: 'right 8px center',
                         backgroundSize: '16px',
@@ -435,8 +435,8 @@ const PubMedQueryBuilder: React.FC<PubMedQueryBuilderProps> = ({
             <div className="flex justify-center pt-2">
               <button
                 onClick={addNewSubquery}
-                className="flex items-center gap-2 px-4 py-2 text-[#62B6CB] border-2 border-[#62B6CB] 
-                  rounded-xl hover:bg-[#62B6CB] hover:text-white transition-colors font-semibold"
+                className="flex items-center gap-2 px-4 py-2 text-[#068EF1] border-2 border-[#068EF1] 
+                  rounded-xl hover:bg-[#068EF1] hover:text-white transition-colors font-semibold"
               >
                 <FaPlus className="w-4 h-4" />
                 Add concept
@@ -595,7 +595,7 @@ const PubMedQueryBuilder: React.FC<PubMedQueryBuilderProps> = ({
               <div className="overflow-hidden h-2 mb-4 text-xs flex rounded bg-[#DCF8FF]">
                 <div
                   style={{ width: `${collectionProgress}%` }}
-                  className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-[#62B6CB] transition-all duration-100"
+                  className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-[#068EF1] transition-all duration-100"
                 />
               </div>
               <p className="text-sm text-gray-600 text-center">

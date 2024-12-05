@@ -43,7 +43,7 @@ const LandingPage: React.FC = () => {
       <div className="flex gap-4 mb-12">
         <button
           onClick={() => navigate('/new-project')}
-          className="px-6 py-3 bg-[#62B6CB] text-white rounded-lg hover:bg-opacity-90 transition-colors"
+          className="px-6 py-3 bg-[#068EF1] text-white rounded-lg hover:bg-opacity-90 transition-colors"
         >
           Start a new project
         </button>
@@ -51,7 +51,7 @@ const LandingPage: React.FC = () => {
           onClick={() => navigate('/projects')}
           className={`px-6 py-3 ${
             savedQueries.length > 0 
-              ? 'bg-[#62B6CB] text-white hover:bg-opacity-90' 
+              ? 'bg-[#068EF1] text-white hover:bg-opacity-90' 
               : 'bg-gray-200 text-gray-500 cursor-not-allowed'
           } rounded-lg transition-colors`}
           disabled={savedQueries.length === 0}
@@ -64,7 +64,7 @@ const LandingPage: React.FC = () => {
       {recentProjects.length > 0 && (
         <div className="w-full max-w-2xl">
           <h2 className="text-lg font-semibold text-gray-700 mb-4 flex items-center gap-2">
-            <FaClock className="text-[#62B6CB]" />
+            <FaClock className="text-[#068EF1]" />
             Recent Projects
           </h2>
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 divide-y">

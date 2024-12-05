@@ -34,7 +34,7 @@ const SynonymList: React.FC<SynonymListProps> = ({
 
   return (
     <div 
-      className="absolute bg-white p-4 rounded-xl shadow-lg border border-[#62B6CB]"
+      className="absolute bg-white p-4 rounded-xl shadow-lg border border-[#068EF1]"
       style={{ 
         top: position?.top || 0, 
         left: position?.left || 0,
@@ -56,7 +56,7 @@ const SynonymList: React.FC<SynonymListProps> = ({
           <select
             value={selectedConceptIndex}
             onChange={(e) => onConceptSelect(Number(e.target.value))}
-            className="w-full px-3 py-2 border border-[#BDBDBD] rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#62B6CB] border-b-4"
+            className="w-full px-3 py-2 border border-[#BDBDBD] rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#068EF1] border-b-4"
           >
             {synonymGroups.map((group, index) => (
               <option key={index} value={index}>
@@ -67,7 +67,7 @@ const SynonymList: React.FC<SynonymListProps> = ({
         </div>
         <button
           onClick={onGetSynonyms}
-          className="ml-3 text-[#62B6CB] hover:text-white p-2 rounded-full hover:bg-[#C2E2EB] transition-colors"
+          className="ml-3 text-[#068EF1] hover:text-white p-2 rounded-full hover:bg-[#C2E2EB] transition-colors"
           disabled={isSynonymsLoading}
         >
           <FaSync className={`w-4 h-4 ${isSynonymsLoading ? 'animate-spin' : ''}`} />
@@ -81,10 +81,10 @@ const SynonymList: React.FC<SynonymListProps> = ({
             <button
               key={index}
               onClick={() => onSynonymClick(synonym)}
-              className="inline-flex items-center px-3 py-1 rounded-full bg-[#C2E2EB] text-black hover:bg-[#62B6CB] transition-colors">
+              className="inline-flex items-center px-3 py-1 rounded-full bg-[#C2E2EB] text-black hover:bg-[#068EF1] transition-colors">
               {synonym}
               <span className="ml-2">
-                <FaPlusCircle className="text-[#62B6CB] bg-white rounded-full" />
+                <FaPlusCircle className="text-[#068EF1] bg-white rounded-full" />
               </span>
             </button>
           ))}

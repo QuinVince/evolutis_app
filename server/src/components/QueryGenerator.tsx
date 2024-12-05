@@ -436,10 +436,10 @@ const QueryGenerator: React.FC<QueryGeneratorProps> = ({ initialData, onSaveQuer
       case 0:  // Changed from case 1
         return (
           <div>
-            <h2 className="text-xl font-semibold mb-4 text-[#62B6CB]">Generated Questions</h2>
+            <h2 className="text-xl font-semibold mb-4 text-[#068EF1]">Generated Questions</h2>
             {isGeneratingQuestions ? (
               <div className="text-center py-4 flex items-center justify-center">
-                <svg className="animate-spin h-5 w-5 mr-3 text-[#62B6CB]" viewBox="0 0 24 24">
+                <svg className="animate-spin h-5 w-5 mr-3 text-[#068EF1]" viewBox="0 0 24 24">
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
                 </svg>
@@ -455,14 +455,14 @@ const QueryGenerator: React.FC<QueryGeneratorProps> = ({ initialData, onSaveQuer
                       value={answers[question] || ''}
                       onChange={(e) => handleAnswerChange(question, e.target.value)}
                       onKeyPress={(e) => handleAnswerKeyPress(e, index === questions.length - 1)}
-                      className="w-full px-3 py-2 border border-[#BDBDBD] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#62B6CB] focus:ring-offset-2 flex items-center justify-center"
+                      className="w-full px-3 py-2 border border-[#BDBDBD] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#068EF1] focus:ring-offset-2 flex items-center justify-center"
                       placeholder="Your answer..."
                     />
                   </div>
                 ))}
                 <button
                   onClick={handleNextStep}
-                  className="mt-4 px-4 py-2 bg-[#62B6CB] text-white rounded-md hover:bg-[#62B6CB] focus:outline-none focus:ring-2 focus:ring-[#62B6CB] focus:ring-offset-2 flex items-center justify-center"
+                  className="mt-4 px-4 py-2 bg-[#068EF1] text-white rounded-md hover:bg-[#068EF1] focus:outline-none focus:ring-2 focus:ring-[#068EF1] focus:ring-offset-2 flex items-center justify-center"
                   disabled={isGeneratingPubMed}
                 >
                   {isGeneratingPubMed ? (
@@ -489,7 +489,7 @@ const QueryGenerator: React.FC<QueryGeneratorProps> = ({ initialData, onSaveQuer
             <h2 className="text-2xl font-semibold mb-8 text-black text-center">Generated PubMed Query</h2>
             {isGeneratingPubMed ? (
               <div className="text-center py-4 flex items-center justify-center">
-                <svg className="animate-spin h-5 w-5 mr-3 text-[#62B6CB]" viewBox="0 0 24 24">
+                <svg className="animate-spin h-5 w-5 mr-3 text-[#068EF1]" viewBox="0 0 24 24">
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
                 </svg>
@@ -498,13 +498,13 @@ const QueryGenerator: React.FC<QueryGeneratorProps> = ({ initialData, onSaveQuer
             ) : (
               <div className="flex flex-col gap-8">
                 <div className="w-full">
-                  <div className="bg-white p-4 rounded-xl border-2 border-[#62B6CB] shadow-sm">
+                  <div className="bg-white p-4 rounded-xl border-2 border-[#068EF1] shadow-sm">
 
                     {pubMedQuery.split('\n\nAND\n\n').map((part, index, array) => (
                       <React.Fragment key={index}>
                         {index > 0 && (
                           <div className="flex items-center my-2">
-                            <span className="px-4 py-1 text-[#62B6CB] rounded-full font-bold">
+                            <span className="px-4 py-1 text-[#068EF1] rounded-full font-bold">
                               AND
                             </span>
                             <div className="flex-grow  border-gray-200 ml-2"></div>
@@ -530,14 +530,14 @@ const QueryGenerator: React.FC<QueryGeneratorProps> = ({ initialData, onSaveQuer
                     ))}
                   </div>
                   {estimatedDocuments !== null && (
-                    <p className="mt-2 text-[#62B6CB]">
+                    <p className="mt-2 text-[#068EF1]">
                       Estimated number of documents: <span className="font-bold">{estimatedDocuments}</span>
                     </p>
                   )}
                 </div>
                 {isGeneratingSynonyms ? (
                   <div className="text-center py-4 flex items-center justify-center">
-                    <svg className="animate-spin h-5 w-5 mr-3 text-[#62B6CB]" viewBox="0 0 24 24">
+                    <svg className="animate-spin h-5 w-5 mr-3 text-[#068EF1]" viewBox="0 0 24 24">
                       <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
                       <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
                     </svg>
@@ -563,7 +563,7 @@ const QueryGenerator: React.FC<QueryGeneratorProps> = ({ initialData, onSaveQuer
                 <div className="mt-4">
                   <button
                     onClick={handleCollectDocuments}
-                    className={`w-full px-4 py-2 ${isCollected ? 'bg-[#62B6CB]' : 'bg-[#62B6CB]'} text-white rounded-md hover:bg-[#62B6CB] focus:outline-none focus:ring-2 focus:ring-[#62B6CB] focus:ring-offset-2 flex items-center justify-center`}
+                    className={`w-full px-4 py-2 ${isCollected ? 'bg-[#068EF1]' : 'bg-[#068EF1]'} text-white rounded-md hover:bg-[#068EF1] focus:outline-none focus:ring-2 focus:ring-[#068EF1] focus:ring-offset-2 flex items-center justify-center`}
                     disabled={isCollecting || isCollected}
                   >
                     {isCollecting ? 'Collecting...' : isCollected ? 'Documents Collected' : 'Collect Documents'}
@@ -572,12 +572,12 @@ const QueryGenerator: React.FC<QueryGeneratorProps> = ({ initialData, onSaveQuer
 
                   {isCollecting && (
                     <div className="mt-4">
-                      <p className="text-[#62B6CB]">
+                      <p className="text-[#068EF1]">
                         Collecting documents: {collectedDocuments.pubmed + collectedDocuments.semanticScholar} / {totalDocuments}
                       </p>
                       <div className="w-full bg-[#BDBDBD] rounded-full h-2.5 mt-2">
                         <div 
-                          className="bg-[#62B6CB] h-2.5 rounded-full transition-all duration-200" 
+                          className="bg-[#068EF1] h-2.5 rounded-full transition-all duration-200" 
                           style={{ width: `${((collectedDocuments.pubmed + collectedDocuments.semanticScholar) / totalDocuments) * 100}%` }}
                         ></div>
                       </div>
@@ -586,12 +586,12 @@ const QueryGenerator: React.FC<QueryGeneratorProps> = ({ initialData, onSaveQuer
 
                   {isCollected && (
                     <div className="mt-4">
-                      <p className="text-[#62B6CB] text-center">
+                      <p className="text-[#068EF1] text-center">
                         Collection complete! {totalDocuments} documents collected
                       </p>
                       <button
                         onClick={() => setStep(2)}
-                        className="mt-4 w-full px-4 py-2 bg-[#62B6CB] text-white rounded-md hover:bg-[#62B6CB] focus:outline-none focus:ring-2 focus:ring-[#62B6CB] focus:ring-offset-2 flex items-center justify-center"
+                        className="mt-4 w-full px-4 py-2 bg-[#068EF1] text-white rounded-md hover:bg-[#068EF1] focus:outline-none focus:ring-2 focus:ring-[#068EF1] focus:ring-offset-2 flex items-center justify-center"
                       >
                         Save Query <FaArrowRight className="ml-2" />
                       </button>
@@ -611,12 +611,12 @@ const QueryGenerator: React.FC<QueryGeneratorProps> = ({ initialData, onSaveQuer
               value={queryName}
               onChange={(e) => setQueryName(e.target.value)}
               onKeyPress={handleQueryNameKeyPress}
-              className="w-full px-3 py-2 border border-[#BDBDBD] rounded-md focus:outline-none focus:ring-2 focus:ring-[#62B6CB] focus:ring-offset-2 flex items-center justify-center"
+              className="w-full px-3 py-2 border border-[#BDBDBD] rounded-md focus:outline-none focus:ring-2 focus:ring-[#068EF1] focus:ring-offset-2 flex items-center justify-center"
               placeholder="Enter query name"
             />
             <button
               onClick={handleSaveQuery}
-              className="mt-4 px-4 py-2 bg-[#62B6CB] text-white rounded-md hover:bg-[#62B6CB] focus:outline-none focus:ring-2 focus:ring-[#62B6CB] focus:ring-offset-2 flex items-center justify-center"
+              className="mt-4 px-4 py-2 bg-[#068EF1] text-white rounded-md hover:bg-[#068EF1] focus:outline-none focus:ring-2 focus:ring-[#068EF1] focus:ring-offset-2 flex items-center justify-center"
             >
               Save Query <FaCheck className="ml-2" />
             </button>
@@ -662,14 +662,14 @@ const QueryGenerator: React.FC<QueryGeneratorProps> = ({ initialData, onSaveQuer
                         handleGenerateQuestions();
                       }
                     }}
-                    className="flex-grow px-4 py-3 border border-[#BDBDBD]rounded-md focus:outline-none focus:ring-2 focus:ring-[#62B6CB] focus:ring-offset-2"
+                    className="flex-grow px-4 py-3 border border-[#BDBDBD]rounded-md focus:outline-none focus:ring-2 focus:ring-[#068EF1] focus:ring-offset-2"
                     placeholder="Describe your research..."
                     rows={4}
                   />
                   {questions.length > 0 && (
                     <button
                       onClick={() => handleGenerateQuestions()}
-                      className="p-2 text-[#62B6CB] hover:text-white rounded-full hover:bg-[#C2E2EB] transition-colors self-start"
+                      className="p-2 text-[#068EF1] hover:text-white rounded-full hover:bg-[#C2E2EB] transition-colors self-start"
                       disabled={isGeneratingQuestions}
                     >
                       <FaSync className={`w-4 h-4 ${isGeneratingQuestions ? 'animate-spin' : ''}`} />
@@ -707,7 +707,7 @@ const QueryGenerator: React.FC<QueryGeneratorProps> = ({ initialData, onSaveQuer
               <h2 className="text-xl font-semibold text-black mb-6">Generated Questions</h2>
               {isGeneratingQuestions ? (
                 <div className="flex items-center justify-center p-8 bg-gray-50 rounded-lg">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#62B6CB]" />
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#068EF1]" />
                   <span className="ml-3 text-gray-600">Generating questions...</span>
                 </div>
               ) : (
@@ -719,7 +719,7 @@ const QueryGenerator: React.FC<QueryGeneratorProps> = ({ initialData, onSaveQuer
                         type="text"
                         value={answers[question] || ''}
                         onChange={(e) => handleAnswerChange(question, e.target.value)}
-                        className="w-full px-4 py-3 border border-[#BDBDBD] rounded-md focus:outline-none focus:ring-2 focus:ring-[#62B6CB] focus:ring-offset-2"
+                        className="w-full px-4 py-3 border border-[#BDBDBD] rounded-md focus:outline-none focus:ring-2 focus:ring-[#068EF1] focus:ring-offset-2"
                         placeholder="Your answer..."
                       />
                     </div>
@@ -729,7 +729,7 @@ const QueryGenerator: React.FC<QueryGeneratorProps> = ({ initialData, onSaveQuer
                     <div className="flex justify-end">
                       <button
                         onClick={handleGenerateQuery}
-                        className="mt-4 px-6 py-2 bg-gray-200 text-gray-700 hover:bg-[#62B6CB] hover:text-white rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#62B6CB] focus:ring-offset-2 flex items-center justify-center"
+                        className="mt-4 px-6 py-2 bg-gray-200 text-gray-700 hover:bg-[#068EF1] hover:text-white rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#068EF1] focus:ring-offset-2 flex items-center justify-center"
                         disabled={isGeneratingPubMed || isGeneratingSynonyms}
                       >
                         {(isGeneratingPubMed || isGeneratingSynonyms) ? (
