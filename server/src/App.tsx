@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import React, { useState } from 'react';
 import LandingPage from './components/LandingPage';
-import NewProject from './components/NewProject';
+import NewQuery from './components/NewQuery';
 import QueryGenerator from './components/QueryGenerator';
 import Layout from './components/Layout';
 import { Provider } from 'react-redux';
@@ -91,7 +91,7 @@ const App: React.FC = () => {
         >
           <Routes>
             <Route path="/" element={<LandingPage />} />
-            <Route path="/new-project" element={<NewProject />} />
+            <Route path="/new-project" element={<NewQuery />} />
             <Route path="/projects" element={<ProjectsPage />} />
             <Route path="/query-parser" element={<QueryParser />} />
             <Route 

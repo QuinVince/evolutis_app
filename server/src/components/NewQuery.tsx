@@ -12,7 +12,7 @@ interface Source {
 
 type Mode = 'description' | 'query';
 
-const NewProject: React.FC = () => {
+const NewQuery: React.FC = () => {
   const [mode, setMode] = useState<Mode>('description');
   const [input, setInput] = useState('');
   const [showSourcesDropdown, setShowSourcesDropdown] = useState(false);
@@ -148,4 +148,4 @@ const NewProject: React.FC = () => {
   );
 };
 
-export default NewProject; 
+export default NewQuery; 
