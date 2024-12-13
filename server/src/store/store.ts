@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import queryReducer from './querySlice';
+import projectReducer from './projectSlice';
 
 export const store = configureStore({
   reducer: {
-    query: queryReducer
+    query: queryReducer,
+    projects: projectReducer
   }
 });
 

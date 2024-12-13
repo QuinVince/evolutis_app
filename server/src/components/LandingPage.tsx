@@ -1,14 +1,9 @@
 import React, { useState } from 'react';
 import { FaFolder, FaClock, FaFile, FaFilter, FaSearch, FaUser, FaCalendar } from 'react-icons/fa';
-
-interface Project {
-  id: string;
-  name: string;
-  status: 'in_progress' | 'done';
-  author: string;
-  createdAt: string;
-  queryCount: number;
-}
+import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { RootState } from '../store/store';
+import { Project } from '../store/projectSlice';
 
 const LandingPage: React.FC = () => {
   const [showFilters, setShowFilters] = useState(false);
@@ -16,36 +11,22 @@ const LandingPage: React.FC = () => {
   const [filterUser, setFilterUser] = useState('');
   const [filterDate, setFilterDate] = useState('');
 
-  // Placeholder data
-  const projects: Project[] = [
-    {
-      id: '1',
-      name: 'Knee surgery',
-      status: 'in_progress',
-      author: 'Fanny M.',
-      createdAt: '1 day ago',
-      queryCount: 5
-    },
-    {
-      id: '2',
-      name: 'Hip replacement',
-      status: 'in_progress',
-      author: 'Fanny M.',
-      createdAt: '2 days ago',
-      queryCount: 7
-    },
-    {
-      id: '3',
-      name: 'Shoulder surgery',
-      status: 'done',
-      author: 'Fanny M.',
-      createdAt: '5 days ago',
-      queryCount: 3
-    }
-  ];
+  const projects = useSelector((state: RootState) => state.projects.projects);
+  const navigate = useNavigate();
+
+  const formatCreatedAt = (dateString: string) => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffTime = Math.abs(now.getTime() - date.getTime());
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return `${diffDays} ${diffDays === 1 ? 'day' : 'days'} ago`;
+  };
 
   const ProjectCard: React.FC<{ project: Project }> = ({ project }) => (
-    <div className="flex items-center justify-between bg-white rounded-lg p-4 hover:shadow-md transition-shadow">
+    <div 
+      onClick={() => navigate(`/project/${project.id}`)}
+      className="flex items-center justify-between bg-white rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer"
+    >
       <div className="flex items-center space-x-4">
         <div className="p-2 rounded-full bg-[#DCF8FF]">
           <FaFolder className="w-5 h-5 text-[#068EF1]" />
@@ -65,7 +46,7 @@ const LandingPage: React.FC = () => {
           <div className="flex items-center space-x-4 mt-2 text-sm text-gray-500">
             <div className="flex items-center space-x-1">
               <FaClock className="w-4 h-4" />
-              <span>{project.createdAt}</span>
+              <span>{formatCreatedAt(project.createdAt)}</span>
             </div>
             <div className="flex items-center space-x-1">
               <FaFile className="w-4 h-4" />

@@ -1,10 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { FaBars, FaPlus, FaSearch } from 'react-icons/fa';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setCurrentProjectTitle } from '../store/querySlice';
 import logo from '../utils/evolutis-logo.png';
 import iconHome from '../utils/icon-home.png';
+import { RootState } from '../store/store';
 
 interface Project {
   id: string;
@@ -26,19 +27,10 @@ const Layout: React.FC<LayoutProps> = ({ children, projectTitle, onProjectTitleC
   const [isSidebarExpanded, setIsSidebarExpanded] = useState(true);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // Placeholder data - should be moved to a central state management later
-  const projects = {
-    inProgress: [
-      { id: '1', name: 'Knee surgery', status: 'in_progress' as const },
-      { id: '2', name: 'Hip replacement', status: 'in_progress' as const },
-      { id: '3', name: 'Multiple sclerosis', status: 'in_progress' as const },
-      { id: '4', name: 'Project 2', status: 'in_progress' as const }
-    ],
-    done: [
-      { id: '5', name: "Parkinson's Disease", status: 'done' as const },
-      { id: '6', name: 'Prostate Cancer', status: 'done' as const },
-      { id: '7', name: 'Acute Kidney Inj...', status: 'done' as const }
-    ]
+  const projects = useSelector((state: RootState) => state.projects.projects);
+  const projectsByStatus = {
+    inProgress: projects.filter(p => p.status === 'in_progress'),
+    done: projects.filter(p => p.status === 'done')
   };
 
   // Show project title only on query-generator page
@@ -129,11 +121,11 @@ const Layout: React.FC<LayoutProps> = ({ children, projectTitle, onProjectTitleC
 
             <ProjectList 
               title="IN PROGRESS" 
-              projects={projects.inProgress} 
+              projects={projectsByStatus.inProgress} 
             />
             <ProjectList 
               title="DONE" 
-              projects={projects.done}
+              projects={projectsByStatus.done}
               isDone 
             />
           </div>
