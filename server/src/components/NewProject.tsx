@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link, useParams } from 'react-router-dom';
-import { FaFolder, FaEdit, FaUser, FaTimes, FaPlus, FaChevronRight, FaSearch, FaFilter } from 'react-icons/fa';
+import { FaFolder, FaEdit, FaUser, FaTimes, FaPlus, FaChevronRight, FaSearch, FaFilter, FaBatteryThreeQuarters } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 import { addProject, updateProject } from '../store/projectSlice';
 import { RootState } from '../store/store';
@@ -115,64 +115,70 @@ const NewProject: React.FC = () => {
         </div>
 
         {/* Status */}
-        <div className="flex items-center space-x-2">
-          <span className="text-sm text-gray-500">Status</span>
-          <span className="px-3 py-1 bg-[#DCF8FF] text-[#068EF1] rounded-full text-sm">
-            In progress
-          </span>
+        <div className="flex items-center">
+          <span className="text-sm text-gray-500 w-24">Status</span>
+          <div className="ml-4">
+            <span className="px-3 py-1 bg-[#5CABFF] text-white rounded-lg text-sm">
+              In progress
+            </span>
+          </div>
         </div>
 
         {/* Assignees */}
-        <div className="flex items-center space-x-2">
-          <span className="text-sm text-gray-500">Assignees</span>
-          <div className="flex items-center space-x-2">
-            <div className="flex items-center space-x-2 px-3 py-1 bg-gray-100 rounded-full">
-              <FaUser className="w-4 h-4 text-gray-500" />
-              <span className="text-sm text-gray-700">{assignee}</span>
+        <div className="flex items-center">
+          <span className="text-sm text-gray-500 w-24">Assignees</span>
+          <div className="ml-4">
+            <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-2 px-3 py-1 bg-gray-100 rounded-lg">
+                <FaUser className="w-4 h-4 text-gray-500" />
+                <span className="text-sm text-gray-700">{assignee}</span>
+              </div>
             </div>
           </div>
         </div>
 
         {/* Tags */}
-        <div className="flex items-center space-x-2 flex-wrap">
-          <span className="text-sm text-gray-500">Tags</span>
-          <div className="flex items-center flex-wrap gap-2">
-            {tags.map(tag => (
-              <div
-                key={tag.id}
-                className="flex items-center space-x-2 px-3 py-1 bg-gray-100 rounded-full"
-              >
-                <span className="text-sm text-gray-700">{tag.name}</span>
-                <button
-                  onClick={() => handleRemoveTag(tag.id)}
-                  className="text-gray-400 hover:text-gray-600"
+        <div className="flex items-start">
+          <span className="text-sm text-gray-500 w-24">Tags</span>
+          <div className="ml-4">
+            <div className="flex items-center flex-wrap gap-2">
+              {tags.map(tag => (
+                <div
+                  key={tag.id}
+                  className="flex items-center space-x-2 px-3 py-1 bg-gray-100 rounded-full"
                 >
-                  <FaTimes className="w-3 h-3" />
+                  <span className="text-sm text-gray-700">{tag.name}</span>
+                  <button
+                    onClick={() => handleRemoveTag(tag.id)}
+                    className="text-gray-400 hover:text-gray-600"
+                  >
+                    <FaTimes className="w-3 h-3" />
+                  </button>
+                </div>
+              ))}
+              {showTagInput ? (
+                <div className="flex items-center space-x-2">
+                  <input
+                    type="text"
+                    value={newTag}
+                    onChange={(e) => setNewTag(e.target.value)}
+                    onBlur={handleAddTag}
+                    onKeyPress={(e) => e.key === 'Enter' && handleAddTag()}
+                    className="px-3 py-1 text-sm border rounded-full focus:outline-none focus:border-[#068EF1]"
+                    placeholder="Add tag..."
+                    autoFocus
+                  />
+                </div>
+              ) : (
+                <button
+                  onClick={() => setShowTagInput(true)}
+                  className="flex items-center space-x-1 px-3 py-1 text-[#068EF1] hover:bg-[#DCF8FF] rounded-full transition-colors"
+                >
+                  <FaPlus className="w-3 h-3" />
+                  <span className="text-sm">Add tag</span>
                 </button>
-              </div>
-            ))}
-            {showTagInput ? (
-              <div className="flex items-center space-x-2">
-                <input
-                  type="text"
-                  value={newTag}
-                  onChange={(e) => setNewTag(e.target.value)}
-                  onBlur={handleAddTag}
-                  onKeyPress={(e) => e.key === 'Enter' && handleAddTag()}
-                  className="px-3 py-1 text-sm border rounded-full focus:outline-none focus:border-[#068EF1]"
-                  placeholder="Add tag..."
-                  autoFocus
-                />
-              </div>
-            ) : (
-              <button
-                onClick={() => setShowTagInput(true)}
-                className="flex items-center space-x-1 px-3 py-1 text-[#068EF1] hover:bg-[#DCF8FF] rounded-full transition-colors"
-              >
-                <FaPlus className="w-3 h-3" />
-                <span className="text-sm">Add tag</span>
-              </button>
-            )}
+              )}
+            </div>
           </div>
         </div>
       </div>

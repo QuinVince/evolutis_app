@@ -25,23 +25,23 @@ const LandingPage: React.FC = () => {
   const ProjectCard: React.FC<{ project: Project }> = ({ project }) => (
     <div 
       onClick={() => navigate(`/project/${project.id}`)}
-      className="flex items-center justify-between bg-white rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer"
+      className="flex items-center justify-between bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer"
     >
       <div className="flex items-center space-x-4">
-        <div className="p-2 rounded-full bg-[#DCF8FF]">
-          <FaFolder className="w-5 h-5 text-[#068EF1]" />
+        <div className="p-4 rounded-full bg-[#DCF8FF]">
+          <FaFolder className="w-6 h-6 text-[#068EF1]" />
         </div>
         <div>
           <div className="flex items-center space-x-3">
-            <span className="font-medium text-gray-900">{project.name}</span>
+            <span className="font-medium text-gray-900 text-xl font-semibold">{project.name}</span>
             <span className={`px-2 py-1 rounded-md text-xs font-medium ${
               project.status === 'in_progress' 
-                ? 'bg-[#DCF8FF] text-[#068EF1]' 
+                ? 'bg-[#5CABFF] text-white' 
                 : 'bg-green-100 text-green-800'
             }`}>
               {project.status === 'in_progress' ? 'In progress' : 'Done'}
             </span>
-            <span className="text-sm text-gray-500">{project.author}</span>
+            <span className="text-xs text-gray-500 bg-gray-100 rounded-md px-2 py-1">{project.author}</span>
           </div>
           <div className="flex items-center space-x-4 mt-2 text-sm text-gray-500">
             <div className="flex items-center space-x-1">
@@ -76,7 +76,7 @@ const LandingPage: React.FC = () => {
   };
 
   return (
-    <div className="p-8 max-w-5xl mx-auto">
+    <div className="p-2 max-w-5xl mx-auto mt-8">
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-3xl font-bold">Dashboard</h1>
         
