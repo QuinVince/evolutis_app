@@ -6,7 +6,6 @@ import QueryGenerator from './components/QueryGenerator';
 import Layout from './components/Layout';
 import { Provider } from 'react-redux';
 import { store } from './store/store';
-import ProjectsPage from './components/ProjectsPage';
 import QueryParser from './components/QueryParser';
 import NewProject from './components/NewProject';
 
@@ -95,7 +94,6 @@ const App: React.FC = () => {
             <Route path="/new-project" element={<NewProject />} />
             <Route path="/project/:projectId" element={<NewProject />} />
             <Route path="/new-query" element={<NewQuery />} />
-            <Route path="/projects" element={<ProjectsPage />} />
             <Route path="/query-parser" element={<QueryParser />} />
             <Route 
               path="/query-generator" 
