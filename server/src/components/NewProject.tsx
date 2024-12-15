@@ -29,6 +29,7 @@ const NewProject: React.FC = () => {
   );
   const [newTag, setNewTag] = useState("");
   const [showTagInput, setShowTagInput] = useState(false);
+  const [localProjectId, setLocalProjectId] = useState(Date.now().toString());
 
   // Update local state when existing project is loaded
   useEffect(() => {
@@ -41,7 +42,7 @@ const NewProject: React.FC = () => {
   const handleTitleSubmit = () => {
     setIsEditingTitle(false);
     const projectData = {
-      id: existingProject?.id || Date.now().toString(),
+      id: existingProject?.id || localProjectId,
       name: projectTitle,
       status: 'in_progress' as const,
       author: assignee,
@@ -74,7 +75,8 @@ const NewProject: React.FC = () => {
       state: { 
         mode: 'new',
         initialData: {
-          projectTitle: projectTitle
+          projectTitle: projectTitle,
+          projectId: existingProject?.id || localProjectId
         }
       }
     });
@@ -221,7 +223,7 @@ const NewProject: React.FC = () => {
           </div>
         </div>
 
-        <QueryTable projectId={existingProject?.id || ''} />
+        <QueryTable projectId={existingProject?.id || localProjectId} />
       </div>
     </div>
   );

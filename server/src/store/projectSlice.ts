@@ -31,10 +31,15 @@ const projectSlice = createSlice({
         state.projects[index] = action.payload;
       }
     },
-    updateProjectQueries: (state, action: PayloadAction<{ projectId: string; queryCount: number }>) => {
+    updateProjectQueries: (state, action: PayloadAction<{ 
+      projectId: string; 
+      queryCount: number | ((currentCount: number) => number) 
+    }>) => {
       const project = state.projects.find(p => p.id === action.payload.projectId);
       if (project) {
-        project.queryCount = action.payload.queryCount;
+        project.queryCount = typeof action.payload.queryCount === 'function' 
+          ? action.payload.queryCount(project.queryCount)
+          : action.payload.queryCount;
       }
     }
   }
