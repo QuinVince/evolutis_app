@@ -12,7 +12,12 @@ interface Source {
 
 type Mode = 'description' | 'query';
 
-const NewQuery: React.FC = () => {
+interface NewQueryProps {
+  onSubmit?: (mode: 'generator' | 'parser', data: { description?: string; query?: string }) => void;
+  isEmbedded?: boolean;
+}
+
+const NewQuery: React.FC<NewQueryProps> = ({ onSubmit, isEmbedded = false }) => {
   const [mode, setMode] = useState<Mode>('description');
   const [input, setInput] = useState('');
   const [showSourcesDropdown, setShowSourcesDropdown] = useState(false);
@@ -34,10 +39,24 @@ const NewQuery: React.FC = () => {
     };
     localStorage.setItem('currentProject', JSON.stringify(project));
     
-    if (mode === 'description') {
-      navigate('/query-generator', { state: { description: input, mode } });
+    if (isEmbedded && onSubmit) {
+      onSubmit(
+        mode === 'description' ? 'generator' : 'parser',
+        {
+          description: mode === 'description' ? input : undefined,
+          query: mode === 'query' ? input : undefined
+        }
+      );
     } else {
-      navigate('/query-parser', { state: { description: input, mode } });
+      navigate('/slr-pipeline', { 
+        state: { 
+          mode: mode === 'description' ? 'generator' : 'parser',
+          initialData: {
+            description: mode === 'description' ? input : undefined,
+            query: mode === 'query' ? input : undefined
+          }
+        }
+      });
     }
   };
 
@@ -69,8 +88,8 @@ const NewQuery: React.FC = () => {
   ];
 
   return (
-    <div className="h-[calc(100vh-4rem)] flex items-center justify-center bg-white">
-      <div className="max-w-xl w-full px-6">
+    <div className="bg-white">
+      <div className="max-w-xl w-full mx-auto px-6">
         <h1 className="text-2xl font-bold text-center mb-8 text-black h-8">
           <Typewriter
             words={[mode === 'description' ? titles[0] : titles[1]]}

@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import React, { useState } from 'react';
 import LandingPage from './components/LandingPage';
 import NewQuery from './components/NewQuery';
@@ -8,6 +8,7 @@ import { Provider } from 'react-redux';
 import { store } from './store/store';
 import QueryParser from './components/QueryParser';
 import NewProject from './components/NewProject';
+import SLRPipeline from './components/SLRPipeline';
 
 // Add these type definitions
 export interface SavedQuery {
@@ -68,6 +69,19 @@ interface LayoutProps {
   onProjectTitleChange: (title: string) => void;
 }
 
+// Create a wrapper component to handle location state
+const SLRPipelineWrapper: React.FC = () => {
+  const location = useLocation();
+  const state = location.state as { mode: 'generator' | 'parser'; initialData?: any } | null;
+
+  return (
+    <SLRPipeline 
+      mode={state?.mode || 'generator'}
+      initialData={state?.initialData}
+    />
+  );
+};
+
 const App: React.FC = () => {
   const [savedQueries, setSavedQueries] = useState<SavedQuery[]>([]);
   const [projectTitle, setProjectTitle] = useState('New project');
@@ -93,18 +107,7 @@ const App: React.FC = () => {
             <Route path="/" element={<LandingPage />} />
             <Route path="/new-project" element={<NewProject />} />
             <Route path="/project/:projectId" element={<NewProject />} />
-            <Route path="/new-query" element={<NewQuery />} />
-            <Route path="/query-parser" element={<QueryParser />} />
-            <Route 
-              path="/query-generator" 
-              element={
-                <QueryGenerator 
-                  onSaveQuery={handleSaveQuery}
-                  savedQueries={savedQueries}
-                  onClearQueries={handleClearQueries}
-                />
-              } 
-            />
+            <Route path="/slr-pipeline" element={<SLRPipelineWrapper />} />
           </Routes>
         </Layout>
       </Router>
