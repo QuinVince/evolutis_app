@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link, useParams } from 'react-router-dom';
 import { FaFolder, FaEdit, FaUser, FaTimes, FaPlus, FaChevronRight, FaSearch, FaFilter, FaBatteryThreeQuarters } from 'react-icons/fa';
+import { TbCircleDotted } from "react-icons/tb";
+import { GrUser } from "react-icons/gr";
+import { AiOutlineTags } from "react-icons/ai";
 import { useDispatch, useSelector } from 'react-redux';
 import { addProject, updateProject } from '../store/projectSlice';
 import { RootState } from '../store/store';
@@ -94,7 +97,7 @@ const NewProject: React.FC = () => {
       </nav>
 
       {/* Project Header */}
-      <div className="space-y-6">
+      <div className="space-y-4">
         {/* Title Section */}
         <div className="flex items-center space-x-4">
           <div className="p-3 rounded-lg bg-[#DCF8FF]">
@@ -124,9 +127,11 @@ const NewProject: React.FC = () => {
         </div>
 
         {/* Status */}
-        <div className="flex items-center">
-          <span className="text-sm text-gray-500 w-24">Status</span>
-          <div className="ml-4">
+          <div className="pl-4 flex items-center gap-2">
+          <TbCircleDotted className="w-4 h-4 text-gray-500" />
+            <span className="text-sm text-gray-500 w-24">Status</span>
+            <div className="ml-4">
+
             <span className="px-3 py-1 bg-[#5CABFF] text-white rounded-lg text-sm">
               In progress
             </span>
@@ -134,12 +139,14 @@ const NewProject: React.FC = () => {
         </div>
 
         {/* Assignees */}
-        <div className="flex items-center">
-          <span className="text-sm text-gray-500 w-24">Assignees</span>
-          <div className="ml-4">
+          <div className="pl-4 flex items-center gap-2">
+          <GrUser className="w-4 h-4 text-gray-500" />
+            <span className="text-sm text-gray-500 w-24">Assignees</span>
+            <div className="ml-4">
+
             <div className="flex items-center space-x-2">
               <div className="flex items-center space-x-2 px-3 py-1 bg-gray-100 rounded-lg">
-                <FaUser className="w-4 h-4 text-gray-500" />
+                
                 <span className="text-sm text-gray-700">{assignee}</span>
               </div>
             </div>
@@ -147,8 +154,11 @@ const NewProject: React.FC = () => {
         </div>
 
         {/* Tags */}
-        <div className="flex items-start">
-          <span className="text-sm text-gray-500 w-24">Tags</span>
+        <div className="pl-4 flex items-start">
+          <div className="flex items-center gap-2">
+            <AiOutlineTags className="w-4 h-4" />
+            <span className="text-sm text-gray-500 w-24">Tags</span>
+          </div>
           <div className="ml-4">
             <div className="flex items-center flex-wrap gap-2">
               {tags.map(tag => (
@@ -161,7 +171,7 @@ const NewProject: React.FC = () => {
                     onClick={() => handleRemoveTag(tag.id)}
                     className="text-gray-400 hover:text-gray-600"
                   >
-                    <FaTimes className="w-3 h-3" />
+                    
                   </button>
                 </div>
               ))}

@@ -507,7 +507,7 @@ const PubMedQueryBuilder: React.FC<PubMedQueryBuilderProps> = ({
                         ? 'bg-[#068EF1] hover:bg-[#0576C8]'  // Blue when needs save
                         : 'bg-[#408038] hover:bg-[#346C2E]'   // Green when saved
                       : 'bg-[#068EF1] hover:bg-[#0576C8]'     // Blue for collect
-                  } text-white rounded-full font-semibold transition-colors flex items-center gap-2`}
+                  } text-white rounded-lg font-semibold transition-colors flex items-center gap-2`}
                 >
                   {duplicatesTreated ? (
                     <>

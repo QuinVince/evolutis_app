@@ -628,7 +628,7 @@ const QueryGenerator: React.FC<QueryGeneratorProps> = ({ initialData, onSaveQuer
   };
 
   return (
-    <div className="p-6 relative">
+    <div className="p-1 relative">
       {/* Return button */}
       <div className="flex justify-start mb-6">
 
@@ -662,14 +662,14 @@ const QueryGenerator: React.FC<QueryGeneratorProps> = ({ initialData, onSaveQuer
                         handleGenerateQuestions();
                       }
                     }}
-                    className="flex-grow px-4 py-3 border border-[#BDBDBD]rounded-md focus:outline-none focus:ring-2 focus:ring-[#068EF1] focus:ring-offset-2"
+                    className="flex-grow px-4 py-3 rounded-lg border border-[#BDBDBD]rounded-md bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[#068EF1] focus:ring-offset-2"
                     placeholder="Describe your research..."
                     rows={4}
                   />
                   {questions.length > 0 && (
                     <button
                       onClick={() => handleGenerateQuestions()}
-                      className="p-2 text-[#068EF1] hover:text-white rounded-full hover:bg-[#C2E2EB] transition-colors self-start"
+                      className="p-2 text-[#068EF1] hover:text-white rounded-lg hover:bg-[#C2E2EB] transition-colors self-start border border-[#BDBDBD]"
                       disabled={isGeneratingQuestions}
                     >
                       <FaSync className={`w-4 h-4 ${isGeneratingQuestions ? 'animate-spin' : ''}`} />

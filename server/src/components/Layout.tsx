@@ -188,7 +188,7 @@ const Layout: React.FC<LayoutProps> = ({ children, projectTitle, onProjectTitleC
         </header>
 
         {/* Main Content Area */}
-        <main className="flex-1 overflow-auto px-6">
+        <main className="flex-1 overflow-auto px-2">
           <div className="h-full max-h-[calc(100vh-4rem)]">
             {children}
           </div>

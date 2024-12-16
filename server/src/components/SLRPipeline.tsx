@@ -291,10 +291,7 @@ const SLRPipeline: React.FC<SLRPipelineProps> = ({ mode: initialMode, initialDat
 
       {/* Footer */}
       <div className="bg-white border-t border-gray-200 px-6 py-4">
-        <div className="flex justify-between items-center max-w-7xl mx-auto">
-          <div className="text-sm text-gray-500">
-            Click save to store the current pipeline state
-          </div>
+        <div className="flex justify-end items-center max-w-7xl mx-auto">
           <button
             onClick={handleSave}
             className={`px-4 py-2 rounded-lg flex items-center gap-2 transition-colors ${

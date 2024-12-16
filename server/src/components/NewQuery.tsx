@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import booksIcon from '../assets/image_books.png';
 import { FaArrowRight, FaCheck, FaExchangeAlt, FaCalendar, FaBook } from 'react-icons/fa';
+import { PiCalendarDots,PiBooksLight   } from "react-icons/pi";
 import { Typewriter } from 'react-simple-typewriter';
 
 interface Source {
@@ -151,10 +152,12 @@ const NewQuery: React.FC<NewQueryProps> = ({ onSubmit, isEmbedded = false, proje
                     text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 
                     focus:ring-[#068EF1] flex items-center gap-2"
                 >
-                  <FaCalendar className="w-3 h-3 text-gray-500" />
+                  
                   <span>
-                    Date: <span className="font-bold">{dateRange}</span>
-                  </span>
+                    Date:
+                    </span>
+                    <PiCalendarDots  className="w-4 h-4 text-gray-500" />
+                    <span className="font-bold">{dateRange}</span>
                 </button>
 
                 {showDateDropdown && (
@@ -191,11 +194,11 @@ const NewQuery: React.FC<NewQueryProps> = ({ onSubmit, isEmbedded = false, proje
                   className="px-2 py-1 bg-white border border-gray-200 rounded-lg text-xs 
                     text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 
                     focus:ring-[#068EF1] flex items-center gap-2"
-                >
-                  <FaBook className="w-3 h-3 text-gray-500" />
-                  <span>
-                    Sources: <span className="font-bold">{getSelectedSourcesText()}</span>
+                ><span>
+                  Sources:
                   </span>
+                  <PiBooksLight  className="w-4 h-4 text-gray-500" />
+                  <span className="font-bold">{getSelectedSourcesText()}</span>
                 </button>
 
                 {showSourcesDropdown && (
