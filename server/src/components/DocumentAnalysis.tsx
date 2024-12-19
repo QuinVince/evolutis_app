@@ -135,7 +135,7 @@ const ScrollableContainer = styled.div`
     border: 2px solid #F5F5F5;
 
     &:hover {
-      background: #62B6CB;
+      background: #068EF1;
     }
   }
 
@@ -151,7 +151,7 @@ const FilterDropdown = styled.div`
   left: 0;
   width: 600px;
   background: white;
-  border: 2px solid #62B6CB;
+  border: 2px solid #068EF1;
   border-radius: 0.75rem;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   z-index: 30;
@@ -399,7 +399,7 @@ const DocumentAnalysis: React.FC<DocumentAnalysisProps> = ({ analysisData, updat
     if (!hasSelectedDocuments()) {
       return "w-full bg-gray-200 text-gray-400 px-4 py-2 rounded-md flex items-center justify-center cursor-not-allowed";
     }
-    return "w-full bg-[#62B6CB] text-white px-4 py-2 rounded-md hover:bg-[#5AA3B7] disabled:bg-gray-300 flex items-center justify-center transition-colors duration-200";
+    return "w-full bg-[#068EF1] text-white px-4 py-2 rounded-md hover:bg-[#5AA3B7] disabled:bg-gray-300 flex items-center justify-center transition-colors duration-200";
   };
 
   return (
@@ -412,7 +412,7 @@ const DocumentAnalysis: React.FC<DocumentAnalysisProps> = ({ analysisData, updat
         <div className="relative h-[70px]">
           <select
             className="w-full h-[50px] pl-10 pr-8 py-2 border border-[#BDBDBD] rounded-xl 
-              focus:outline-none focus:ring-2 focus:ring-[#62B6CB] appearance-none border-b-4 
+              focus:outline-none focus:ring-2 focus:ring-[#068EF1] appearance-none border-b-4 
               font-bold bg-white hover:bg-gray-50 transition-colors duration-200
               cursor-pointer shadow-sm hover:shadow-md"
             onChange={handleQueryChange}
@@ -426,10 +426,10 @@ const DocumentAnalysis: React.FC<DocumentAnalysisProps> = ({ analysisData, updat
             ))}
           </select>
           <div className="absolute top-4 left-3">
-              <FaFolder className="text-[#62B6CB]" />
+              <FaFolder className="text-[#068EF1]" />
             </div>
             <div className="absolute top-4 right-3">
-              <svg className="w-4 h-4 text-[#62B6CB]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-4 h-4 text-[#068EF1]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
               </svg>
             </div>
@@ -445,7 +445,7 @@ const DocumentAnalysis: React.FC<DocumentAnalysisProps> = ({ analysisData, updat
                   <h3 className="font-semibold text-gray-700">Criteria definition:</h3>
                   <button
                     onClick={() => setShowTooltip(false)}
-                    className="text-[#62B6CB] text-sm underline hover:text-gray-500"
+                    className="text-[#068EF1] text-sm underline hover:text-gray-500"
                   >
                     Hide
                   </button>
@@ -466,7 +466,7 @@ const DocumentAnalysis: React.FC<DocumentAnalysisProps> = ({ analysisData, updat
                   value={newCriterion}
                   onChange={(e) => setNewCriterion(e.target.value)}
                   onKeyPress={handleKeyPress}
-                  className="w-full px-3 py-2 rounded-xl border-2 border-[#62B6CB] shadow focus:outline-none focus:ring-2"
+                  className="w-full px-3 py-2 rounded-xl border-2 border-[#068EF1] shadow focus:outline-none focus:ring-2"
                   placeholder="Enter new criterion in natural language... (press Enter to add)"
                 />
               </div>
@@ -480,7 +480,7 @@ const DocumentAnalysis: React.FC<DocumentAnalysisProps> = ({ analysisData, updat
                   <div
                     key={index}
                     onClick={() => handleAddCriterion(example)}
-                    className="p-3 border border-[#62B6CB] rounded-md hover:bg-[#C2E2EB] 
+                    className="p-3 border border-[#068EF1] rounded-md hover:bg-[#C2E2EB] 
                     cursor-pointer transition-colors duration-200 text-sm"
                   >
                     {example}
@@ -501,7 +501,7 @@ const DocumentAnalysis: React.FC<DocumentAnalysisProps> = ({ analysisData, updat
             <div className="space-y-2 mb-4">
               {analysisData.criteria.map((criterion) => (
                 <div key={criterion.id} className="flex items-center justify-between gap-4 p-2 rounded-md">
-                  <span className={`p-3 border border-[#62B6CB] rounded-md hover:bg-[#C2E2EB] text-left w-full transition-colors group
+                  <span className={`p-3 border border-[#068EF1] rounded-md hover:bg-[#C2E2EB] text-left w-full transition-colors group
                     ${CRITERIA_EXAMPLES.includes(criterion.description) ? 'bg-[#F0F9FB]' : ''}`}>
                     {criterion.description}
                   </span>
@@ -548,7 +548,7 @@ const DocumentAnalysis: React.FC<DocumentAnalysisProps> = ({ analysisData, updat
                   <button
                     onClick={() => setShowOnlyFullMatch(!showOnlyFullMatch)}
                     className={`px-3 py-1 rounded-md flex items-center ${
-                      showOnlyFullMatch ? 'bg-[#62B6CB] text-white' : 'bg-white text-[#62B6CB] border border-[#62B6CB]'
+                      showOnlyFullMatch ? 'bg-[#068EF1] text-white' : 'bg-white text-[#068EF1] border border-[#068EF1]'
                     }`}
                   >
                     <FaCheckDouble className="mr-2" />
@@ -628,7 +628,7 @@ const DocumentAnalysis: React.FC<DocumentAnalysisProps> = ({ analysisData, updat
                 <div className="flex justify-end mt-6">
                   <button
                     onClick={() => setShowFilters(false)}
-                    className="px-4 py-2 bg-[#62B6CB] text-white rounded-md hover:bg-[#5AA3B7]"
+                    className="px-4 py-2 bg-[#068EF1] text-white rounded-md hover:bg-[#5AA3B7]"
                   >
                     Apply Filters
                   </button>
@@ -647,13 +647,13 @@ const DocumentAnalysis: React.FC<DocumentAnalysisProps> = ({ analysisData, updat
                   type="checkbox"
                   checked={selectAll}
                   onChange={handleSelectAll}
-                  className="w-4 h-4 rounded border-[#BDBDBD] text-[#62B6CB] focus:ring-[#62B6CB] mr-2"
+                  className="w-4 h-4 rounded border-[#BDBDBD] text-[#068EF1] focus:ring-[#068EF1] mr-2"
                 />
                 <span className="text-sm text-gray-600">Select all</span>
               </div>
               <button
                 onClick={handleExport}
-                className="bg-[#62B6CB] text-white px-3 py-1 rounded-md hover:bg-[#5AA3B7] flex items-center transition-colors duration-200"
+                className="bg-[#068EF1] text-white px-3 py-1 rounded-md hover:bg-[#5AA3B7] flex items-center transition-colors duration-200"
               >
                 <FaDownload className="mr-2" />
                 Export
@@ -666,10 +666,10 @@ const DocumentAnalysis: React.FC<DocumentAnalysisProps> = ({ analysisData, updat
         {analysisCompleted && (
           <div className="mb-6 bg-[#F0F9FB] border border-[#C2E2EB] rounded-lg p-4 flex-shrink-0">
             <div className="flex justify-between items-center mb-3 h-30">
-              <h3 className="text-lg font-semibold text-[#62B6CB]">Analysis Results</h3>
+              <h3 className="text-lg font-semibold text-[#068EF1]">Analysis Results</h3>
               <button
                 onClick={() => setShowAnalysisResults(!showAnalysisResults)}
-                className="text-[#62B6CB] hover:text-[#5AA3B7]"
+                className="text-[#068EF1] hover:text-[#5AA3B7]"
               >
                 {showAnalysisResults ? <FaChevronUp /> : <FaChevronDown />}
               </button>
@@ -685,11 +685,11 @@ const DocumentAnalysis: React.FC<DocumentAnalysisProps> = ({ analysisData, updat
                     <div className="flex justify-between items-center mb-4 relative">
                       <div className="w-[35%] bg-white p-3 rounded-md shadow-sm border border-[#E3F9FD] flex flex-col items-center">
                         <p className="text-sm text-gray-600 text-center">Documents Analyzed</p>
-                        <p className="text-2xl font-bold text-[#62B6CB] text-center">{results.deduplicatedPapers}</p>
+                        <p className="text-2xl font-bold text-[#068EF1] text-center">{results.deduplicatedPapers}</p>
                       </div>
                       <div className="w-[30%] flex flex-col justify-center items-center">
-                        <div className="bg-white p-2 rounded-full border border-[#62B6CB] relative group mb-2">
-                          <FaArrowRight className="text-xl text-[#62B6CB]" />
+                        <div className="bg-white p-2 rounded-full border border-[#068EF1] relative group mb-2">
+                          <FaArrowRight className="text-xl text-[#068EF1]" />
                           <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-1 bg-gray-800 text-white text-xs rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
                             {results.reductionPercentage}% removed
                           </div>
@@ -700,7 +700,7 @@ const DocumentAnalysis: React.FC<DocumentAnalysisProps> = ({ analysisData, updat
                       </div>
                       <div className="w-[35%] bg-white p-3 rounded-md shadow-sm border border-[#E3F9FD] flex flex-col items-center">
                         <p className="text-sm text-gray-600 text-center">100% Criteria Matches</p>
-                        <p className="text-2xl font-bold text-[#62B6CB] text-center">
+                        <p className="text-2xl font-bold text-[#068EF1] text-center">
                           {results.hundredPercentMatch}
                         </p>
                       </div>
@@ -727,7 +727,7 @@ const DocumentAnalysis: React.FC<DocumentAnalysisProps> = ({ analysisData, updat
                 <div className="w-8/12 pr-4">
                   <div className="flex items-center justify-between mb-2">
                     <h4 
-                      className="font-semibold cursor-pointer hover:text-[#62B6CB] transition-colors duration-200"
+                      className="font-semibold cursor-pointer hover:text-[#068EF1] transition-colors duration-200"
                       onClick={() => togglePICO(doc.id)}
                     >
                       {doc.title}
@@ -742,7 +742,7 @@ const DocumentAnalysis: React.FC<DocumentAnalysisProps> = ({ analysisData, updat
                     </p>
                     {doc.abstract.length > 80 && (
                       <button 
-                        className="text-[#62B6CB] cursor-pointer mt-2"
+                        className="text-[#068EF1] cursor-pointer mt-2"
                         onClick={() => toggleAbstract(doc.id)}
                       >
                         {doc.abstractExpanded ? 'Show less' : 'Read more'}
@@ -751,8 +751,8 @@ const DocumentAnalysis: React.FC<DocumentAnalysisProps> = ({ analysisData, updat
                   </div>
 
                   {doc.pico.expanded && (
-                    <div className="mt-2 bg-white p-3 rounded border border-[#62B6CB] relative">
-                      <FaMagic className="absolute top-2 right-2 text-[#62B6CB] w-4 h-4" />
+                    <div className="mt-2 bg-white p-3 rounded border border-[#068EF1] relative">
+                      <FaMagic className="absolute top-2 right-2 text-[#068EF1] w-4 h-4" />
                       <h5 className="font-semibold mb-2">PICO Information</h5>
                       <ul className="list-disc pl-5">
                         <li><strong>Population:</strong> {doc.pico.population}</li>
@@ -771,7 +771,7 @@ const DocumentAnalysis: React.FC<DocumentAnalysisProps> = ({ analysisData, updat
                         href={doc.pubmedLink}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="ml-auto hover:text-[#62B6CB] transition-colors duration-200"
+                        className="ml-auto hover:text-[#068EF1] transition-colors duration-200"
                         title="Open in PubMed"
                       >
                         <FaExternalLinkAlt className="w-4 h-4" />
@@ -787,12 +787,12 @@ const DocumentAnalysis: React.FC<DocumentAnalysisProps> = ({ analysisData, updat
                       {analysisData.criteria.map(criterion => (
                         <div key={criterion.id} className="flex items-center mb-1 relative">
                           <span className="mr-2">Criteria {criterion.id}:</span>
-                          {analysisData.analysisResults[doc.id][criterion.id] === 'Yes' && <FaCheck className="text-[#62B6CB]" />}
+                          {analysisData.analysisResults[doc.id][criterion.id] === 'Yes' && <FaCheck className="text-[#068EF1]" />}
                           {analysisData.analysisResults[doc.id][criterion.id] === 'No' && <FaTimes className="text-red-500" />}
                           {analysisData.analysisResults[doc.id][criterion.id] === 'Uncertain' && <FaQuestion className="text-orange-500" />}
                           <div className="relative inline-block ml-2">
                             <button
-                              className="text-[#62B6CB] hover:text-[#62B6CB] focus:outline-none"
+                              className="text-[#068EF1] hover:text-[#068EF1] focus:outline-none"
                               onClick={() => handleTooltipClick(doc.id, criterion.id)}
                             >
                               <FaInfoCircle />

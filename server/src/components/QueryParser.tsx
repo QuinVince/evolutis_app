@@ -8,9 +8,13 @@ interface Subquery {
   operator: 'AND' | 'OR';
 }
 
-const QueryParser: React.FC = () => {
+interface QueryParserProps {
+  initialQuery?: string;
+}
+
+const QueryParser: React.FC<QueryParserProps> = ({ initialQuery }) => {
   const location = useLocation();
-  const [currentQuery, setCurrentQuery] = useState(location.state?.description || '');
+  const [currentQuery, setCurrentQuery] = useState(initialQuery || '');
   const [parsedSubqueries, setParsedSubqueries] = useState<Subquery[]>([]);
   const [parseError, setParseError] = useState<string | null>(null);
 
