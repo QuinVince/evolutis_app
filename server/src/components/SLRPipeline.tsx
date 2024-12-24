@@ -9,6 +9,7 @@ import { useDispatch } from 'react-redux';
 import { createPipeline, updatePipeline } from '../store/pipelineSlice';
 import { updateProjectQueries } from '../store/projectSlice';
 import { RootState } from '../store/store';
+import CriteriaSelection from './CriteriaSelection';
 
 interface SLRPipelineProps {
   mode?: 'generator' | 'parser';
@@ -167,13 +168,11 @@ const SLRPipeline: React.FC<SLRPipelineProps> = ({ mode: initialMode, initialDat
     switch (screeningStep) {
       case 'new':
         return (
-          <div className="py-8">
             <NewQuery 
               onSubmit={handleQuerySubmit}
               isEmbedded={true}
               projectId={initialData?.projectId}
             />
-          </div>
         );
       case 'generator':
         return (
@@ -194,18 +193,7 @@ const SLRPipeline: React.FC<SLRPipelineProps> = ({ mode: initialMode, initialDat
       case 'screening':
         return renderScreeningContent();
       case 'criteria':
-        return (
-          <DocumentAnalysis
-            analysisData={{
-              selectedQuery: null,
-              documents: [],
-              criteria: [],
-              analysisResults: {}
-            }}
-            updateAnalysisData={() => {}}
-            savedQueries={[]}
-          />
-        );
+        return <CriteriaSelection />;
       case 'selection':
         return <FileSelection />;
       default:
