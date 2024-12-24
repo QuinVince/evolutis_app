@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 interface Article {
   title: string;
@@ -8,14 +8,42 @@ interface Article {
 
 interface SampleTableProps {
   articles: Article[];
-  criteria: string[];  // Still needed for future reference
+  criteria: string[];
 }
 
 const SampleTable: React.FC<SampleTableProps> = ({ articles, criteria }) => {
   const [selectedAbstract, setSelectedAbstract] = useState<string | null>(null);
-
-  // Fixed column headers
+  const [loadedRows, setLoadedRows] = useState<{ [key: number]: number[] }>({});
   const criteriaHeaders = Array.from({ length: 6 }, (_, i) => `Criteria ${i + 1}`);
+
+  // Track which criteria column is currently loading
+  const [loadingColumn, setLoadingColumn] = useState<number | null>(null);
+
+  useEffect(() => {
+    const currentCriteriaCount = criteria.length;
+    const previousCriteriaCount = Object.keys(loadedRows).length;
+
+    // If a new criteria was added
+    if (currentCriteriaCount > previousCriteriaCount) {
+      const newColumnIndex = previousCriteriaCount;
+      setLoadingColumn(newColumnIndex);
+
+      // Load rows one by one
+      articles.forEach((_, rowIndex) => {
+        setTimeout(() => {
+          setLoadedRows(prev => ({
+            ...prev,
+            [newColumnIndex]: [...(prev[newColumnIndex] || []), rowIndex]
+          }));
+
+          // If this is the last row, mark column as done loading
+          if (rowIndex === articles.length - 1) {
+            setLoadingColumn(null);
+          }
+        }, rowIndex * 500); // 500ms delay between each row
+      });
+    }
+  }, [criteria.length, articles.length]);
 
   const getAnswerColor = (answer: string) => {
     switch (answer.toLowerCase()) {
@@ -28,6 +56,10 @@ const SampleTable: React.FC<SampleTableProps> = ({ articles, criteria }) => {
       default:
         return 'bg-gray-200';
     }
+  };
+
+  const isAnswerLoaded = (columnIndex: number, rowIndex: number) => {
+    return loadedRows[columnIndex]?.includes(rowIndex);
   };
 
   return (
@@ -63,8 +95,8 @@ const SampleTable: React.FC<SampleTableProps> = ({ articles, criteria }) => {
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {articles.map((article, index) => (
-              <tr key={index} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
+            {articles.map((article, rowIndex) => (
+              <tr key={rowIndex} className={rowIndex % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
                 <td className="px-6 py-2 text-sm text-[#5C5C5C] font-semibold border border-gray-200">
                   <div className="truncate" title={article.title}>
                     {article.title}
@@ -80,15 +112,22 @@ const SampleTable: React.FC<SampleTableProps> = ({ articles, criteria }) => {
                     </button>
                   </div>
                 </td>
-                {Array.from({ length: 6 }, (_, i) => (
-                  <td key={i} className="px-6 py-1 whitespace-nowrap text-sm text-center border border-gray-200">
+                {Array.from({ length: 6 }, (_, columnIndex) => (
+                  <td key={columnIndex} className="px-6 py-1 whitespace-nowrap text-sm text-center border border-gray-200">
                     <div className="flex justify-center items-center">
-                      <div className="w-5 h-5 rounded-lg border-2 border-gray-300 flex items-center justify-center">
-                        <div 
-                          className={`w-2 h-2 rounded-full ${getAnswerColor(article.answers[i])}`}
-                          title={article.answers[i]}
-                        />
-                      </div>
+                      {columnIndex < criteria.length && isAnswerLoaded(columnIndex, rowIndex) && (
+                        <div className="w-5 h-5 rounded-md border-2 border-gray-300 flex items-center justify-center">
+                          <div 
+                            className={`w-2 h-2 rounded-full ${getAnswerColor(article.answers[columnIndex])}`}
+                            title={article.answers[columnIndex]}
+                          />
+                        </div>
+                      )}
+                      {columnIndex < criteria.length && !isAnswerLoaded(columnIndex, rowIndex) && loadingColumn === columnIndex && (
+                        <div className="w-5 h-5 rounded-md border-2 border-gray-300 flex items-center justify-center animate-pulse">
+                          <div className="w-2 h-2 rounded-full bg-gray-200" />
+                        </div>
+                      )}
                     </div>
                   </td>
                 ))}
