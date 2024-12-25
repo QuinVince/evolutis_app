@@ -18,6 +18,7 @@ const CriteriaSelection: React.FC<CriteriaSelectionProps> = ({ onCriteriaChange 
   const [activeCriteria, setActiveCriteria] = useState<Criterion[]>([]);
   const [isCalculating, setIsCalculating] = useState(false);
   const [hasCalculated, setHasCalculated] = useState(false);
+  const [showCriteria, setShowCriteria] = useState(true);
   
   // Suggested criteria - these would typically come from props or an API
   const [suggestedCriteria] = useState([
@@ -109,31 +110,42 @@ const CriteriaSelection: React.FC<CriteriaSelectionProps> = ({ onCriteriaChange 
 
   return (
     <div className="w-full px-6">
-      {/* Input Section */}
+      {/* Input Section with Toggle */}
       <div className="mb-6">
-        <h1 className="text-2xl font-semibold mb-4">Criteria definition</h1>
-        <div className="flex gap-2">
-          <input
-            type="text"
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            onKeyPress={handleKeyPress}
-            placeholder="Define your criteria"
-            className="flex-grow px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#068EF1] focus:border-transparent"
-            disabled={activeCriteria.length >= 7}
-          />
+        <div className="flex items-center justify-start mb-4">
+          <h1 className="text-2xl font-semibold">Criteria definition</h1>
           <button
-            onClick={handleAddCriterion}
-            disabled={!inputValue.trim() || activeCriteria.length >= 7}
-            className="p-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+            onClick={() => setShowCriteria(!showCriteria)}
+            className="pl-4 text-[#0076F5] hover:text-[#0056b3] text-sm underline"
           >
-            <FiPlusCircle className="w-5 h-5 text-gray-600" />
+            {showCriteria ? 'Hide criteria' : 'Show criteria'}
           </button>
         </div>
+        
+        {showCriteria && (
+          <div className="flex gap-2">
+            <input
+              type="text"
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              onKeyPress={handleKeyPress}
+              placeholder="Define your criteria"
+              className="flex-grow px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#068EF1] focus:border-transparent"
+              disabled={activeCriteria.length >= 7}
+            />
+            <button
+              onClick={handleAddCriterion}
+              disabled={!inputValue.trim() || activeCriteria.length >= 7}
+              className="p-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <FiPlusCircle className="w-5 h-5 text-gray-600" />
+            </button>
+          </div>
+        )}
       </div>
 
-      {/* Active Criteria */}
-      {activeCriteria.length > 0 && (
+      {/* Active Criteria - Only show if showCriteria is true */}
+      {showCriteria && activeCriteria.length > 0 && (
         <div className="mb-8">
           <div className="flex flex-wrap gap-2">
             {activeCriteria.map((criterion) => (
@@ -161,8 +173,8 @@ const CriteriaSelection: React.FC<CriteriaSelectionProps> = ({ onCriteriaChange 
         </div>
       )}
 
-      {/* Suggested Criteria */}
-      {activeCriteria.length < 7 && (
+      {/* Suggested Criteria - Only show if showCriteria is true */}
+      {showCriteria && activeCriteria.length < 7 && (
         <div>
           <div className="flex items-center gap-4 mb-3">
             <h2 className="text-sm font-medium text-gray-500">Suggested</h2>
