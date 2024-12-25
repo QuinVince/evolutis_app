@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaPlus, FaTimes } from 'react-icons/fa';
 import { FiPlusCircle  } from "react-icons/fi";
 import SampleTable from './SampleTable';
@@ -16,6 +16,8 @@ interface Criterion {
 const CriteriaSelection: React.FC<CriteriaSelectionProps> = ({ onCriteriaChange }) => {
   const [inputValue, setInputValue] = useState('');
   const [activeCriteria, setActiveCriteria] = useState<Criterion[]>([]);
+  const [isCalculating, setIsCalculating] = useState(false);
+  const [hasCalculated, setHasCalculated] = useState(false);
   
   // Suggested criteria - these would typically come from props or an API
   const [suggestedCriteria] = useState([
@@ -37,6 +39,14 @@ const CriteriaSelection: React.FC<CriteriaSelectionProps> = ({ onCriteriaChange 
       article["Answer 4"] || '',
       article["Answer 5"] || '',
       article["Answer 6"] || ''
+    ],
+    justifications: [
+      article["Justification 1"] || '',
+      article["Justification 2"] || '',
+      article["Justification 3"] || '',
+      article["Justification 4"] || '',
+      article["Justification 5"] || '',
+      article["Justification 6"] || ''
     ]
   }));
 
@@ -48,6 +58,7 @@ const CriteriaSelection: React.FC<CriteriaSelectionProps> = ({ onCriteriaChange 
       };
       setActiveCriteria([...activeCriteria, newCriterion]);
       setInputValue('');
+      setIsCalculating(false);
       onCriteriaChange?.([...activeCriteria, newCriterion].map(c => c.text));
     }
   };
@@ -60,6 +71,7 @@ const CriteriaSelection: React.FC<CriteriaSelectionProps> = ({ onCriteriaChange 
 
   const handleRemoveCriterion = (id: string) => {
     setActiveCriteria(activeCriteria.filter(c => c.id !== id));
+    setIsCalculating(false);
     onCriteriaChange?.(activeCriteria.filter(c => c.id !== id).map(c => c.text));
   };
 
@@ -70,6 +82,7 @@ const CriteriaSelection: React.FC<CriteriaSelectionProps> = ({ onCriteriaChange 
         text
       };
       setActiveCriteria([...activeCriteria, newCriterion]);
+      setIsCalculating(false);
       onCriteriaChange?.([...activeCriteria, newCriterion].map(c => c.text));
     }
   };
@@ -78,8 +91,24 @@ const CriteriaSelection: React.FC<CriteriaSelectionProps> = ({ onCriteriaChange 
     return text.length > maxLength ? `${text.substring(0, maxLength)}...` : text;
   };
 
+  const handleApply = () => {
+    if (activeCriteria.length > 0 && !isCalculating && !hasCalculated) {
+      setIsCalculating(true);
+    }
+  };
+
+  const handleCalculationComplete = () => {
+    setIsCalculating(false);
+    setHasCalculated(true);
+  };
+
+  // Reset hasCalculated when criteria change
+  useEffect(() => {
+    setHasCalculated(false);
+  }, [activeCriteria.length]);
+
   return (
-    <div className="w-full  px-6">
+    <div className="w-full px-6">
       {/* Input Section */}
       <div className="mb-6">
         <h1 className="text-2xl font-semibold mb-4">Criteria definition</h1>
@@ -159,8 +188,32 @@ const CriteriaSelection: React.FC<CriteriaSelectionProps> = ({ onCriteriaChange 
         <SampleTable 
           articles={sampleArticles}
           criteria={activeCriteria.map(c => truncateText(c.text, 30))}
+          isCalculating={isCalculating}
+          onCalculationComplete={handleCalculationComplete}
         />
       )}
+
+      {/* Footer with buttons */}
+      <div className="fixed bottom-0 right-0 bg-white border-t border-gray-200 px-6 py-4 w-full">
+        <div className="flex justify-end items-center gap-4 max-w-7xl mx-auto">
+          <button
+            onClick={handleApply}
+            disabled={activeCriteria.length === 0 || isCalculating || hasCalculated}
+            className={`px-4 py-2 rounded-lg transition-colors
+              ${isCalculating || hasCalculated
+                ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
+                : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-50'
+              }`}
+          >
+            Apply
+          </button>
+          <button
+            className="px-4 py-2 rounded-lg bg-[#068EF1] text-white hover:bg-[#0576C8]"
+          >
+            Save Pipeline
+          </button>
+        </div>
+      </div>
     </div>
   );
 };
