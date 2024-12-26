@@ -92,8 +92,10 @@ const SLRPipeline: React.FC<SLRPipelineProps> = ({ mode: initialMode, initialDat
         currentStep: activeTab,
         screeningStep: screeningStep,
         queryData: {
-          ...queryData,
-          projectId: initialData?.projectId || ''
+          description: queryData.description,
+          query: queryData.query,
+          projectTitle: queryData.projectTitle,
+          projectId: initialData.projectId
         }
       };
       
