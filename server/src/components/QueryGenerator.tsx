@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import SynonymList from './SynonymList';
 import axios from 'axios';
-import { FaSearch, FaArrowRight, FaCheck, FaList, FaDownload, FaFileAlt, FaTrash, FaUnlock, FaSync, FaLightbulb, FaPlus } from 'react-icons/fa';
+import {  FaArrowRight, FaCheck, FaDownload, FaSync } from 'react-icons/fa';
 import { SavedQuery } from '../App'; // Import the SavedQuery interface from App
-import { Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
-import { ProgressBar, Step } from "react-step-progress-bar";
 import "react-step-progress-bar/styles.css";
 import '../styles/progressBar.css';
 import { useLocation } from 'react-router-dom';
@@ -33,7 +31,13 @@ interface SynonymGroup {
   synonyms: string[];
 }
 
-const QueryGenerator: React.FC<QueryGeneratorProps> = ({ initialData, onSaveQuery, savedQueries, onClearQueries }) => {
+// Add interface at the top of the file
+interface Subquery {
+  content: string;
+  operator: string;
+}
+
+const QueryGenerator: React.FC<QueryGeneratorProps> = ({ initialData, ...props }) => {
   const location = useLocation();
   const initialDescription = location.state?.description || initialData?.description || '';
 
@@ -43,14 +47,12 @@ const QueryGenerator: React.FC<QueryGeneratorProps> = ({ initialData, onSaveQuer
   const [pubMedQuery, setPubMedQuery] = useState('');
   const [questions, setQuestions] = useState<string[]>([]);
   const [answers, setAnswers] = useState<Record<string, string>>({});
-  const [isLoading, setIsLoading] = useState(false);
 
-  const [estimatedDocuments, setEstimatedDocuments] = useState<number | null>(null);
+  const [estimatedDocuments] = useState<number | null>(null);
   const [isCollecting, setIsCollecting] = useState(false);
   const [isCollected, setIsCollected] = useState(false);
   const [collectedDocuments, setCollectedDocuments] = useState<CollectedDocuments>({ pubmed: 0, semanticScholar: 0 });
   const [totalDocuments, setTotalDocuments] = useState<number>(0);
-  const [currentQuery, setCurrentQuery] = useState<SavedQuery | null>(null);
   const [synonymGroups, setSynonymGroups] = useState<SynonymGroup[]>([]);
   const [isSynonymsLoading, setIsSynonymsLoading] = useState(false);
   const [selectedConceptIndex, setSelectedConceptIndex] = useState(0);
@@ -67,22 +69,41 @@ const QueryGenerator: React.FC<QueryGeneratorProps> = ({ initialData, onSaveQuer
   // Add this state for the info message
   const [showInfoMessage, setShowInfoMessage] = useState(true);
 
-  // Add this at the beginning of the component
-  const steps = [
-    { id: 0, name: 'New query' },
-    { id: 1, name: 'Questions' },
-    { id: 2, name: 'Pubmed query' },
-    { id: 3, name: 'Saving' }
-  ];
+  // Single useEffect for handling all initializations
+  useEffect(() => {
+    console.log('Full initialData:', initialData);
+    
+    if (initialData?.description) {
+      setNaturalLanguageQuery(initialData.description);
+      
+      // Check both direct properties and queryData
+      if (initialData.questions || initialData.answers || initialData.pubmedQuery ||
+          initialData.queryData?.questions || initialData.queryData?.answers || initialData.queryData?.pubmedQuery) {
+        console.log('Found saved data');
+        
+        // Set questions and answers
+        const savedQuestions = initialData.questions || initialData.queryData?.questions || [];
+        const savedAnswers = initialData.answers || initialData.queryData?.answers || {};
+        const savedPubmedQuery = initialData.pubmedQuery || initialData.queryData?.pubmedQuery || '';
+        
+        setQuestions(savedQuestions);
+        setAnswers(savedAnswers);
+        setPubMedQuery(savedPubmedQuery);
+        setStep(1);
+        
+        if (initialData.synonymGroups || initialData.queryData?.synonymGroups) {
+          setSynonymGroups(initialData.synonymGroups || initialData.queryData?.synonymGroups || []);
+        }
+      } else {
+        // Only generate new questions if we don't have saved data
+        console.log('No saved data found, will generate new questions');
+        handleGenerateQuestions();
+      }
+    }
+  }, [initialData]); // Only depend on initialData
 
-
-  // Remove or modify the useEffect that was automatically generating questions
-  // useEffect(() => {
-  //   if (initialData?.description) {
-  //     setNaturalLanguageQuery(initialData.description);
-  //     handleGenerateQuestions(); // This will now trigger when description is set
-  //   }
-  // }, [initialData]);
+  // Add debug logging in the render to verify the state
+  console.log('Current state:', { questions, answers, pubMedQuery, step });
 
   const generateQuestions = async (query: string) => {
     //For production in replit, replace by:
@@ -132,8 +153,6 @@ const QueryGenerator: React.FC<QueryGeneratorProps> = ({ initialData, onSaveQuer
       throw error;
     }
   };
-
-
 
   const [projectId] = useState(() => Date.now().toString());
 
@@ -241,8 +260,7 @@ const QueryGenerator: React.FC<QueryGeneratorProps> = ({ initialData, onSaveQuer
       freeFullTextCount: Math.floor(totalDocuments * 0.4), // Assume 40% are free full text
       yearDistribution: mockYearDistribution
     };
-    onSaveQuery(newQuery);
-    setCurrentQuery(newQuery);
+    props.onSaveQuery(newQuery);
     // Reset form
     setStep(0);
     setQueryName('');
@@ -305,7 +323,7 @@ const QueryGenerator: React.FC<QueryGeneratorProps> = ({ initialData, onSaveQuer
       case 0: // At questions step
       case 1: // At pubmed query step
         // Return to landing page
-        onSaveQuery(null as any);
+        props.onSaveQuery(null as any);
         break;
       case 2: // At save step
         // Return to pubmed query step
@@ -357,42 +375,18 @@ const QueryGenerator: React.FC<QueryGeneratorProps> = ({ initialData, onSaveQuer
     setSynonymPopupPosition(null);
   };
 
-  // Update the handleGenerateQuestions function to accept a MouseEvent parameter
-  const handleGenerateQuestions = async (descriptionOrEvent?: string | React.MouseEvent) => {
-    // If it's a mouse event (from button click), use the current naturalLanguageQuery
-    const queryToUse = typeof descriptionOrEvent === 'string' 
-      ? descriptionOrEvent 
-      : naturalLanguageQuery;
-
-    if (!queryToUse.trim()) return;
-    
+  // Separate function for generating new questions
+  const handleGenerateQuestions = async () => {
     setIsGeneratingQuestions(true);
     try {
-      const data = await generateQuestions(queryToUse);
-      setQuestions(data.questions);
-      setAnswers(Object.fromEntries(data.questions.map((q: string) => [q, ''])));
-      
-      // Update project in localStorage
-      const currentProject = JSON.parse(localStorage.getItem('currentProject') || '{}');
-      const updatedProject = {
-        ...currentProject,
-        questions: data.questions,
-        answers: {}
-      };
-      localStorage.setItem('currentProject', JSON.stringify(updatedProject));
+      const data = await generateQuestions(naturalLanguageQuery);
+      setQuestions(data.questions || []);
     } catch (error) {
       console.error('Error generating questions:', error);
     } finally {
       setIsGeneratingQuestions(false);
     }
   };
-
-  // Add useEffect to trigger question generation on mount if we have a description
-  useEffect(() => {
-    if (initialDescription) {
-      handleGenerateQuestions(initialDescription);
-    }
-  }, [initialDescription]); // Only run when initialDescription changes
 
   // Add handleGenerateQuery function
   const handleGenerateQuery = async () => {
@@ -406,25 +400,36 @@ const QueryGenerator: React.FC<QueryGeneratorProps> = ({ initialData, onSaveQuer
         answers: answers
       });
 
-      // Set the query with the subqueries structure
+      console.log('Query response:', queryResponse.data);
+
+      // Check if we have a valid query response with subqueries
+      if (!queryResponse.data || !queryResponse.data.subqueries) {
+        throw new Error('Invalid query response from server');
+      }
+
+      // The response is already in the correct format, just stringify it
       setPubMedQuery(JSON.stringify(queryResponse.data));
 
-      // Generate synonyms
+      // Generate synonyms with the formatted query
       const synonymsResponse = await axios.post('http://localhost:8000/generate_synonyms', {
         description: naturalLanguageQuery,
         questions: questions,
         answers: answers,
-        query: JSON.stringify(queryResponse.data)
+        // Convert the structured query back to a string format for the backend
+        query: queryResponse.data.subqueries
+          .map((sq: Subquery) => `(${sq.content})`)
+          .join(' AND ')
       });
       
       if (Array.isArray(synonymsResponse.data.synonym_groups)) {
         setSynonymGroups(synonymsResponse.data.synonym_groups);
       }
 
-
-
     } catch (error) {
       console.error('Error generating query and synonyms:', error);
+      if ((error as any).response) {
+        console.error('Server response:', (error as any).response.data);
+      }
     } finally {
       setIsGeneratingPubMed(false);
       setIsGeneratingSynonyms(false);

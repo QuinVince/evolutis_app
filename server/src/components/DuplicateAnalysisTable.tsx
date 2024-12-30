@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { FaFileAlt, FaToggleOn, FaToggleOff, FaChevronDown, FaTrash, FaTimes, FaEye } from 'react-icons/fa';
+import React from 'react';
+import {  FaChevronDown, FaTrash, FaTimes, FaEye } from 'react-icons/fa';
 import { DuplicatePair } from './DuplicateAnalysis';
 
 interface DuplicateAnalysisTableProps {

@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { RootState } from '../store/store';
-import { FaCheck, FaFile, FaCopy, FaList, FaClock, FaChevronRight } from 'react-icons/fa';
+import { FaChevronRight } from 'react-icons/fa';
 import { Pipeline } from '../store/pipelineSlice';
 import { createSelector } from '@reduxjs/toolkit';
 
@@ -14,7 +14,7 @@ interface QueryTableProps {
 const selectPipelinesByProjectId = createSelector(
   [(state: RootState) => state.pipelines.pipelines, 
    (_state: RootState, projectId: string) => projectId],
-  (pipelines, projectId) => pipelines.filter(p => p.projectId === projectId)
+  (pipelines, projectId) => pipelines.filter((p: Pipeline) => p.projectId === projectId)
 );
 
 const QueryTable: React.FC<QueryTableProps> = ({ projectId }) => {
@@ -35,6 +35,13 @@ const QueryTable: React.FC<QueryTableProps> = ({ projectId }) => {
   };
 
   const handleQueryClick = (pipeline: Pipeline) => {
+    console.log('Pipeline data being passed:', {
+      pipeline,
+      queryData: pipeline.queryData,
+      questions: pipeline.queryData.questions,
+      answers: pipeline.queryData.answers
+    });
+
     navigate('/slr-pipeline', {
       state: {
         mode: pipeline.screeningStep === 'parser' ? 'parser' : 'generator',
@@ -45,6 +52,11 @@ const QueryTable: React.FC<QueryTableProps> = ({ projectId }) => {
           description: pipeline.queryData.description,
           query: pipeline.queryData.query,
           projectTitle: pipeline.queryData.projectTitle,
+          questions: pipeline.queryData.questions,
+          answers: pipeline.queryData.answers,
+          pubmedQuery: pipeline.queryData.pubmedQuery,
+          generatedQuery: true,
+          queryData: pipeline.queryData,
           savedState: {
             fileScreening: pipeline.fileScreening,
             totalFiles: pipeline.totalFiles,
@@ -87,7 +99,7 @@ const QueryTable: React.FC<QueryTableProps> = ({ projectId }) => {
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
           {pipelines.length > 0 ? (
-            pipelines.map((pipeline) => (
+            pipelines.map((pipeline: Pipeline) => (
               <tr key={pipeline.id}>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                   <button

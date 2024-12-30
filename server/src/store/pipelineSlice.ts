@@ -19,6 +19,10 @@ export interface Pipeline {
     query?: string;
     projectTitle?: string;
     projectId: string;
+    questions?: string[];
+    answers?: Record<string, string>;
+    pubmedQuery?: string;
+    generatedQuery?: boolean; // Flag to indicate if questions were already generated
   };
 }
 

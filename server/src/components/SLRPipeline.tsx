@@ -3,12 +3,10 @@ import { FaEdit, FaCheck, FaChevronRight } from 'react-icons/fa';
 import QueryGenerator from './QueryGenerator';
 import QueryParser from './QueryParser';
 import NewQuery from './NewQuery';
-import DocumentAnalysis from './DocumentAnalysis';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { createPipeline, updatePipeline } from '../store/pipelineSlice';
 import { updateProjectQueries } from '../store/projectSlice';
-import { RootState } from '../store/store';
 import CriteriaSelection from './CriteriaSelection';
 
 interface SLRPipelineProps {
@@ -127,12 +125,20 @@ const SLRPipeline: React.FC<SLRPipelineProps> = ({ mode: initialMode, initialDat
   // Handler for NewQuery submission
   const handleQuerySubmit = (
     mode: 'generator' | 'parser', 
-    data: { description?: string; query?: string; projectId?: string }
+    data: { 
+      description?: string; 
+      query?: string; 
+      projectId?: string;
+      questions?: string[];
+      answers?: Record<string, string>;
+      pubmedQuery?: string;
+      generatedQuery?: boolean;
+    }
   ) => {
     setScreeningStep(mode);
     setQueryData({
       ...data,
-      projectId: initialData?.projectId || ''  // Ensure projectId is always a string
+      projectId: initialData?.projectId || ''
     });
   };
 

@@ -1,8 +1,8 @@
-import { configureStore } from '@reduxjs/toolkit';
+import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import queryReducer from './querySlice';
 import projectReducer from './projectSlice';
 import pipelineReducer from './pipelineSlice';
-import { Pipeline } from './pipelineSlice';
+import type { Pipeline } from './pipelineSlice';
 import { mockProjects, mockPipelines } from '../utils/mockData';
 
 export interface RootState {
@@ -13,12 +13,14 @@ export interface RootState {
   };
 }
 
+const rootReducer = combineReducers({
+  query: queryReducer,
+  projects: projectReducer,
+  pipelines: pipelineReducer
+});
+
 export const store = configureStore({
-  reducer: {
-    query: queryReducer,
-    projects: projectReducer,
-    pipelines: pipelineReducer
-  },
+  reducer: rootReducer,
   preloadedState: {
     projects: {
       projects: mockProjects
@@ -26,7 +28,7 @@ export const store = configureStore({
     pipelines: {
       pipelines: mockPipelines
     }
-  }
+  } as any
 });
 
 export type AppDispatch = typeof store.dispatch; 

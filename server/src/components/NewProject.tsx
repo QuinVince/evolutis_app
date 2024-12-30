@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link, useParams } from 'react-router-dom';
-import { FaFolder, FaEdit, FaUser, FaTimes, FaPlus, FaChevronRight, FaSearch, FaFilter, FaBatteryThreeQuarters } from 'react-icons/fa';
+import { FaFolder, FaEdit, FaPlus, FaChevronRight, FaSearch, FaFilter } from 'react-icons/fa';
 import { TbCircleDotted } from "react-icons/tb";
 import { GrUser } from "react-icons/gr";
 import { AiOutlineTags } from "react-icons/ai";

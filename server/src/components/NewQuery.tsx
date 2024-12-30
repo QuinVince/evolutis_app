@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import booksIcon from '../assets/image_books.png';
-import { FaArrowRight, FaCheck, FaExchangeAlt, FaCalendar, FaBook } from 'react-icons/fa';
+import { FaArrowRight, FaCheck, FaExchangeAlt } from 'react-icons/fa';
 import { PiCalendarDots,PiBooksLight   } from "react-icons/pi";
 import { Typewriter } from 'react-simple-typewriter';
 

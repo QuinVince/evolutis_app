@@ -342,7 +342,34 @@ export const mockPipelines = [
       description: "Investigating neural interface integration in smart prosthetic limbs",
       query: "(prosthetic OR artificial limb) AND (neural interface OR brain computer interface) AND (integration OR control)",
       projectTitle: "Smart Prosthetic Limbs Review",
-      projectId: "project-1"
+      projectId: "project-1",
+      questions: [
+        "What types of neural interfaces are being used in prosthetic limbs?",
+        "How effective is the integration between neural interfaces and prosthetic control?",
+        "What are the main challenges in neural interface implementation?"
+      ],
+      answers: {
+        "What types of neural interfaces are being used in prosthetic limbs?": "Both invasive and non-invasive neural interfaces, including EEG-based and implanted electrodes",
+        "How effective is the integration between neural interfaces and prosthetic control?": "Studies show varying degrees of success, with response times approaching natural movement",
+        "What are the main challenges in neural interface implementation?": "Signal stability, long-term biocompatibility, and processing speed"
+      },
+      pubmedQuery: JSON.stringify({
+        subqueries: [
+          {
+            content: 'prosthetic OR artificial limb',
+            operator: 'AND'
+          },
+          {
+            content: 'neural interface OR brain computer interface',
+            operator: 'AND'
+          },
+          {
+            content: 'integration OR control',
+            operator: 'AND'
+          }
+        ]
+      }),
+      generatedQuery: true
     }
   },
   {
@@ -361,7 +388,30 @@ export const mockPipelines = [
       description: "Analyzing sensory feedback mechanisms in advanced prosthetics",
       query: "(prosthetic limb OR artificial limb) AND (sensory feedback OR haptic feedback OR tactile sensation)",
       projectTitle: "Smart Prosthetic Limbs Review",
-      projectId: "project-1"
+      projectId: "project-1",
+      questions: [
+        "What sensory feedback mechanisms are used in advanced prosthetics?",
+        "How effective are haptic and tactile sensations in prosthetic control?",
+        "What are the implications of sensory feedback in prosthetic design?"
+      ],
+      answers: {
+        "What sensory feedback mechanisms are used in advanced prosthetics?": "Various sensory feedback mechanisms, including touch sensors, pressure sensors, and strain gauges",
+        "How effective are haptic and tactile sensations in prosthetic control?": "Studies show varying degrees of effectiveness, with some prosthetics achieving natural sensation",
+        "What are the implications of sensory feedback in prosthetic design?": "Sensory feedback is crucial for prosthetic design, as it enhances user experience and functionality"
+      },
+      pubmedQuery: JSON.stringify({
+        subqueries: [
+          {
+            content: 'prosthetic limb OR artificial limb',
+            operator: 'AND'
+          },
+          {
+            content: 'sensory feedback OR haptic feedback OR tactile sensation',
+            operator: 'AND'
+          }
+        ]
+      }),
+      generatedQuery: true
     }
   },
   {
@@ -380,7 +430,30 @@ export const mockPipelines = [
       description: "Safety evaluation of implantable cardiac devices",
       query: "(implantable cardiac device OR pacemaker OR defibrillator) AND (safety OR adverse effects OR complications)",
       projectTitle: "Implantable Medical Devices Safety",
-      projectId: "project-2"
+      projectId: "project-2",
+      questions: [
+        "What safety measures are implemented in implantable cardiac devices?",
+        "How effective are adverse effects and complications in implantable cardiac devices?",
+        "What are the implications of safety in implantable cardiac device design?"
+      ],
+      answers: {
+        "What safety measures are implemented in implantable cardiac devices?": "Various safety measures, including patient monitoring, device testing, and patient education",
+        "How effective are adverse effects and complications in implantable cardiac devices?": "Studies show varying degrees of effectiveness, with some devices achieving minimal adverse effects",
+        "What are the implications of safety in implantable cardiac device design?": "Safety is crucial in implantable cardiac device design, as it ensures patient safety and device longevity"
+      },
+      pubmedQuery: JSON.stringify({
+        subqueries: [
+          {
+            content: 'implantable cardiac device OR pacemaker OR defibrillator',
+            operator: 'AND'
+          },
+          {
+            content: 'safety OR adverse effects OR complications',
+            operator: 'AND'
+          }
+        ]
+      }),
+      generatedQuery: true
     }
   },
   {
@@ -399,7 +472,34 @@ export const mockPipelines = [
       description: "Analysis of infection risks in implantable medical devices",
       query: "(implantable medical device) AND (infection OR bacterial colonization) AND (prevention OR risk factors)",
       projectTitle: "Implantable Medical Devices Safety",
-      projectId: "project-2"
+      projectId: "project-2",
+      questions: [
+        "What are the main factors contributing to infection risks in implantable medical devices?",
+        "How effective are prevention measures in reducing infection risks in implantable medical devices?",
+        "What are the implications of infection risks in implantable medical device design?"
+      ],
+      answers: {
+        "What are the main factors contributing to infection risks in implantable medical devices?": "Various factors, including bacterial colonization, patient factors, and device design",
+        "How effective are prevention measures in reducing infection risks in implantable medical devices?": "Studies show varying degrees of effectiveness, with some devices achieving minimal infection rates",
+        "What are the implications of infection risks in implantable medical device design?": "Infection risks are crucial in implantable medical device design, as they ensure patient safety and device longevity"
+      },
+      pubmedQuery: JSON.stringify({
+        subqueries: [
+          {
+            content: 'implantable medical device',
+            operator: 'AND'
+          },
+          {
+            content: 'infection OR bacterial colonization',
+            operator: 'AND'
+          },
+          {
+            content: 'prevention OR risk factors',
+            operator: 'AND'
+          }
+        ]
+      }),
+      generatedQuery: true
     }
   },
   {
@@ -418,7 +518,34 @@ export const mockPipelines = [
       description: "Long-term durability assessment of hip replacement implants",
       query: "(hip replacement OR hip arthroplasty) AND (longevity OR durability OR wear) AND (long-term outcomes)",
       projectTitle: "Orthopedic Implants Longevity",
-      projectId: "project-3"
+      projectId: "project-3",
+      questions: [
+        "What factors contribute to the longevity of hip replacement implants?",
+        "How effective are materials in enhancing hip replacement implant durability?",
+        "What are the implications of hip replacement implant durability for long-term outcomes?"
+      ],
+      answers: {
+        "What factors contribute to the longevity of hip replacement implants?": "Various factors, including material selection, implant design, and patient factors",
+        "How effective are materials in enhancing hip replacement implant durability?": "Studies show varying degrees of effectiveness, with some materials achieving long-term durability",
+        "What are the implications of hip replacement implant durability for long-term outcomes?": "Hip replacement implant durability is crucial for long-term outcomes, as it ensures patient safety and device longevity"
+      },
+      pubmedQuery: JSON.stringify({
+        subqueries: [
+          {
+            content: 'hip replacement OR hip arthroplasty',
+            operator: 'AND'
+          },
+          {
+            content: 'longevity OR durability OR wear',
+            operator: 'AND'
+          },
+          {
+            content: 'long-term outcomes',
+            operator: 'AND'
+          }
+        ]
+      }),
+      generatedQuery: true
     }
   },
   {
@@ -437,7 +564,34 @@ export const mockPipelines = [
       description: "Impact of new materials on orthopedic implant performance",
       query: "(orthopedic implant) AND (material innovation OR new materials) AND (performance OR outcomes)",
       projectTitle: "Orthopedic Implants Longevity",
-      projectId: "project-3"
+      projectId: "project-3",
+      questions: [
+        "What are the main factors contributing to the performance of orthopedic implants?",
+        "How effective are new materials in enhancing orthopedic implant performance?",
+        "What are the implications of material innovation in orthopedic implant design?"
+      ],
+      answers: {
+        "What are the main factors contributing to the performance of orthopedic implants?": "Various factors, including material selection, implant design, and patient factors",
+        "How effective are new materials in enhancing orthopedic implant performance?": "Studies show varying degrees of effectiveness, with some materials achieving improved performance",
+        "What are the implications of material innovation in orthopedic implant design?": "Material innovation is crucial in orthopedic implant design, as it ensures patient safety and device longevity"
+      },
+      pubmedQuery: JSON.stringify({
+        subqueries: [
+          {
+            content: 'orthopedic implant',
+            operator: 'AND'
+          },
+          {
+            content: 'material innovation OR new materials',
+            operator: 'AND'
+          },
+          {
+            content: 'performance OR outcomes',
+            operator: 'AND'
+          }
+        ]
+      }),
+      generatedQuery: true
     }
   }
 ];

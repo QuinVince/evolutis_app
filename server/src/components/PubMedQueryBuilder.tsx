@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FaPlus, FaTimes, FaCheck, FaSync } from 'react-icons/fa';
+import { FaPlus, FaTimes, FaCheck } from 'react-icons/fa';
 import bulbIcon from '../assets/image_bulb.png';
 import SynonymTooltip from './SynonymTooltip';
 import DuplicateAnalysisTable from './DuplicateAnalysisTable';
@@ -49,6 +49,7 @@ const PubMedQueryBuilder: React.FC<PubMedQueryBuilderProps> = ({
   questions,
   answers
 }) => {
+  const [processedQuery, setProcessedQuery] = useState('');
   const [subqueries, setSubqueries] = React.useState<Subquery[]>([]);
   const [activeSynonymIndex, setActiveSynonymIndex] = React.useState<number | null>(null);
   const [tooltipPosition, setTooltipPosition] = React.useState<{ top: number; left: number } | null>(null);
@@ -92,17 +93,36 @@ const PubMedQueryBuilder: React.FC<PubMedQueryBuilderProps> = ({
     }
   };
 
-  React.useEffect(() => {
-    try {
-      if (query) {
-        const queryData = JSON.parse(query);
-        if (queryData.subqueries && Array.isArray(queryData.subqueries)) {
-          setSubqueries(queryData.subqueries);
-          setStatsNeedUpdate(true);
+  useEffect(() => {
+    if (query) {
+      try {
+        setProcessedQuery(query);
+        
+        // Try to parse as JSON first (for saved queries)
+        try {
+          const parsedQuery = JSON.parse(query);
+          if (parsedQuery.subqueries) {
+            setSubqueries(parsedQuery.subqueries);
+            console.log('Loaded saved subqueries:', parsedQuery.subqueries);
+            return;
+          }
+        } catch (e) {
+          // If JSON parsing fails, treat as plain text query
+          console.log('Parsing as plain text query');
         }
+
+        // Fall back to splitting plain text query
+        const parts = query.split(/\n\nAND\n\n/);
+        const newSubqueries = parts.map(part => ({
+          content: part.trim().replace(/^\(|\)$/g, ''),
+          operator: 'AND' as const
+        }));
+        
+        setSubqueries(newSubqueries);
+        console.log('Setting subqueries from plain text:', newSubqueries);
+      } catch (error) {
+        console.error('Error processing query:', error);
       }
-    } catch (e) {
-      console.error('Error parsing query:', e);
     }
   }, [query]);
 

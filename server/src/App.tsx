@@ -1,12 +1,9 @@
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import React, { useState } from 'react';
 import LandingPage from './components/LandingPage';
-import NewQuery from './components/NewQuery';
-import QueryGenerator from './components/QueryGenerator';
 import Layout from './components/Layout';
 import { Provider } from 'react-redux';
 import { store } from './store/store';
-import QueryParser from './components/QueryParser';
 import NewProject from './components/NewProject';
 import SLRPipeline from './components/SLRPipeline';
 
@@ -62,12 +59,6 @@ export interface AnalysisData {
   };
 }
 
-// Update LayoutProps to match Layout component requirements
-interface LayoutProps {
-  children: React.ReactNode;
-  projectTitle: string;
-  onProjectTitleChange: (title: string) => void;
-}
 
 // Create a wrapper component to handle location state
 const SLRPipelineWrapper: React.FC = () => {
@@ -83,18 +74,8 @@ const SLRPipelineWrapper: React.FC = () => {
 };
 
 const App: React.FC = () => {
-  const [savedQueries, setSavedQueries] = useState<SavedQuery[]>([]);
   const [projectTitle, setProjectTitle] = useState('New project');
   
-  const handleSaveQuery = (query: SavedQuery | null) => {
-    if (query) {
-      setSavedQueries(prev => [...prev, query]);
-    }
-  };
-
-  const handleClearQueries = () => {
-    setSavedQueries([]);
-  };
 
   return (
     <Provider store={store}>
