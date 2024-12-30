@@ -292,3 +292,152 @@ export const mockDocuments: Document[] = [
    pubmedLink: "https://pubmed.ncbi.nlm.nih.gov/"
   }
 ];
+
+// Update mock projects
+export const mockProjects = [
+  {
+    id: "project-1",
+    name: "Smart Prosthetic Limbs Review",
+    status: "in_progress" as const,
+    author: "Fanny M.",
+    createdAt: "2024-01-15T10:00:00.000Z",
+    queryCount: 2,
+    tags: ["Prosthetics", "Neural Interface", "Smart Devices"]
+  },
+  {
+    id: "project-2",
+    name: "Implantable Medical Devices Safety",
+    status: "done" as const,
+    author: "Fanny M.",
+    createdAt: "2023-12-01T09:00:00.000Z",
+    queryCount: 2,
+    tags: ["Medical Devices", "Safety", "Clinical Trials"]
+  },
+  {
+    id: "project-3",
+    name: "Orthopedic Implants Longevity",
+    status: "done" as const,
+    author: "Fanny M.",
+    createdAt: "2023-11-15T09:00:00.000Z",
+    queryCount: 2,
+    tags: ["Orthopedics", "Implants", "Long-term Outcomes"]
+  }
+];
+
+// Update mock pipelines for these projects
+export const mockPipelines = [
+  {
+    id: "pipeline-1",
+    projectId: "project-1",
+    name: "Neural Interface Integration",
+    fileScreening: "in_progress" as const,
+    totalFiles: 156,
+    duplicates: 12,
+    fileSelection: 144,
+    criteria: 5,
+    lastModified: "2024-01-20T15:30:00.000Z",
+    currentStep: "screening" as const,
+    screeningStep: "generator" as const,
+    queryData: {
+      description: "Investigating neural interface integration in smart prosthetic limbs",
+      query: "(prosthetic OR artificial limb) AND (neural interface OR brain computer interface) AND (integration OR control)",
+      projectTitle: "Smart Prosthetic Limbs Review",
+      projectId: "project-1"
+    }
+  },
+  {
+    id: "pipeline-2",
+    projectId: "project-1",
+    name: "Sensory Feedback Analysis",
+    fileScreening: "in_progress" as const,
+    totalFiles: 89,
+    duplicates: 7,
+    fileSelection: 82,
+    criteria: 4,
+    lastModified: "2024-01-22T11:20:00.000Z",
+    currentStep: "criteria" as const,
+    screeningStep: "generator" as const,
+    queryData: {
+      description: "Analyzing sensory feedback mechanisms in advanced prosthetics",
+      query: "(prosthetic limb OR artificial limb) AND (sensory feedback OR haptic feedback OR tactile sensation)",
+      projectTitle: "Smart Prosthetic Limbs Review",
+      projectId: "project-1"
+    }
+  },
+  {
+    id: "pipeline-3",
+    projectId: "project-2",
+    name: "Cardiac Device Safety",
+    fileScreening: "completed" as const,
+    totalFiles: 234,
+    duplicates: 18,
+    fileSelection: 216,
+    criteria: 6,
+    lastModified: "2024-01-05T09:45:00.000Z",
+    currentStep: "selection" as const,
+    screeningStep: "generator" as const,
+    queryData: {
+      description: "Safety evaluation of implantable cardiac devices",
+      query: "(implantable cardiac device OR pacemaker OR defibrillator) AND (safety OR adverse effects OR complications)",
+      projectTitle: "Implantable Medical Devices Safety",
+      projectId: "project-2"
+    }
+  },
+  {
+    id: "pipeline-4",
+    projectId: "project-2",
+    name: "Device-Related Infections",
+    fileScreening: "completed" as const,
+    totalFiles: 178,
+    duplicates: 15,
+    fileSelection: 163,
+    criteria: 5,
+    lastModified: "2024-01-03T14:20:00.000Z",
+    currentStep: "selection" as const,
+    screeningStep: "generator" as const,
+    queryData: {
+      description: "Analysis of infection risks in implantable medical devices",
+      query: "(implantable medical device) AND (infection OR bacterial colonization) AND (prevention OR risk factors)",
+      projectTitle: "Implantable Medical Devices Safety",
+      projectId: "project-2"
+    }
+  },
+  {
+    id: "pipeline-5",
+    projectId: "project-3",
+    name: "Hip Implant Durability",
+    fileScreening: "completed" as const,
+    totalFiles: 145,
+    duplicates: 12,
+    fileSelection: 133,
+    criteria: 7,
+    lastModified: "2023-12-15T10:15:00.000Z",
+    currentStep: "selection" as const,
+    screeningStep: "generator" as const,
+    queryData: {
+      description: "Long-term durability assessment of hip replacement implants",
+      query: "(hip replacement OR hip arthroplasty) AND (longevity OR durability OR wear) AND (long-term outcomes)",
+      projectTitle: "Orthopedic Implants Longevity",
+      projectId: "project-3"
+    }
+  },
+  {
+    id: "pipeline-6",
+    projectId: "project-3",
+    name: "Material Innovation Impact",
+    fileScreening: "completed" as const,
+    totalFiles: 167,
+    duplicates: 14,
+    fileSelection: 153,
+    criteria: 5,
+    lastModified: "2023-12-20T16:45:00.000Z",
+    currentStep: "selection" as const,
+    screeningStep: "generator" as const,
+    queryData: {
+      description: "Impact of new materials on orthopedic implant performance",
+      query: "(orthopedic implant) AND (material innovation OR new materials) AND (performance OR outcomes)",
+      projectTitle: "Orthopedic Implants Longevity",
+      projectId: "project-3"
+    }
+  }
+];
