@@ -357,7 +357,7 @@ const DocumentAnalysis: React.FC<DocumentAnalysisProps> = ({ analysisData, updat
   const calculateAnalysisResults = useCallback(() => {
     if (!analysisData.selectedQuery) return null;
 
-    const totalPapers = analysisData.selectedQuery.paperCount;
+    const totalPapers = analysisData.selectedQuery.totalFiles;
     const deduplicatedPapers = Math.floor(totalPapers * 0.9); // Assume 10% are duplicates
 
     // Use a deterministic method to generate a percentage between 5% and 30%

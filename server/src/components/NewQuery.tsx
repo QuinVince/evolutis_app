@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import booksIcon from '../assets/image_books.png';
-import { FaArrowRight, FaCheck, FaExchangeAlt, FaCalendar, FaBook } from 'react-icons/fa';
+import { FaArrowRight, FaCheck, FaExchangeAlt } from 'react-icons/fa';
 import { PiCalendarDots,PiBooksLight   } from "react-icons/pi";
 import { Typewriter } from 'react-simple-typewriter';
 
@@ -124,6 +124,12 @@ const NewQuery: React.FC<NewQueryProps> = ({ onSubmit, isEmbedded = false, proje
             <textarea
               value={input}
               onChange={(e) => setInput(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                  e.preventDefault();
+                  if (input) handleSubmit(e);
+                }
+              }}
               className="w-full px-4 py-3 border border-[#BDBDBD] rounded-xl 
                 focus:outline-none focus:ring-2 focus:ring-[#068EF1] focus:ring-offset-2 pr-14
                 bg-gray-50"
