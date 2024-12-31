@@ -87,7 +87,7 @@ const QueryTable: React.FC<QueryTableProps> = ({ projectId }) => {
               Name
             </th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              File screening
+              Progress
             </th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
               Files
@@ -129,11 +129,21 @@ const QueryTable: React.FC<QueryTableProps> = ({ projectId }) => {
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm">
                   <span className={`px-2 py-1 rounded-full text-xs ${
-                    pipeline.fileScreening === 'completed' 
-                      ? 'bg-green-100 text-green-800' 
-                      : 'bg-blue-100 text-blue-800'
+                    pipeline.currentStep === 'screening' 
+                      ? 'bg-blue-100 text-blue-800'
+                      : pipeline.currentStep === 'criteria'
+                      ? 'bg-yellow-100 text-yellow-800'
+                      : pipeline.currentStep === 'abstract'
+                      ? 'bg-purple-100 text-purple-800'
+                      : 'bg-green-100 text-green-800'
                   }`}>
-                    {pipeline.fileScreening === 'completed' ? 'Completed' : 'In Progress'}
+                    {pipeline.currentStep === 'screening'
+                      ? 'Query definition'
+                      : pipeline.currentStep === 'criteria'
+                      ? 'Criteria selection'
+                      : pipeline.currentStep === 'abstract'
+                      ? 'Abstract review'
+                      : pipeline.currentStep.charAt(0).toUpperCase() + pipeline.currentStep.slice(1)}
                   </span>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">

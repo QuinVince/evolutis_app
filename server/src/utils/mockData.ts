@@ -300,7 +300,7 @@ export const mockProjects = [
     name: "Smart Prosthetic Limbs Review",
     status: "in_progress" as const,
     author: "Fanny M.",
-    createdAt: "2024-01-15T10:00:00.000Z",
+    createdAt: "2024-11-15T10:00:00.000Z",
     queryCount: 2,
     tags: ["Prosthetics", "Neural Interface", "Smart Devices"]
   },
@@ -309,7 +309,7 @@ export const mockProjects = [
     name: "Implantable Medical Devices Safety",
     status: "done" as const,
     author: "Fanny M.",
-    createdAt: "2023-12-01T09:00:00.000Z",
+    createdAt: "2024-10-01T09:00:00.000Z",
     queryCount: 2,
     tags: ["Medical Devices", "Safety", "Clinical Trials"]
   },
@@ -321,6 +321,15 @@ export const mockProjects = [
     createdAt: "2023-11-15T09:00:00.000Z",
     queryCount: 2,
     tags: ["Orthopedics", "Implants", "Long-term Outcomes"]
+  },
+  {
+    id: "project-4",
+    name: "Knee Surgery",
+    status: "in_progress" as const,
+    author: "Fanny M.",
+    createdAt: "2024-12-15T10:00:00.000Z",
+    queryCount: 1,
+    tags: ["Orthopedics", "Surgery", "Clinical Outcomes"]
   }
 ];
 
@@ -424,7 +433,7 @@ export const mockPipelines = [
     fileSelection: 216,
     criteria: 6,
     lastModified: "2024-01-05T09:45:00.000Z",
-    currentStep: "selection" as const,
+    currentStep: "abstract" as const,
     screeningStep: "generator" as const,
     queryData: {
       description: "Safety evaluation of implantable cardiac devices",
@@ -466,7 +475,7 @@ export const mockPipelines = [
     fileSelection: 163,
     criteria: 5,
     lastModified: "2024-01-03T14:20:00.000Z",
-    currentStep: "selection" as const,
+    currentStep: "abstract" as const,
     screeningStep: "generator" as const,
     queryData: {
       description: "Analysis of infection risks in implantable medical devices",
@@ -512,7 +521,7 @@ export const mockPipelines = [
     fileSelection: 133,
     criteria: 7,
     lastModified: "2023-12-15T10:15:00.000Z",
-    currentStep: "selection" as const,
+    currentStep: "abstract" as const,
     screeningStep: "generator" as const,
     queryData: {
       description: "Long-term durability assessment of hip replacement implants",
@@ -558,7 +567,7 @@ export const mockPipelines = [
     fileSelection: 153,
     criteria: 5,
     lastModified: "2023-12-20T16:45:00.000Z",
-    currentStep: "selection" as const,
+    currentStep: "abstract" as const,
     screeningStep: "generator" as const,
     queryData: {
       description: "Impact of new materials on orthopedic implant performance",
@@ -587,6 +596,56 @@ export const mockPipelines = [
           },
           {
             content: 'performance OR outcomes',
+            operator: 'AND'
+          }
+        ]
+      }),
+      generatedQuery: true
+    }
+  },
+  {
+    id: "pipeline-7",
+    projectId: "project-4",
+    name: "Knee Surgery Outcomes",
+    fileScreening: "in_progress" as const,
+    totalFiles: 187,
+    duplicates: 15,
+    fileSelection: 172,
+    criteria: 6,
+    lastModified: "2024-02-15T13:30:00.000Z",
+    currentStep: "screening" as const,
+    screeningStep: "generator" as const,
+    queryData: {
+      description: "Comparative analysis of minimally invasive versus traditional knee surgery techniques and outcomes",
+      query: "(knee surgery OR knee arthroplasty OR knee replacement) AND (minimally invasive OR arthroscopic) AND (outcomes OR recovery OR complications)",
+      projectTitle: "Knee Surgery Techniques Review",
+      projectId: "project-4",
+      questions: [
+        "What are the key differences in outcomes between minimally invasive and traditional knee surgery?",
+        "How do recovery times compare between different surgical techniques?",
+        "What are the complication rates associated with each approach?"
+      ],
+      answers: {
+        "What are the key differences in outcomes between minimally invasive and traditional knee surgery?": "Studies show differences in post-operative pain, scarring, and initial recovery period, with minimally invasive techniques generally showing faster early recovery",
+        "How do recovery times compare between different surgical techniques?": "Minimally invasive approaches typically show 20-30% faster return to daily activities, though long-term outcomes are similar",
+        "What are the complication rates associated with each approach?": "Traditional approaches show more wound-related complications, while minimally invasive techniques have higher rates of component positioning challenges"
+      },
+      pubmedQuery: JSON.stringify({
+        subqueries: [
+          {
+            content: 'knee surgery OR knee arthroplasty OR knee replacement',
+            operator: 'AND'
+          },
+          {
+            content: 'minimally invasive OR arthroscopic',
+            operator: 'AND'
+          },
+          {
+            content: 'outcomes OR recovery OR complications',
+            operator: 'AND'
+          },
+          {
+            content: 'randomized controlled trial OR systematic review OR meta-analysis',
             operator: 'AND'
           }
         ]

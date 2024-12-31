@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { FaFolder, FaClock, FaFile, FaFilter, FaSearch, FaUser, FaCalendar, FaTrash } from 'react-icons/fa';
-import { PiCalendarDots,PiBooksLight,PiFoldersDuotone   } from "react-icons/pi"
+import { PiCalendarDots,PiBooksLight,PiFoldersDuotone,PiClock    } from "react-icons/pi"
+import { AiOutlineFileSearch } from "react-icons/ai";
 import { IoMdSearch } from "react-icons/io";
 import { GrUser } from "react-icons/gr";
 import { BsSliders } from "react-icons/bs";
@@ -15,10 +16,81 @@ const LandingPage: React.FC = () => {
   const [filterKeyword, setFilterKeyword] = useState('');
   const [filterUser, setFilterUser] = useState('');
   const [filterDate, setFilterDate] = useState('');
+  const [customDateRange, setCustomDateRange] = useState({
+    from: '',
+    to: ''
+  });
 
   const projects = useSelector((state: RootState) => state.projects.projects);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  // Filter projects based on all criteria
+  const filteredProjects = useMemo(() => {
+    return projects.filter(project => {
+      // Keyword filter (check name and tags)
+      const keywordMatch = filterKeyword.trim() === '' || 
+        project.name.toLowerCase().includes(filterKeyword.toLowerCase()) ||
+        project.tags.some(tag => tag.toLowerCase().includes(filterKeyword.toLowerCase()));
+      
+      // User filter
+      const userMatch = filterUser === '' || project.author === filterUser;
+      
+      // Date filter
+      let dateMatch = true;
+      const projectDate = new Date(project.createdAt);
+      const now = new Date();
+      
+      switch (filterDate) {
+        case 'today':
+          dateMatch = projectDate.toDateString() === now.toDateString();
+          break;
+        case 'last7days':
+          const last7Days = new Date(now.setDate(now.getDate() - 7));
+          dateMatch = projectDate >= last7Days;
+          break;
+        case 'last30days':
+          const last30Days = new Date(now.setDate(now.getDate() - 30));
+          dateMatch = projectDate >= last30Days;
+          break;
+        case 'last3months':
+          const last3Months = new Date(now.setMonth(now.getMonth() - 3));
+          dateMatch = projectDate >= last3Months;
+          break;
+        case 'last6months':
+          const last6Months = new Date(now.setMonth(now.getMonth() - 6));
+          dateMatch = projectDate >= last6Months;
+          break;
+        case 'lastyear':
+          const lastYear = new Date(now.setFullYear(now.getFullYear() - 1));
+          dateMatch = projectDate >= lastYear;
+          break;
+        case 'custom':
+          if (customDateRange.from && customDateRange.to) {
+            const fromDate = new Date(customDateRange.from);
+            const toDate = new Date(customDateRange.to);
+            dateMatch = projectDate >= fromDate && projectDate <= toDate;
+          }
+          break;
+        default:
+          dateMatch = true;
+      }
+      
+      return keywordMatch && userMatch && dateMatch;
+    });
+  }, [projects, filterKeyword, filterUser, filterDate, customDateRange]);
+
+  // Get unique users from projects
+  const uniqueUsers = useMemo(() => {
+    return Array.from(new Set(projects.map(project => project.author)));
+  }, [projects]);
+
+  const handleClearFilters = () => {
+    setFilterKeyword('');
+    setFilterUser('');
+    setFilterDate('');
+    setCustomDateRange({ from: '', to: '' });
+  };
 
   const formatCreatedAt = (dateString: string) => {
     const date = new Date(dateString);
@@ -57,14 +129,14 @@ const LandingPage: React.FC = () => {
               </span>
               <span className="text-xs text-gray-500 bg-gray-100 rounded-md px-2 py-1">{project.author}</span>
             </div>
-            <div className="flex items-center space-x-4 mt-2 text-sm text-gray-500">
+            <div className="flex items-center space-x-4 mt-2 text-sm text-gray-500 font-semibold">
               <div className="flex items-center space-x-1">
-                <FaClock className="w-4 h-4" />
+                <PiClock className="w-4 h-4" />
                 <span>{formatCreatedAt(project.createdAt)}</span>
               </div>
-              <div className="flex items-center space-x-1">
-                <FaFile className="w-4 h-4" />
-                <span>{project.queryCount} queries</span>
+              <div className="flex items-center space-x-1 font-semibold">
+                <AiOutlineFileSearch className="w-4 h-4" />
+                <span>{project.queryCount} litterature reviews</span>
               </div>
             </div>
           </div>
@@ -80,7 +152,7 @@ const LandingPage: React.FC = () => {
   };
 
   const ProjectSection: React.FC<{ title: string; status: 'in_progress' | 'done' }> = ({ title, status }) => {
-    const filteredProjects = projects
+    const sectionProjects = filteredProjects
       .filter(project => project.status === status)
       .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
     
@@ -89,9 +161,15 @@ const LandingPage: React.FC = () => {
         <div className="bg-gray-50 rounded-xl p-6">
           <h2 className="text-xl font-semibold mb-4">{title}</h2>
           <div className="space-y-3">
-            {filteredProjects.map(project => (
-              <ProjectCard key={project.id} project={project} />
-            ))}
+            {sectionProjects.length > 0 ? (
+              sectionProjects.map(project => (
+                <ProjectCard key={project.id} project={project} />
+              ))
+            ) : (
+              <div className="text-gray-500 text-center py-4">
+                No projects found
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -145,8 +223,9 @@ const LandingPage: React.FC = () => {
                     className="w-full pl-9 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-[#068EF1] focus:border-[#068EF1] appearance-none"
                   >
                     <option value="">All users</option>
-                    <option value="fanny">Fanny M.</option>
-                    <option value="other">Other users...</option>
+                    {uniqueUsers.map(user => (
+                      <option key={user} value={user}>{user}</option>
+                    ))}
                   </select>
                   <GrUser className="absolute left-3 top-3 text-gray-400" />
                 </div>
@@ -173,46 +252,39 @@ const LandingPage: React.FC = () => {
                     <option value="custom">Custom range...</option>
                   </select>
                   <PiCalendarDots className="absolute left-3 top-3 text-gray-400" />
-                  {filterDate === 'custom' && (
-                    <div className="absolute top-full left-0 mt-2 w-full bg-white rounded-lg shadow-lg border border-gray-200 p-4">
-                      <div className="flex gap-4">
-                        <div>
-                          <label className="block text-sm text-gray-600 mb-1">From</label>
-                          <input
-                            type="date"
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-[#068EF1] focus:border-[#068EF1]"
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-sm text-gray-600 mb-1">To</label>
-                          <input
-                            type="date"
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-[#068EF1] focus:border-[#068EF1]"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  )}
                 </div>
+                
+                {filterDate === 'custom' && (
+                  <div className="mt-2 space-y-2">
+                    <div>
+                      <label className="block text-xs text-gray-600">From</label>
+                      <input
+                        type="date"
+                        value={customDateRange.from}
+                        onChange={(e) => setCustomDateRange(prev => ({ ...prev, from: e.target.value }))}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-[#068EF1] focus:border-[#068EF1]"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs text-gray-600">To</label>
+                      <input
+                        type="date"
+                        value={customDateRange.to}
+                        onChange={(e) => setCustomDateRange(prev => ({ ...prev, to: e.target.value }))}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-[#068EF1] focus:border-[#068EF1]"
+                      />
+                    </div>
+                  </div>
+                )}
               </div>
 
-              {/* Apply/Clear Buttons */}
-              <div className="flex justify-end gap-2">
+              {/* Clear Filters Button */}
+              <div className="flex justify-end">
                 <button
-                  onClick={() => {
-                    setFilterKeyword('');
-                    setFilterUser('');
-                    setFilterDate('');
-                  }}
-                  className="px-3 py-1.5 text-gray-600 hover:text-gray-800"
+                  onClick={handleClearFilters}
+                  className="text-gray-600 hover:text-gray-800"
                 >
-                  Clear
-                </button>
-                <button
-                  onClick={() => setShowFilters(false)}
-                  className="px-3 py-1.5 bg-[#068EF1] text-white rounded-lg hover:bg-[#068EF1]/90"
-                >
-                  Apply Filters
+                  Clear filters
                 </button>
               </div>
             </div>

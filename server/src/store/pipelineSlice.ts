@@ -12,7 +12,7 @@ export interface Pipeline {
   fileSelection: number | null;
   criteria: number | null;
   lastModified: string;
-  currentStep: 'screening' | 'criteria' | 'selection';
+  currentStep: 'screening' | 'criteria' | 'abstract' | 'selection';
   screeningStep: 'new' | 'parser' | 'generator';
   queryData: {
     description?: string;

@@ -193,9 +193,9 @@ const SLRPipeline: React.FC<SLRPipelineProps> = ({ mode: initialMode, initialDat
   };
 
   const tabs = [
-    { id: 'screening', label: 'File Screening' },
+    { id: 'screening', label: 'Query definition' },
     { id: 'criteria', label: 'Criteria Selection' },
-    { id: 'selection', label: 'File Selection' }
+    { id: 'abstract', label: 'Abstract review' }
   ];
 
   const renderScreeningContent = () => {

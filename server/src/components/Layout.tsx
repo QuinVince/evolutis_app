@@ -1,18 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { FaBars, FaPlus, FaSearch, FaTrash } from 'react-icons/fa';
+import { FiPlusCircle } from "react-icons/fi";
 import { useDispatch, useSelector } from 'react-redux';
 import { setCurrentProjectTitle } from '../store/querySlice';
 import { deleteProject } from '../store/projectSlice';
 import logo from '../utils/evolutis-logo.png';
 import iconHome from '../utils/icon-home.png';
 import { RootState } from '../store/store';
-
-interface Project {
-  id: string;
-  name: string;
-  status: 'in_progress' | 'done';
-}
+import { Project } from '../store/projectSlice';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -66,6 +62,11 @@ const Layout: React.FC<LayoutProps> = ({ children, projectTitle, onProjectTitleC
     isDone = false 
   }) => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const handleProjectClick = (project: Project) => {
+      navigate(`/project/${project.id}`);
+    };
 
     const handleDelete = (e: React.MouseEvent, projectId: string) => {
       e.stopPropagation();
@@ -86,11 +87,11 @@ const Layout: React.FC<LayoutProps> = ({ children, projectTitle, onProjectTitleC
               className="group flex items-center justify-between px-8 py-2 hover:bg-gray-100"
             >
               <button
-                onClick={() => navigate(`/project/${project.id}`)}
+                onClick={() => handleProjectClick(project)}
                 className="flex items-center space-x-2 max-w-[160px]"
               >
                 <span className={`flex-shrink-0 w-3 h-3 rounded-full ${isDone ? 'bg-green-500' : 'bg-blue-500'}`} />
-                <span className="text-sm text-gray-700 truncate">{project.name}</span>
+                <span className="text-sm text-gray-700 truncate pr-2 ">{project.name}</span>
               </button>
               <button
                 onClick={(e) => handleDelete(e, project.id)}
@@ -133,13 +134,15 @@ const Layout: React.FC<LayoutProps> = ({ children, projectTitle, onProjectTitleC
         {/* Sidebar Content */}
         {isSidebarExpanded && (
           <div className="py-4 px-6">
-            <button
-              onClick={() => navigate('/new-project')}
-              className="w-full px-6 py-2 text-left hover:bg-gray-100 flex items-center space-x-2 mb-4"
-            >
-              <FaPlus className="w-4 h-4 text-blue-500" />
-              <span className="text-sm text-gray-700">New Project</span>
-            </button>
+            <div className="flex items-center justify-between mb-4">
+              <span className="text-sm text-gray-500 font-semibold">Projects</span>
+              <button
+                onClick={() => navigate('/new-project')}
+                className="p-2 hover:bg-gray-100 rounded-lg"
+              >
+                <FiPlusCircle className="w-4 h-4 text-gray-700" />
+              </button>
+            </div>
 
             <ProjectList 
               title="IN PROGRESS" 
