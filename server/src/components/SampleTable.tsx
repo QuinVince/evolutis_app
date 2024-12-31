@@ -104,82 +104,126 @@ const SampleTable: React.FC<SampleTableProps> = ({
     return (isCalculating || calculationComplete) && isRowLoaded(rowIndex);
   };
 
+  const renderBasicTable = () => (
+    <table className="w-full table-fixed divide-y divide-gray-200 border-collapse">
+      <colgroup>
+        <col className="w-[70%]" />
+        <col className="w-[30%]" />
+      </colgroup>
+      <thead className="bg-gray-50">
+        <tr>
+          <th className="px-6 py-3 text-left text-xs font-bold text-black uppercase tracking-wider border border-gray-200">
+            Title
+          </th>
+          <th className="px-6 py-2 text-center text-[10px] font-bold text-black uppercase tracking-wider border border-gray-200">
+            Abstract
+          </th>
+        </tr>
+      </thead>
+      <tbody className="bg-white divide-y divide-gray-200">
+        {articles.map((article, rowIndex) => (
+          <tr key={rowIndex} className={rowIndex % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
+            <td className="px-6 py-2 text-sm text-[#5C5C5C] font-semibold border border-gray-200">
+              <div className="truncate" title={article.title}>
+                {article.title}
+              </div>
+            </td>
+            <td className="px-2 py-2 text-sm border border-gray-200">
+              <div className="flex justify-center">
+                <button
+                  onClick={() => setSelectedArticle(article)}
+                  className="text-[#0076F5] hover:text-[#0056b3] underline text-center text-s whitespace-nowrap"
+                >
+                  See abstract
+                </button>
+              </div>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
+
+  const renderFullTable = () => (
+    <table className="w-full table-fixed divide-y divide-gray-200 border-collapse">
+      <colgroup>
+        <col className="w-[42%]" />
+        <col className="w-[10%]" />
+        {criteria.map((_, i) => (
+          <col key={i} className="w-[8%]" />
+        ))}
+      </colgroup>
+      <thead className="bg-gray-50">
+        <tr>
+          <th className="px-6 py-3 text-left text-xs font-bold text-black uppercase tracking-wider border border-gray-200">
+            Title
+          </th>
+          <th className="px-6 py-2 text-center text-[10px] font-bold text-black uppercase tracking-wider border border-gray-200">
+            Abstract
+          </th>
+          {criteria.map((_, i) => (
+            <th 
+              key={i}
+              className="px-2 py-2 text-center text-[10px] font-bold text-black uppercase tracking-wider border border-gray-200"
+            >
+              {`Criteria ${i + 1}`}
+            </th>
+          ))}
+        </tr>
+      </thead>
+      <tbody className="bg-white divide-y divide-gray-200">
+        {articles.map((article, rowIndex) => (
+          <tr key={rowIndex} className={rowIndex % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
+            <td className="px-6 py-2 text-sm text-[#5C5C5C] font-semibold border border-gray-200">
+              <div className="truncate" title={article.title}>
+                {article.title}
+              </div>
+            </td>
+            <td className="px-2 py-2 text-sm border border-gray-200">
+              <div className="flex justify-center">
+                <button
+                  onClick={() => setSelectedArticle(article)}
+                  className="text-[#0076F5] hover:text-[#0056b3] underline text-center text-s whitespace-nowrap"
+                >
+                  See abstract
+                </button>
+              </div>
+            </td>
+            {criteria.map((_, columnIndex) => (
+              <td key={columnIndex} className="px-6 py-1 whitespace-nowrap text-sm text-center border border-gray-200">
+                <div className="flex justify-center items-center">
+                  {(isCalculating || calculationComplete) && isRowLoaded(rowIndex) && (
+                    <div className="relative group">
+                      <div className="w-5 h-5 rounded-md border-2 border-gray-300 flex items-center justify-center">
+                        <div 
+                          className={`w-2 h-2 rounded-full ${getAnswerColor(article.answers[columnIndex])}`}
+                        />
+                      </div>
+                      {/* Tooltip */}
+                      <div className="opacity-0 invisible group-hover:opacity-100 group-hover:visible 
+                                    absolute left-1/2 bottom-full transform -translate-x-1/2 -translate-y-2
+                                    bg-gray-900 text-white text-xs rounded py-1 px-2 w-48 z-50
+                                    whitespace-normal text-left">
+                        {article.justifications[columnIndex] || 'No justification provided'}
+                        {/* Arrow */}
+                        <div className="absolute left-1/2 bottom-0 transform -translate-x-1/2 translate-y-full
+                                      border-4 border-transparent border-t-gray-900"/>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </td>
+            ))}
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
+
   return (
     <div className="mt-8">
       <div className="rounded-xl border border-gray-200">
-        <table className="w-full table-fixed divide-y divide-gray-200 border-collapse">
-          <colgroup>
-            <col className="w-[42%]" />
-            <col className="w-[10%]" />
-            {criteria.map((_, i) => (
-              <col key={i} className="w-[8%]" />
-            ))}
-          </colgroup>
-          <thead className="bg-gray-50">
-            <tr>
-              <th className="px-6 py-3 text-left text-xs font-bold text-black uppercase tracking-wider border border-gray-200">
-                Title
-              </th>
-              <th className="px-6 py-2 text-center text-[10px] font-bold text-black uppercase tracking-wider border border-gray-200">
-                Abstract
-              </th>
-              {criteria.map((_, i) => (
-                <th 
-                  key={i}
-                  className="px-2 py-2 text-center text-[10px] font-bold text-black uppercase tracking-wider border border-gray-200"
-                >
-                  {`Criteria ${i + 1}`}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
-            {articles.map((article, rowIndex) => (
-              <tr key={rowIndex} className={rowIndex % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
-                <td className="px-6 py-2 text-sm text-[#5C5C5C] font-semibold border border-gray-200">
-                  <div className="truncate" title={article.title}>
-                    {article.title}
-                  </div>
-                </td>
-                <td className="px-2 py-2 text-sm border border-gray-200">
-                  <div className="flex justify-center">
-                    <button
-                      onClick={() => setSelectedArticle(article)}
-                      className="text-[#0076F5] hover:text-[#0056b3] underline text-center text-s whitespace-nowrap"
-                    >
-                      See abstract
-                    </button>
-                  </div>
-                </td>
-                {criteria.map((_, columnIndex) => (
-                  <td key={columnIndex} className="px-6 py-1 whitespace-nowrap text-sm text-center border border-gray-200">
-                    <div className="flex justify-center items-center">
-                      {(isCalculating || calculationComplete) && isRowLoaded(rowIndex) && (
-                        <div className="relative group">
-                          <div className="w-5 h-5 rounded-md border-2 border-gray-300 flex items-center justify-center">
-                            <div 
-                              className={`w-2 h-2 rounded-full ${getAnswerColor(article.answers[columnIndex])}`}
-                            />
-                          </div>
-                          {/* Tooltip */}
-                          <div className="opacity-0 invisible group-hover:opacity-100 group-hover:visible 
-                                        absolute left-1/2 bottom-full transform -translate-x-1/2 -translate-y-2
-                                        bg-gray-900 text-white text-xs rounded py-1 px-2 w-48 z-50
-                                        whitespace-normal text-left">
-                            {article.justifications[columnIndex] || 'No justification provided'}
-                            {/* Arrow */}
-                            <div className="absolute left-1/2 bottom-0 transform -translate-x-1/2 translate-y-full
-                                          border-4 border-transparent border-t-gray-900"/>
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  </td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        {criteria.length > 0 ? renderFullTable() : renderBasicTable()}
       </div>
 
       {/* Enhanced Abstract Modal */}

@@ -195,15 +195,13 @@ const CriteriaSelection: React.FC<CriteriaSelectionProps> = ({ onCriteriaChange 
         </div>
       )}
 
-      {/* Add the table below existing content */}
-      {activeCriteria.length > 0 && (
-        <SampleTable 
-          articles={sampleArticles}
-          criteria={activeCriteria.map(c => truncateText(c.text, 30))}
-          isCalculating={isCalculating}
-          onCalculationComplete={handleCalculationComplete}
-        />
-      )}
+      <h2 className="text-xl font-bold text-gray-900 mb-4">Results on 20 papers</h2>
+      <SampleTable 
+        articles={sampleArticles}
+        criteria={activeCriteria.map(c => truncateText(c.text, 30))}
+        isCalculating={isCalculating}
+        onCalculationComplete={handleCalculationComplete}
+      />
 
       {/* Footer with buttons */}
       <div className="fixed bottom-0 right-0 bg-white border-t border-gray-200 px-6 py-4 w-full">

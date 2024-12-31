@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { FaFolder, FaClock, FaFile, FaFilter, FaSearch, FaUser, FaCalendar, FaTrash } from 'react-icons/fa';
 import { PiCalendarDots,PiBooksLight,PiFoldersDuotone,PiClock    } from "react-icons/pi"
 import { AiOutlineFileSearch } from "react-icons/ai";
@@ -24,6 +24,26 @@ const LandingPage: React.FC = () => {
   const projects = useSelector((state: RootState) => state.projects.projects);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  // Add ref for the filter container
+  const filterRef = useRef<HTMLDivElement>(null);
+
+  // Add click outside handler
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (filterRef.current && !filterRef.current.contains(event.target as Node)) {
+        setShowFilters(false);
+      }
+    };
+
+    if (showFilters) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showFilters]);
 
   // Filter projects based on all criteria
   const filteredProjects = useMemo(() => {
@@ -182,7 +202,7 @@ const LandingPage: React.FC = () => {
         <h1 className="text-3xl font-bold">Dashboard</h1>
         
         {/* Filter Button and Dropdown */}
-        <div className="relative">
+        <div className="relative" ref={filterRef}>
           <button
             onClick={() => setShowFilters(!showFilters)}
             className="px-4 py-2 bg-white border border-gray-200 rounded-lg flex items-center gap-2 hover:bg-gray-50 transition-colors"
