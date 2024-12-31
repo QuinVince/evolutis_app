@@ -259,10 +259,8 @@ const SLRPipeline: React.FC<SLRPipelineProps> = ({ mode: initialMode, initialDat
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
-      {/* Existing content wrapped in a flex-grow div */}
-      <div className="flex-grow">
-        {/* Breadcrumb */}
+    <div className="relative min-h-screen flex flex-col">
+      <div className="flex-grow pb-16">
         <div className="bg-white px-6 py-4">
           <nav className="flex items-center space-x-2 text-sm">
             <Link to="/" className="text-gray-500 hover:text-gray-700">
@@ -280,7 +278,6 @@ const SLRPipeline: React.FC<SLRPipelineProps> = ({ mode: initialMode, initialDat
           </nav>
         </div>
 
-        {/* Header with editable title */}
         <div className="bg-white border-b border-gray-200 px-6 py-4">
           <div className="flex items-center justify-between">
             {isEditingTitle ? (
@@ -307,7 +304,6 @@ const SLRPipeline: React.FC<SLRPipelineProps> = ({ mode: initialMode, initialDat
           </div>
         </div>
 
-        {/* Tab Navigation - always visible */}
         <div className="bg-white border-b border-gray-200">
           <div className="px-6">
             <nav className="flex space-x-8">
@@ -328,14 +324,12 @@ const SLRPipeline: React.FC<SLRPipelineProps> = ({ mode: initialMode, initialDat
           </div>
         </div>
 
-        {/* Tab Content */}
         <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
           {renderTabContent()}
         </div>
       </div>
 
-      {/* Footer */}
-      <div className="bg-white border-t border-gray-200 px-6 py-4">
+      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-6 py-4 z-50">
         <div className="flex justify-end items-center max-w-7xl mx-auto">
           <button
             onClick={handleSave}
