@@ -38,34 +38,11 @@ const pipelineSlice = createSlice({
   name: 'pipeline',
   initialState,
   reducers: {
-    createPipeline: (state, action: PayloadAction<{ projectId: string; name: string; id: string }>) => {
+    createPipeline: (state, action: PayloadAction<Pipeline>) => {
       const exists = state.pipelines.some(p => p.id === action.payload.id);
       if (!exists) {
-        const newPipeline: Pipeline = {
-          id: action.payload.id,
-          projectId: action.payload.projectId,
-          name: action.payload.name,
-          fileScreening: 'in_progress',
-          totalFiles: null,
-          duplicates: null,
-          fileSelection: null,
-          criteria: null,
-          lastModified: new Date().toISOString(),
-          currentStep: 'screening',
-          screeningStep: 'new',
-          queryData: {
-            description: '',
-            query: '',
-            projectTitle: action.payload.name,
-            projectId: action.payload.projectId,
-            questions: [],
-            answers: {},
-            pubmedQuery: '',
-            generatedQuery: false
-          }
-        };
-        console.log('Pipeline reducer - creating:', newPipeline);
-        state.pipelines.push(newPipeline);
+        state.pipelines.push(action.payload);
+        console.log('Pipeline reducer - creating:', action.payload);
       } else {
         console.log('Pipeline already exists, skipping creation:', action.payload.id);
       }

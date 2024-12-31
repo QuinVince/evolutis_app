@@ -127,11 +127,14 @@ const SLRPipeline: React.FC<SLRPipelineProps> = ({ mode: initialMode, initialDat
 
       if (!pipelineId) {
         setPipelineId(newPipelineId);
-        dispatch(createPipeline(pipelineState));
-        console.log('handleSave - Created new pipeline',pipelineState);
+        dispatch(createPipeline({
+          ...pipelineState,
+          lastModified: new Date().toISOString()
+        }));
+        console.log('handleSave - Created new pipeline');
       } else {
         dispatch(updatePipeline(pipelineState));
-        console.log('handleSave - Updated existing pipeline',pipelineState);
+        console.log('handleSave - Updated existing pipeline');
       }
       
       setIsDirty(false);

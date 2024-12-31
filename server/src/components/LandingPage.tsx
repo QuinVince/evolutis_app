@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { FaFolder, FaClock, FaFile, FaFilter, FaSearch, FaUser, FaCalendar, FaTrash } from 'react-icons/fa';
-import { PiCalendarDots,PiBooksLight   } from "react-icons/pi";
+import { PiCalendarDots,PiBooksLight,PiFoldersDuotone   } from "react-icons/pi"
 import { IoMdSearch } from "react-icons/io";
 import { GrUser } from "react-icons/gr";
 import { BsSliders } from "react-icons/bs";
@@ -43,7 +43,7 @@ const LandingPage: React.FC = () => {
       >
         <div className="flex items-center space-x-4">
           <div className="p-4 rounded-full bg-[#DCF8FF]">
-            <FaFolder className="w-6 h-6 text-[#068EF1]" />
+            <PiFoldersDuotone className="w-6 h-6 text-[#068EF1]" />
           </div>
           <div>
             <div className="flex items-center space-x-3">
@@ -51,7 +51,7 @@ const LandingPage: React.FC = () => {
               <span className={`px-2 py-1 rounded-md text-xs font-medium ${
                 project.status === 'in_progress' 
                   ? 'bg-[#5CABFF] text-white' 
-                  : 'bg-green-100 text-green-800'
+                  : 'bg-[#35AC5A] text-white'
               }`}>
                 {project.status === 'in_progress' ? 'In progress' : 'Done'}
               </span>
