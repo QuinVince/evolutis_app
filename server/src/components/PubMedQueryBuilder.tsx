@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { FaPlus, FaTimes, FaCheck, FaSync } from 'react-icons/fa';
+import { FaPlus, FaTimes, FaCheck } from 'react-icons/fa';
 import bulbIcon from '../assets/image_bulb.png';
 import SynonymTooltip from './SynonymTooltip';
 import DuplicateAnalysisTable from './DuplicateAnalysisTable';
 import { mockDuplicatePairs } from '../utils/mockData';
-import { DuplicatePair } from './DuplicateAnalysis';
+import { DuplicatePair } from './DuplicateAnalysisTable';
 import { useDispatch } from 'react-redux';
 import { saveQuery } from '../store/querySlice';
 import { SavedQuery } from '../App';
 import axios from 'axios';
+
+
 
 interface PubMedQueryBuilderProps {
   query: string;
@@ -49,6 +51,7 @@ const PubMedQueryBuilder: React.FC<PubMedQueryBuilderProps> = ({
   questions,
   answers
 }) => {
+  const [processedQuery, setProcessedQuery] = useState('');
   const [subqueries, setSubqueries] = React.useState<Subquery[]>([]);
   const [activeSynonymIndex, setActiveSynonymIndex] = React.useState<number | null>(null);
   const [tooltipPosition, setTooltipPosition] = React.useState<{ top: number; left: number } | null>(null);
@@ -92,17 +95,36 @@ const PubMedQueryBuilder: React.FC<PubMedQueryBuilderProps> = ({
     }
   };
 
-  React.useEffect(() => {
-    try {
-      if (query) {
-        const queryData = JSON.parse(query);
-        if (queryData.subqueries && Array.isArray(queryData.subqueries)) {
-          setSubqueries(queryData.subqueries);
-          setStatsNeedUpdate(true);
+  useEffect(() => {
+    if (query) {
+      try {
+        setProcessedQuery(query);
+        
+        // Try to parse as JSON first (for saved queries)
+        try {
+          const parsedQuery = JSON.parse(query);
+          if (parsedQuery.subqueries) {
+            setSubqueries(parsedQuery.subqueries);
+            console.log('Loaded saved subqueries:', parsedQuery.subqueries);
+            return;
+          }
+        } catch (e) {
+          // If JSON parsing fails, treat as plain text query
+          console.log('Parsing as plain text query');
         }
+
+        // Fall back to splitting plain text query
+        const parts = query.split(/\n\nAND\n\n/);
+        const newSubqueries = parts.map(part => ({
+          content: part.trim().replace(/^\(|\)$/g, ''),
+          operator: 'AND' as const
+        }));
+        
+        setSubqueries(newSubqueries);
+        console.log('Setting subqueries from plain text:', newSubqueries);
+      } catch (error) {
+        console.error('Error processing query:', error);
       }
-    } catch (e) {
-      console.error('Error parsing query:', e);
     }
   }, [query]);
 
@@ -280,19 +302,26 @@ const PubMedQueryBuilder: React.FC<PubMedQueryBuilderProps> = ({
     if (duplicatesTreated) {
       const newQuery: SavedQuery = {
         id: Date.now().toString(),
+        projectId: 'project-1',
         name: 'Query ' + new Date().toLocaleDateString(),
-        description: description,
-        questions: questions,
-        answers: answers,
-        pubmedQuery: query,
-        collectedDocuments: {
-          pubmed: localDocumentStats.files - localDocumentStats.duplicates,
-          semanticScholar: 0,
-          removedDuplicates: remainingDuplicates
-        },
-        paperCount: localDocumentStats.files - remainingDuplicates,
-        freeFullTextCount: Math.floor((localDocumentStats.files - remainingDuplicates) * 0.4),
-        yearDistribution: {}
+        fileScreening: 'in_progress',
+        totalFiles: 0,
+        duplicates: 0,
+        fileSelection: 0,
+        criteria: 5,
+        lastModified: new Date().toISOString(),
+        currentStep: 'screening',
+        screeningStep: 'generator',
+        queryData: {
+          description: description,
+          query: query,
+          projectTitle: 'Query ' + new Date().toLocaleDateString(),
+          projectId: 'project-1',
+          questions: questions,
+          answers: answers,
+          pubmedQuery: query,
+          generatedQuery: true
+        }
       };
 
       dispatch(saveQuery(newQuery));
@@ -310,19 +339,26 @@ const PubMedQueryBuilder: React.FC<PubMedQueryBuilderProps> = ({
     // Create a new query object
     const newQuery: SavedQuery = {
       id: Date.now().toString(),
+      projectId: 'project-1',
       name: 'Query ' + new Date().toLocaleDateString(),
-      description: description,
-      questions: questions,
-      answers: answers,
-      pubmedQuery: query,
-      collectedDocuments: {
-        pubmed: localDocumentStats.files - localDocumentStats.duplicates,
-        semanticScholar: 0,
-        removedDuplicates: remainingDuplicates
-      },
-      paperCount: localDocumentStats.files - remainingDuplicates,
-      freeFullTextCount: Math.floor((localDocumentStats.files - remainingDuplicates) * 0.4),
-      yearDistribution: {}
+      fileScreening: 'in_progress',
+      totalFiles: 0,
+      duplicates: 0,
+      fileSelection: 0,
+      criteria: 5,
+      lastModified: new Date().toISOString(),
+      currentStep: 'screening',
+      screeningStep: 'generator',
+      queryData: {
+        description: description,
+        query: query,
+        projectTitle: 'Query ' + new Date().toLocaleDateString(),
+        projectId: 'project-1',
+        questions: questions,
+        answers: answers,
+        pubmedQuery: query,
+        generatedQuery: true
+      }
     };
 
     // Save to Redux store

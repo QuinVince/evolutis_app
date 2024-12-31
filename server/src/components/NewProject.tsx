@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link, useParams } from 'react-router-dom';
-import { FaFolder, FaEdit, FaUser, FaTimes, FaPlus, FaChevronRight, FaSearch, FaFilter, FaBatteryThreeQuarters } from 'react-icons/fa';
+import { FaFolder, FaEdit, FaPlus, FaChevronRight, FaSearch, FaFilter } from 'react-icons/fa';
 import { TbCircleDotted } from "react-icons/tb";
 import { GrUser } from "react-icons/gr";
 import { AiOutlineTags } from "react-icons/ai";
 import { useDispatch, useSelector } from 'react-redux';
-import { addProject, updateProject } from '../store/projectSlice';
+import { addProject, updateProject, Project } from '../store/projectSlice';
 import { RootState } from '../store/store';
 import QueryTable from './QueryTable';
 
@@ -14,11 +14,80 @@ interface Tag {
   name: string;
 }
 
+const generateUniqueName = (projects: Project[], baseName: string = "New project"): string => {
+  let name = baseName;
+  let counter = 1;
+  
+  console.log('Generating unique name. Current projects:', projects.map(p => p.name));
+  
+  while (projects.some(p => p.name === name)) {
+    name = `${baseName} (${counter})`;
+    counter++;
+    console.log('Name already exists, trying:', name);
+  }
+  
+  console.log('Final unique name:', name);
+  return name;
+};
+
+const getTagColor = (index: number): string => {
+  const colors = [
+    'bg-blue-100 text-black',    // Blue
+    'bg-green-100 text-black',  // Green
+    'bg-purple-100 text-black', // Purple
+    'bg-pink-100 text-black',    // Pink
+    'bg-yellow-100 text-black', // Yellow
+    'bg-indigo-100 text-black', // Indigo
+    'bg-red-100 text-black',      // Red
+    'bg-teal-100 text-black'     // Teal
+  ];
+  return colors[index % colors.length];
+};
+
 const NewProject: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { projectId } = useParams<{ projectId: string }>();
+  const projects = useSelector((state: RootState) => state.projects.projects);
+  const hasDispatchedRef = React.useRef(false);
   
+  useEffect(() => {
+    if (!projectId && !hasDispatchedRef.current) {
+      console.log('Starting project creation...');
+      hasDispatchedRef.current = true;
+      
+      const newProjectId = Date.now().toString();
+      const existingNames = projects.map(p => p.name);
+      console.log('Existing project names:', existingNames);
+      
+      let name = "New project";
+      let counter = 1;
+      while (existingNames.includes(name)) {
+        name = `New project (${counter})`;
+        counter++;
+        console.log('Trying name:', name);
+      }
+      
+      const projectData = {
+        id: newProjectId,
+        name: name,
+        status: 'in_progress' as const,
+        author: "Fanny M.",
+        createdAt: new Date().toISOString(),
+        queryCount: 0,
+        tags: []
+      };
+      
+      console.log('Creating project with data:', projectData);
+      dispatch(addProject(projectData));
+      navigate(`/project/${newProjectId}`, { replace: true });
+    }
+    
+    return () => {
+      hasDispatchedRef.current = false;
+    };
+  }, [projectId]);  // Remove projects, dispatch, navigate from dependencies
+
   // Get project from store if editing existing project
   const existingProject = useSelector((state: RootState) => 
     projectId ? state.projects.projects.find(p => p.id === projectId) : null
@@ -27,20 +96,52 @@ const NewProject: React.FC = () => {
   const [projectTitle, setProjectTitle] = useState(existingProject?.name || "New project");
   const [isEditingTitle, setIsEditingTitle] = useState(false);
   const [assignee] = useState(existingProject?.author || "Fanny M.");
-  const [tags, setTags] = useState<Tag[]>(
-    existingProject?.tags.map(tag => ({ id: Date.now().toString(), name: tag })) || []
-  );
+  const [tags, setTags] = useState<Tag[]>([]);
   const [newTag, setNewTag] = useState("");
   const [showTagInput, setShowTagInput] = useState(false);
   const [localProjectId, setLocalProjectId] = useState(Date.now().toString());
 
-  // Update local state when existing project is loaded
+  // Update local state when existing project is loaded or changed
   useEffect(() => {
+    console.log('Project change detected:', {
+      projectId,
+      existingProject,
+      timestamp: new Date().toISOString()
+    });
+
     if (existingProject) {
+      console.log('Loading project:', {
+        id: existingProject.id,
+        name: existingProject.name,
+        tags: existingProject.tags,
+        timestamp: new Date().toISOString()
+      });
+      
       setProjectTitle(existingProject.name);
-      setTags(existingProject.tags.map(tag => ({ id: Date.now().toString(), name: tag })));
+      
+      // Clear existing tags first, then set new ones
+      setTags([]); // Clear existing tags
+      const newTags = existingProject.tags.map(tag => ({
+        id: `${Date.now()}-${Math.random()}`, // Ensure unique IDs
+        name: tag
+      }));
+      
+      console.log('Setting new tags:', {
+        newTags,
+        timestamp: new Date().toISOString()
+      });
+      
+      setTags(newTags);
+    } else {
+      // Reset everything when no project is found
+      console.log('No project found, clearing state', {
+        projectId,
+        timestamp: new Date().toISOString()
+      });
+      setTags([]);
+      setProjectTitle("New project");
     }
-  }, [existingProject]);
+  }, [existingProject?.id]); // Change dependency to existingProject?.id
 
   const handleTitleSubmit = () => {
     setIsEditingTitle(false);
@@ -62,15 +163,52 @@ const NewProject: React.FC = () => {
   };
 
   const handleAddTag = () => {
-    if (newTag.trim()) {
-      setTags([...tags, { id: Date.now().toString(), name: newTag.trim() }]);
+    console.log('Adding tag:', {
+      newTag,
+      existingProjectId: existingProject?.id,
+      currentTags: tags,
+      timestamp: new Date().toISOString()
+    });
+
+    if (newTag.trim() && existingProject) {
+      const newTagObject = { id: Date.now().toString(), name: newTag.trim() };
+      setTags(prevTags => {
+        console.log('Updating tags:', {
+          prevTags,
+          newTag: newTagObject,
+          projectId: existingProject.id,
+          timestamp: new Date().toISOString()
+        });
+        return [...prevTags, newTagObject];
+      });
+      
+      console.log('Dispatching project update:', {
+        projectId: existingProject.id,
+        updatedTags: [...tags.map(t => t.name), newTag.trim()],
+        timestamp: new Date().toISOString()
+      });
+
+      dispatch(updateProject({
+        ...existingProject,
+        tags: [...tags.map(t => t.name), newTag.trim()]
+      }));
+      
       setNewTag("");
       setShowTagInput(false);
     }
   };
 
   const handleRemoveTag = (tagId: string) => {
-    setTags(tags.filter(tag => tag.id !== tagId));
+    if (existingProject) {
+      const updatedTags = tags.filter(t => t.id !== tagId);
+      setTags(updatedTags);
+      
+      // Update project in store with removed tag
+      dispatch(updateProject({
+        ...existingProject,
+        tags: updatedTags.map(t => t.name)
+      }));
+    }
   };
 
   const handleNewQuery = () => {
@@ -161,19 +299,19 @@ const NewProject: React.FC = () => {
           </div>
           <div className="ml-4">
             <div className="flex items-center flex-wrap gap-2">
-              {tags.map(tag => (
-                <div
+              {tags.map((tag, index) => (
+                <span
                   key={tag.id}
-                  className="flex items-center space-x-2 px-3 py-1 bg-gray-100 rounded-full"
+                  className={`inline-flex items-center px-2 py-1 rounded-md text-sm ${getTagColor(index)}`}
                 >
-                  <span className="text-sm text-gray-700">{tag.name}</span>
+                  {tag.name}
                   <button
                     onClick={() => handleRemoveTag(tag.id)}
-                    className="text-gray-400 hover:text-gray-600"
+                    className="ml-1 hover:text-gray-700"
                   >
-                    
+                    ×
                   </button>
-                </div>
+                </span>
               ))}
               {showTagInput ? (
                 <div className="flex items-center space-x-2">

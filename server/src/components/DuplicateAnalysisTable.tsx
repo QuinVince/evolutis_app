@@ -1,6 +1,19 @@
-import React, { useState } from 'react';
-import { FaFileAlt, FaToggleOn, FaToggleOff, FaChevronDown, FaTrash, FaTimes, FaEye } from 'react-icons/fa';
-import { DuplicatePair } from './DuplicateAnalysis';
+import React from 'react';
+import {  FaChevronDown, FaTrash, FaTimes, FaEye } from 'react-icons/fa';
+
+
+export interface DuplicatePair {
+  id: number;
+  article1: {
+    title: string;
+    abstract: string;
+  };
+  article2: {
+    title: string;
+    abstract: string;
+  };
+  proximityScore: number;
+}
 
 interface DuplicateAnalysisTableProps {
   duplicatePairs: DuplicatePair[];
