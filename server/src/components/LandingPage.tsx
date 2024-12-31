@@ -11,6 +11,32 @@ import { RootState } from '../store/store';
 import { Project } from '../store/projectSlice';
 import { deleteProject } from '../store/projectSlice';
 
+const getProjectColors = (projectId: string) => {
+  const colorSchemes = {
+    'project-1': {
+      bg: 'bg-blue-50',
+      icon: 'text-blue-500'
+    },
+    'project-2': {
+      bg: 'bg-purple-50',
+      icon: 'text-purple-500'
+    },
+    'project-3': {
+      bg: 'bg-green-50',
+      icon: 'text-green-500'
+    },
+    'project-4': {
+      bg: 'bg-orange-50',
+      icon: 'text-orange-500'
+    }
+  };
+
+  return colorSchemes[projectId as keyof typeof colorSchemes] || {
+    bg: 'bg-[#DCF8FF]',
+    icon: 'text-[#068EF1]'
+  };
+};
+
 const LandingPage: React.FC = () => {
   const [showFilters, setShowFilters] = useState(false);
   const [filterKeyword, setFilterKeyword] = useState('');
@@ -121,6 +147,8 @@ const LandingPage: React.FC = () => {
   };
 
   const ProjectCard: React.FC<{ project: Project }> = ({ project }) => {
+    const colors = getProjectColors(project.id);
+    
     const handleDelete = (e: React.MouseEvent) => {
       e.stopPropagation();
       if (window.confirm('Are you sure you want to delete this project?')) {
@@ -134,8 +162,8 @@ const LandingPage: React.FC = () => {
         className="flex items-center justify-between bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer group"
       >
         <div className="flex items-center space-x-4">
-          <div className="p-4 rounded-full bg-[#DCF8FF]">
-            <PiFoldersDuotone className="w-6 h-6 text-[#068EF1]" />
+          <div className={`p-4 rounded-full ${colors.bg}`}>
+            <PiFoldersDuotone className={`w-6 h-6 ${colors.icon}`} />
           </div>
           <div>
             <div className="flex items-center space-x-3">
