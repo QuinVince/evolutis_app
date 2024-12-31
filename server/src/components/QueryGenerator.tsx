@@ -108,7 +108,7 @@ const QueryGenerator: React.FC<QueryGeneratorProps> = ({ initialData, ...props }
   const generateQuestions = async (query: string) => {
     //For production in replit, replace by:
     //const response = await axios.post('/generate_questions', { query });
-    const response = await axios.post('http://localhost:8000/generate_questions', { query });
+    const response = await axios.post('/generate_questions', { query });
     return response.data;
   };
 
@@ -116,7 +116,7 @@ const QueryGenerator: React.FC<QueryGeneratorProps> = ({ initialData, ...props }
     try {
       //For production in replit, replace by:
       //const response = await axios.post('/generate_pubmed_query', { query, answers });
-      const response = await axios.post('http://localhost:8000/generate_pubmed_query', { query, answers });
+      const response = await axios.post('/generate_pubmed_query', { query, answers });
 
       // Format the received query with proper structure
       const rawQuery = response.data.query.replace(/```/g, '').trim();
@@ -162,7 +162,7 @@ const QueryGenerator: React.FC<QueryGeneratorProps> = ({ initialData, ...props }
 
     try {
       // Get stats from backend instead of DocumentStats
-      const response = await axios.post('http://localhost:8000/generate_stats', {
+      const response = await axios.post('/generate_stats', {
         projectId: projectId
       });
       
@@ -211,7 +211,7 @@ const QueryGenerator: React.FC<QueryGeneratorProps> = ({ initialData, ...props }
           try {
             //For production in replit, replace by:
             //const synonymsResponse = await axios.post('/generate_synonyms', {
-            const synonymsResponse = await axios.post('http://localhost:8000/generate_synonyms', {
+            const synonymsResponse = await axios.post('/generate_synonyms', {
               description: naturalLanguageQuery,
               questions: questions,
               answers: answers,
@@ -295,7 +295,7 @@ const QueryGenerator: React.FC<QueryGeneratorProps> = ({ initialData, ...props }
     try {
       //For production in replit, replace by:
       //const response = await axios.post('/generate_synonyms', {
-      const response = await axios.post('http://localhost:8000/generate_synonyms', {
+      const response = await axios.post('/generate_synonyms', {
         description: naturalLanguageQuery,
         questions: questions,
         answers: answers,
@@ -397,7 +397,7 @@ const QueryGenerator: React.FC<QueryGeneratorProps> = ({ initialData, ...props }
     
     try {
       // Generate PubMed query
-      const queryResponse = await axios.post('http://localhost:8000/generate_pubmed_query', {
+      const queryResponse = await axios.post('/generate_pubmed_query', {
         query: naturalLanguageQuery,
         answers: answers
       });
@@ -436,8 +436,9 @@ const QueryGenerator: React.FC<QueryGeneratorProps> = ({ initialData, ...props }
       console.log('handleGenerateQuery - Sending data to parent:', updatedData);
       props.onSaveQuery(updatedData);
 
-      // Continue with synonyms generation...
-      const synonymsResponse = await axios.post('http://localhost:8000/generate_synonyms', {
+      // Generate synonyms
+      const synonymsResponse = await axios.post('/generate_synonyms', {
+
         description: naturalLanguageQuery,
         questions: questions,
         answers: answers,

@@ -8,10 +8,10 @@ import json
 import logging
 import os
 from dotenv import load_dotenv
-from document_stats import DocumentStats
+from .document_stats import DocumentStats
 #For production in replit, replace by: 
 #from .prisma_generator import generate_prisma_diagram
-from prisma_generator import generate_prisma_diagram
+from .prisma_generator import generate_prisma_diagram
 import tempfile
 
 # Load environment variables from .env file
@@ -70,8 +70,7 @@ async def generate_questions(request: Request):
         if not os.getenv("MISTRAL_API_KEY"):
             raise HTTPException(status_code=500, detail="MISTRAL_API_KEY environment variable not set")
         #For production in replit, replace by:
-        #result = subprocess.run(['python', 'backend/generate_questions.py', query], capture_output=True, text=True)
-        result = subprocess.run(['python', 'generate_questions.py', query], capture_output=True, text=True)
+        result = subprocess.run(['python', 'backend/generate_questions.py', query], capture_output=True, text=True)
         logger.info(f"generate_questions.py output: {result.stdout}")
         if result.stderr:
             logger.error(f"generate_questions.py error: {result.stderr}")
@@ -97,7 +96,7 @@ async def generate_pubmed_query(request: PubMedQueryRequest):
             output_path = tmp_file.name
         
         result = subprocess.run(
-            ['python', 'generate_pubmed_query.py', request.query, json.dumps(request.answers), output_path], 
+            ['python', 'backend/generate_pubmed_query.py', request.query, json.dumps(request.answers), output_path], 
             capture_output=True, 
             text=True
         )
@@ -200,8 +199,7 @@ for route in app.routes:
 # Mount the static directory
 frontend_dir = os.path.join(os.path.dirname(__file__), '..', 'server', 'build')
 #For production in replit, replace by:
-#app.mount("/", StaticFiles(directory=frontend_dir, html=True), name="static")
-app.mount("/static", StaticFiles(directory="static"), name="static")
+app.mount("/", StaticFiles(directory=frontend_dir, html=True), name="static")
 logger.debug(f"Serving static files from {frontend_dir}")
 
 

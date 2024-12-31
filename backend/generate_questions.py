@@ -42,7 +42,7 @@ def main():
          Topics are useful of a high expertise level, then propose very relevant and expert questions to clarify the research scope.
          Ask maximum 5 questions, that cannot exceed 30 words each
 
-         Include systematically a question about the body part related to the medical device, if it relevant only.
+         Include a question about the body part related to the medical device, if it relevant only. Don't force the question if the suject is not related to the body part.
          Among relevant questions, ones that help to understand the PICO (population, intervention, comparison, outcome) can be useful
         Exclude questions about study type and timeframe
         Questions can be adressed directly to the author: "About what type are you interested in ?"
