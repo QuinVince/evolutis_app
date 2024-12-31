@@ -4,11 +4,13 @@ import bulbIcon from '../assets/image_bulb.png';
 import SynonymTooltip from './SynonymTooltip';
 import DuplicateAnalysisTable from './DuplicateAnalysisTable';
 import { mockDuplicatePairs } from '../utils/mockData';
-import { DuplicatePair } from './DuplicateAnalysis';
+import { DuplicatePair } from './DuplicateAnalysisTable';
 import { useDispatch } from 'react-redux';
 import { saveQuery } from '../store/querySlice';
 import { SavedQuery } from '../App';
 import axios from 'axios';
+
+
 
 interface PubMedQueryBuilderProps {
   query: string;
@@ -300,19 +302,26 @@ const PubMedQueryBuilder: React.FC<PubMedQueryBuilderProps> = ({
     if (duplicatesTreated) {
       const newQuery: SavedQuery = {
         id: Date.now().toString(),
+        projectId: 'project-1',
         name: 'Query ' + new Date().toLocaleDateString(),
-        description: description,
-        questions: questions,
-        answers: answers,
-        pubmedQuery: query,
-        collectedDocuments: {
-          pubmed: localDocumentStats.files - localDocumentStats.duplicates,
-          semanticScholar: 0,
-          removedDuplicates: remainingDuplicates
-        },
-        paperCount: localDocumentStats.files - remainingDuplicates,
-        freeFullTextCount: Math.floor((localDocumentStats.files - remainingDuplicates) * 0.4),
-        yearDistribution: {}
+        fileScreening: 'in_progress',
+        totalFiles: 0,
+        duplicates: 0,
+        fileSelection: 0,
+        criteria: 5,
+        lastModified: new Date().toISOString(),
+        currentStep: 'screening',
+        screeningStep: 'generator',
+        queryData: {
+          description: description,
+          query: query,
+          projectTitle: 'Query ' + new Date().toLocaleDateString(),
+          projectId: 'project-1',
+          questions: questions,
+          answers: answers,
+          pubmedQuery: query,
+          generatedQuery: true
+        }
       };
 
       dispatch(saveQuery(newQuery));
@@ -330,19 +339,26 @@ const PubMedQueryBuilder: React.FC<PubMedQueryBuilderProps> = ({
     // Create a new query object
     const newQuery: SavedQuery = {
       id: Date.now().toString(),
+      projectId: 'project-1',
       name: 'Query ' + new Date().toLocaleDateString(),
-      description: description,
-      questions: questions,
-      answers: answers,
-      pubmedQuery: query,
-      collectedDocuments: {
-        pubmed: localDocumentStats.files - localDocumentStats.duplicates,
-        semanticScholar: 0,
-        removedDuplicates: remainingDuplicates
-      },
-      paperCount: localDocumentStats.files - remainingDuplicates,
-      freeFullTextCount: Math.floor((localDocumentStats.files - remainingDuplicates) * 0.4),
-      yearDistribution: {}
+      fileScreening: 'in_progress',
+      totalFiles: 0,
+      duplicates: 0,
+      fileSelection: 0,
+      criteria: 5,
+      lastModified: new Date().toISOString(),
+      currentStep: 'screening',
+      screeningStep: 'generator',
+      queryData: {
+        description: description,
+        query: query,
+        projectTitle: 'Query ' + new Date().toLocaleDateString(),
+        projectId: 'project-1',
+        questions: questions,
+        answers: answers,
+        pubmedQuery: query,
+        generatedQuery: true
+      }
     };
 
     // Save to Redux store

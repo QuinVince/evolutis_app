@@ -237,30 +237,32 @@ const QueryGenerator: React.FC<QueryGeneratorProps> = ({ initialData, ...props }
   };
 
   const handleSaveQuery = () => {
-    const currentYear = new Date().getFullYear();
-    const mockYearDistribution: Record<number, number> = {};
-
-    // Generate mock data for the last 10 years
-    for (let year = currentYear - 9; year <= currentYear; year++) {
-      mockYearDistribution[year] = Math.floor(Math.random() * 100);
-    }
-
     const newQuery: SavedQuery = {
       id: Date.now().toString(),
+      projectId: initialData?.projectId || 'project-1',
       name: queryName,
-      description: naturalLanguageQuery,
-      questions: questions,
-      answers: answers,
-      pubmedQuery: pubMedQuery,
-      collectedDocuments: {
-        pubmed: collectedDocuments.pubmed,
-        semanticScholar: collectedDocuments.semanticScholar
-      },
-      paperCount: totalDocuments,
-      freeFullTextCount: Math.floor(totalDocuments * 0.4), // Assume 40% are free full text
-      yearDistribution: mockYearDistribution
+      fileScreening: 'in_progress' as const,
+      totalFiles: totalDocuments,
+      duplicates: Math.round(totalDocuments * 0.15),
+      fileSelection: totalDocuments - Math.round(totalDocuments * 0.15),
+      criteria: 5,
+      lastModified: new Date().toISOString(),
+      currentStep: 'screening' as const,
+      screeningStep: 'generator' as const,
+      queryData: {
+        description: naturalLanguageQuery,
+        query: pubMedQuery,
+        projectTitle: queryName,
+        projectId: initialData?.projectId || 'project-1',
+        questions: questions,
+        answers: answers,
+        pubmedQuery: pubMedQuery,
+        generatedQuery: true
+      }
     };
+
     props.onSaveQuery(newQuery);
+    
     // Reset form
     setStep(0);
     setQueryName('');
@@ -434,6 +436,33 @@ const QueryGenerator: React.FC<QueryGeneratorProps> = ({ initialData, ...props }
       setIsGeneratingPubMed(false);
       setIsGeneratingSynonyms(false);
     }
+
+    // After setting state, notify parent with complete SavedQuery structure
+    const updatedData: SavedQuery = {
+      id: Date.now().toString(),
+      projectId: initialData?.projectId || 'project-1',
+      name: 'New Query',
+      fileScreening: 'in_progress',
+      totalFiles: 0,
+      duplicates: 0,
+      fileSelection: 0,
+      criteria: 5,
+      lastModified: new Date().toISOString(),
+      currentStep: 'screening',
+      screeningStep: 'generator',
+      queryData: {
+        description: naturalLanguageQuery,
+        query: pubMedQuery,
+        projectTitle: 'New Query',
+        projectId: initialData?.projectId || 'project-1',
+        questions: questions,
+        answers: answers,
+        pubmedQuery: pubMedQuery,
+        generatedQuery: true
+      }
+    };
+    
+    props.onSaveQuery(updatedData);
   };
 
   const renderStep = () => {

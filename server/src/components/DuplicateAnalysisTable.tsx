@@ -1,6 +1,19 @@
 import React from 'react';
 import {  FaChevronDown, FaTrash, FaTimes, FaEye } from 'react-icons/fa';
-import { DuplicatePair } from './DuplicateAnalysis';
+
+
+export interface DuplicatePair {
+  id: number;
+  article1: {
+    title: string;
+    abstract: string;
+  };
+  article2: {
+    title: string;
+    abstract: string;
+  };
+  proximityScore: number;
+}
 
 interface DuplicateAnalysisTableProps {
   duplicatePairs: DuplicatePair[];

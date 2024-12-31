@@ -1,4 +1,4 @@
-import { DuplicatePair } from '../components/DuplicateAnalysis';
+import { DuplicatePair } from '../components/DuplicateAnalysisTable';
 import { Document } from '../components/DocumentAnalysis';
 
 export const mockDuplicatePairs: DuplicatePair[] = [

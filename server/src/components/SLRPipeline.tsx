@@ -29,19 +29,26 @@ const FileSelection: React.FC = () => (
 
 // Add this interface to track pipeline state
 interface PipelineState {
+  id: string;
+  projectId: string;
   name: string;
   fileScreening: 'in_progress' | 'completed';
-  totalFiles: number | null;
-  duplicates: number | null;
-  fileSelection: number | null;
-  criteria: number | null;
-  currentStep: 'screening' | 'criteria' | 'selection';
-  screeningStep: 'new' | 'parser' | 'generator';
+  totalFiles: number;
+  duplicates: number;
+  fileSelection: number;
+  criteria: number;
+  lastModified: string;
+  currentStep: 'screening' | 'selection';
+  screeningStep: 'generator' | 'parser';
   queryData: {
-    description?: string;
-    query?: string;
-    projectTitle?: string;
+    description: string;
+    query: string;
+    projectTitle: string;
     projectId: string;
+    questions: string[];
+    answers: Record<string, string>;
+    pubmedQuery: string;
+    generatedQuery: boolean;
   };
 }
 
@@ -54,7 +61,16 @@ const SLRPipeline: React.FC<SLRPipelineProps> = ({ mode: initialMode, initialDat
 
   // Add states for handling the screening flow
   const [screeningStep, setScreeningStep] = useState<'new' | 'parser' | 'generator'>('new');
-  const [queryData, setQueryData] = useState({
+  const [queryData, setQueryData] = useState<{
+    projectId: string;
+    description?: string;
+    query?: string;
+    projectTitle?: string;
+    questions?: string[];
+    answers?: Record<string, string>;
+    pubmedQuery?: string;
+    generatedQuery?: boolean;
+  }>({
     ...initialData,
     projectId: initialData?.projectId || ''
   });
@@ -79,41 +95,42 @@ const SLRPipeline: React.FC<SLRPipelineProps> = ({ mode: initialMode, initialDat
   // New save handler
   const handleSave = () => {
     if (initialData?.projectId) {
+      console.log('handleSave - Current queryData:', queryData);
+      
       const newPipelineId = pipelineId || Date.now().toString();
       const pipelineState: PipelineState = {
+        id: newPipelineId,
+        projectId: initialData.projectId,
         name: slrTitle,
         fileScreening: 'in_progress',
-        totalFiles: null,
-        duplicates: null,
-        fileSelection: null,
-        criteria: null,
-        currentStep: activeTab,
-        screeningStep: screeningStep,
+        totalFiles: 0,
+        duplicates: 0,
+        fileSelection: 0,
+        criteria: 5,
+        lastModified: new Date().toISOString(),
+        currentStep: 'screening',
+        screeningStep: 'generator',
         queryData: {
-          description: queryData.description,
-          query: queryData.query,
-          projectTitle: queryData.projectTitle,
-          projectId: initialData.projectId
+          description: queryData.description || '',
+          query: queryData.query || '',
+          projectTitle: initialData.projectTitle || slrTitle,
+          projectId: initialData.projectId,
+          questions: queryData.questions || [],
+          answers: queryData.answers || {},
+          pubmedQuery: queryData.pubmedQuery || '',
+          generatedQuery: queryData.generatedQuery || false
         }
       };
       
+      console.log('handleSave - Pipeline state to save:', pipelineState);
+
       if (!pipelineId) {
         setPipelineId(newPipelineId);
-        dispatch(createPipeline({
-          id: newPipelineId,
-          projectId: initialData.projectId,
-          ...pipelineState
-        }));
-
-        dispatch(updateProjectQueries({
-          projectId: initialData.projectId,
-          queryCount: (currentCount: number) => currentCount + 1
-        }));
+        dispatch(createPipeline(pipelineState));
+        console.log('handleSave - Created new pipeline');
       } else {
-        dispatch(updatePipeline({
-          id: pipelineId,
-          ...pipelineState
-        }));
+        dispatch(updatePipeline(pipelineState));
+        console.log('handleSave - Updated existing pipeline');
       }
       
       setIsDirty(false);
@@ -135,8 +152,13 @@ const SLRPipeline: React.FC<SLRPipelineProps> = ({ mode: initialMode, initialDat
       generatedQuery?: boolean;
     }
   ) => {
+    console.log('handleQuerySubmit - Received data:', data);
     setScreeningStep(mode);
     setQueryData({
+      ...data,
+      projectId: initialData?.projectId || ''
+    });
+    console.log('handleQuerySubmit - Updated queryData:', {
       ...data,
       projectId: initialData?.projectId || ''
     });
@@ -186,7 +208,14 @@ const SLRPipeline: React.FC<SLRPipelineProps> = ({ mode: initialMode, initialDat
         return (
           <QueryGenerator
             initialData={queryData}
-            onSaveQuery={() => {}}
+            onSaveQuery={(data) => {
+              console.log('Received data from QueryGenerator:', data);
+              setQueryData(prevData => ({
+                ...prevData,
+                ...data,
+                projectId: initialData?.projectId || ''
+              }));
+            }}
             savedQueries={[]}
             onClearQueries={() => {}}
           />

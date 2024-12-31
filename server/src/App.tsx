@@ -10,21 +10,26 @@ import SLRPipeline from './components/SLRPipeline';
 // Add these type definitions
 export interface SavedQuery {
   id: string;
+  projectId: string;
   name: string;
-  description: string;
-  questions: string[];
-  answers: Record<string, string>;
-  pubmedQuery: string;
-
-  collectedDocuments: {
-    pubmed: number;
-    semanticScholar: number;
-    removedDuplicates?: number;
+  fileScreening: 'in_progress' | 'completed';
+  totalFiles: number;
+  duplicates: number;
+  fileSelection: number;
+  criteria: number;
+  lastModified: string;
+  currentStep: 'screening' | 'selection';
+  screeningStep: 'generator' | 'parser';
+  queryData: {
+    description: string;
+    query: string;
+    projectTitle: string;
+    projectId: string;
+    questions: string[];
+    answers: Record<string, string>;
+    pubmedQuery: string;
+    generatedQuery: boolean;
   };
-  paperCount: number;
-
-  freeFullTextCount: number;
-  yearDistribution: Record<number, number>;
 }
 
 export interface AnalysisData {
