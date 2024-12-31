@@ -167,8 +167,8 @@ const PubMedQueryBuilder: React.FC<PubMedQueryBuilderProps> = ({
     } else {
       setActiveSynonymIndex(index);
       setTooltipPosition({
-        top: rect.bottom + window.scrollY + 5,
-        left: rect.left + window.scrollX - 200 // Offset to show tooltip to the left
+        top: rect.top + window.scrollY,
+        left: rect.left + window.scrollX - 420  // 420px to the left of the button (tooltip width + margin)
       });
       onLightbulbClick(index, event);
     }
@@ -507,7 +507,7 @@ const PubMedQueryBuilder: React.FC<PubMedQueryBuilderProps> = ({
                         ? 'bg-[#068EF1] hover:bg-[#0576C8]'  // Blue when needs save
                         : 'bg-[#408038] hover:bg-[#346C2E]'   // Green when saved
                       : 'bg-[#068EF1] hover:bg-[#0576C8]'     // Blue for collect
-                  } text-white rounded-full font-semibold transition-colors flex items-center gap-2`}
+                  } text-white rounded-lg font-semibold transition-colors flex items-center gap-2`}
                 >
                   {duplicatesTreated ? (
                     <>
@@ -529,17 +529,19 @@ const PubMedQueryBuilder: React.FC<PubMedQueryBuilderProps> = ({
 
       {/* Add the tooltip */}
       {activeSynonymIndex !== null && tooltipPosition && (
-        <SynonymTooltip
-          synonyms={synonymGroups[activeSynonymIndex]?.synonyms || []}
-          position={tooltipPosition}
-          onClose={() => {
-            setActiveSynonymIndex(null);
-            setTooltipPosition(null);
-          }}
-          onSynonymClick={(synonym, isAdded) => handleSynonymClick(activeSynonymIndex, synonym, isAdded)}
-          addedSynonyms={addedSynonyms.get(activeSynonymIndex) || new Set()}
-          abstraction={synonymGroups[activeSynonymIndex]?.abstraction || ''}
-        />
+        <div className="relative">
+          <SynonymTooltip
+            synonyms={synonymGroups[activeSynonymIndex]?.synonyms || []}
+            position={tooltipPosition}
+            onClose={() => {
+              setActiveSynonymIndex(null);
+              setTooltipPosition(null);
+            }}
+            onSynonymClick={(synonym, isAdded) => handleSynonymClick(activeSynonymIndex, synonym, isAdded)}
+            addedSynonyms={addedSynonyms.get(activeSynonymIndex) || new Set()}
+            abstraction={synonymGroups[activeSynonymIndex]?.abstraction || ''}
+          />
+        </div>
       )}
 
       {/* Duplicate Analysis Modal */}

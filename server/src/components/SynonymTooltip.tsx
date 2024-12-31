@@ -20,11 +20,12 @@ const SynonymTooltip: React.FC<SynonymTooltipProps> = ({
 }) => {
   return (
     <div 
-      className="absolute bg-white p-4 rounded-xl shadow-lg border border-[#068EF1] z-50"
+      className="fixed bg-white p-4 rounded-xl shadow-lg border border-[#068EF1] z-50"
       style={{ 
         top: position.top,
         left: position.left,
-        minWidth: '200px'
+        minWidth: '300px',
+        maxWidth: '400px'
       }}
     >
       <div className="flex justify-between items-center mb-3">

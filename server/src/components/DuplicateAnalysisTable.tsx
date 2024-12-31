@@ -85,7 +85,7 @@ const DuplicateAnalysisTable: React.FC<DuplicateAnalysisTableProps> = ({
                   type="checkbox"
                   checked={selectedPairs.size === duplicatePairs.length}
                   onChange={onSelectAllPairs}
-                  className="w-4 h-4 rounded border-[#BDBDBD] text-[#62B6CB] focus:ring-[#62B6CB]"
+                  className="w-4 h-4 rounded border-[#BDBDBD] text-[#068EF1] focus:ring-[#068EF1]"
                 />
               </th>
             </tr>
@@ -104,7 +104,7 @@ const DuplicateAnalysisTable: React.FC<DuplicateAnalysisTableProps> = ({
                 <td className="px-4 py-4 text-center">
                   <button
                     onClick={() => onCheckAbstracts(pair.id)}
-                    className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[#62B6CB] text-white hover:bg-[#62B6CB]/90"
+                    className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[#068EF1] text-white hover:bg-[#068EF1]/90"
                   >
                     <FaEye className="w-4 h-4" />
                   </button>
@@ -114,7 +114,7 @@ const DuplicateAnalysisTable: React.FC<DuplicateAnalysisTableProps> = ({
                     type="checkbox"
                     checked={selectedPairs.has(pair.id)}
                     onChange={() => onTogglePair(pair.id)}
-                    className="w-4 h-4 rounded border-[#BDBDBD] text-[#62B6CB] focus:ring-[#62B6CB]"
+                    className="w-4 h-4 rounded border-[#BDBDBD] text-[#068EF1] focus:ring-[#068EF1]"
                   />
                 </td>
               </tr>
@@ -127,7 +127,7 @@ const DuplicateAnalysisTable: React.FC<DuplicateAnalysisTableProps> = ({
         <div className="mt-4 text-center">
           <button
             onClick={onSeeMore}
-            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-[#62B6CB] hover:bg-[#62B6CB]"
+            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-[#068EF1] hover:bg-[#068EF1]"
           >
             See More Pairs <FaChevronDown className="ml-2" />
           </button>
