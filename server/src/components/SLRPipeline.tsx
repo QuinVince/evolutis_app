@@ -97,13 +97,6 @@ const SLRPipeline: React.FC<SLRPipelineProps> = ({ mode: initialMode, initialDat
   const handleSave = () => {
     if (initialData?.projectId) {
       console.log('handleSave - Current queryData:', queryData);
-      console.log('handleSave - Current subqueries:', queryData.subqueries);
-      
-      const pubmedQueryString = queryData.subqueries?.length 
-        ? JSON.stringify({ subqueries: queryData.subqueries })
-        : queryData.pubmedQuery || '';
-        
-      console.log('handleSave - Generated pubmedQuery string:', pubmedQueryString);
       
       const newPipelineId = pipelineId || Date.now().toString();
       const pipelineState: PipelineState = {
@@ -125,7 +118,7 @@ const SLRPipeline: React.FC<SLRPipelineProps> = ({ mode: initialMode, initialDat
           projectId: initialData.projectId,
           questions: queryData.questions || [],
           answers: queryData.answers || {},
-          pubmedQuery: pubmedQueryString,
+          pubmedQuery: queryData.pubmedQuery || '',
           generatedQuery: queryData.generatedQuery || false
         }
       };
