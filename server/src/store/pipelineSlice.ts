@@ -54,7 +54,14 @@ const pipelineSlice = createSlice({
           currentStep: 'screening',
           screeningStep: 'new',
           queryData: {
-            projectId: action.payload.projectId
+            description: '',
+            query: '',
+            projectTitle: action.payload.name,
+            projectId: action.payload.projectId,
+            questions: [],
+            answers: {},
+            pubmedQuery: '',
+            generatedQuery: false
           }
         };
         console.log('Pipeline reducer - creating:', newPipeline);

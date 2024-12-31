@@ -69,6 +69,7 @@ const SLRPipeline: React.FC<SLRPipelineProps> = ({ mode: initialMode, initialDat
     questions?: string[];
     answers?: Record<string, string>;
     pubmedQuery?: string;
+    subqueries?: Array<{ content: string; operator: 'AND' | 'OR' }>;
     generatedQuery?: boolean;
   }>({
     ...initialData,
@@ -96,6 +97,13 @@ const SLRPipeline: React.FC<SLRPipelineProps> = ({ mode: initialMode, initialDat
   const handleSave = () => {
     if (initialData?.projectId) {
       console.log('handleSave - Current queryData:', queryData);
+      console.log('handleSave - Current subqueries:', queryData.subqueries);
+      
+      const pubmedQueryString = queryData.subqueries?.length 
+        ? JSON.stringify({ subqueries: queryData.subqueries })
+        : queryData.pubmedQuery || '';
+        
+      console.log('handleSave - Generated pubmedQuery string:', pubmedQueryString);
       
       const newPipelineId = pipelineId || Date.now().toString();
       const pipelineState: PipelineState = {
@@ -117,12 +125,12 @@ const SLRPipeline: React.FC<SLRPipelineProps> = ({ mode: initialMode, initialDat
           projectId: initialData.projectId,
           questions: queryData.questions || [],
           answers: queryData.answers || {},
-          pubmedQuery: queryData.pubmedQuery || '',
+          pubmedQuery: pubmedQueryString,
           generatedQuery: queryData.generatedQuery || false
         }
       };
       
-      console.log('handleSave - Pipeline state to save:', pipelineState);
+      console.log('handleSave - Final pipeline state:', pipelineState);
 
       if (!pipelineId) {
         setPipelineId(newPipelineId);
@@ -209,12 +217,28 @@ const SLRPipeline: React.FC<SLRPipelineProps> = ({ mode: initialMode, initialDat
           <QueryGenerator
             initialData={queryData}
             onSaveQuery={(data) => {
-              console.log('Received data from QueryGenerator:', data);
-              setQueryData(prevData => ({
-                ...prevData,
-                ...data,
+              console.log('QueryGenerator onSaveQuery - Raw data:', data);
+              console.log('QueryGenerator onSaveQuery - PubMed query:', data.queryData.pubmedQuery);
+              
+              let parsedSubqueries = [];
+              try {
+                if (data.queryData.pubmedQuery) {
+                  const parsed = JSON.parse(data.queryData.pubmedQuery);
+                  parsedSubqueries = parsed.subqueries || [];
+                  console.log('QueryGenerator onSaveQuery - Parsed subqueries:', parsedSubqueries);
+                }
+              } catch (error) {
+                console.error('Error parsing pubmedQuery:', error);
+              }
+
+              const updatedData = {
+                ...data.queryData,
+                subqueries: parsedSubqueries,
                 projectId: initialData?.projectId || ''
-              }));
+              };
+              
+              console.log('QueryGenerator onSaveQuery - Updated queryData:', updatedData);
+              setQueryData(updatedData);
             }}
             savedQueries={[]}
             onClearQueries={() => {}}

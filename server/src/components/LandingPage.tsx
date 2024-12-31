@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
 import { FaFolder, FaClock, FaFile, FaFilter, FaSearch, FaUser, FaCalendar } from 'react-icons/fa';
+import { PiCalendarDots,PiBooksLight   } from "react-icons/pi";
+import { IoMdSearch } from "react-icons/io";
+import { GrUser } from "react-icons/gr";
+import { BsSliders } from "react-icons/bs";
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store/store';
@@ -86,7 +90,7 @@ const LandingPage: React.FC = () => {
             onClick={() => setShowFilters(!showFilters)}
             className="px-4 py-2 bg-white border border-gray-200 rounded-lg flex items-center gap-2 hover:bg-gray-50 transition-colors"
           >
-            <FaFilter className="text-gray-500" />
+            <BsSliders className="text-gray-500" />
             <span className="text-gray-700">Filters</span>
           </button>
 
@@ -106,7 +110,7 @@ const LandingPage: React.FC = () => {
                     className="w-full pl-9 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-[#068EF1] focus:border-[#068EF1]"
                     placeholder="Search projects..."
                   />
-                  <FaSearch className="absolute left-3 top-3 text-gray-400" />
+                  <IoMdSearch className="absolute left-3 top-3 text-gray-400" />
                 </div>
               </div>
 
@@ -125,7 +129,7 @@ const LandingPage: React.FC = () => {
                     <option value="fanny">Fanny M.</option>
                     <option value="other">Other users...</option>
                   </select>
-                  <FaUser className="absolute left-3 top-3 text-gray-400" />
+                  <GrUser className="absolute left-3 top-3 text-gray-400" />
                 </div>
               </div>
 
@@ -135,13 +139,41 @@ const LandingPage: React.FC = () => {
                   Filter by date
                 </label>
                 <div className="relative">
-                  <input
-                    type="date"
+                  <select
                     value={filterDate}
                     onChange={(e) => setFilterDate(e.target.value)}
-                    className="w-full pl-9 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-[#068EF1] focus:border-[#068EF1]"
-                  />
-                  <FaCalendar className="absolute left-3 top-3 text-gray-400" />
+                    className="w-full pl-9 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-[#068EF1] focus:border-[#068EF1] appearance-none"
+                  >
+                    <option value="">All time</option>
+                    <option value="today">Today</option>
+                    <option value="last7days">Last 7 days</option>
+                    <option value="last30days">Last 30 days</option>
+                    <option value="last3months">Last 3 months</option>
+                    <option value="last6months">Last 6 months</option>
+                    <option value="lastyear">Last year</option>
+                    <option value="custom">Custom range...</option>
+                  </select>
+                  <PiCalendarDots className="absolute left-3 top-3 text-gray-400" />
+                  {filterDate === 'custom' && (
+                    <div className="absolute top-full left-0 mt-2 w-full bg-white rounded-lg shadow-lg border border-gray-200 p-4">
+                      <div className="flex gap-4">
+                        <div>
+                          <label className="block text-sm text-gray-600 mb-1">From</label>
+                          <input
+                            type="date"
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-[#068EF1] focus:border-[#068EF1]"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm text-gray-600 mb-1">To</label>
+                          <input
+                            type="date"
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-[#068EF1] focus:border-[#068EF1]"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
 

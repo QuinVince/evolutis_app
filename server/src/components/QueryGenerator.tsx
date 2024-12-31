@@ -404,20 +404,43 @@ const QueryGenerator: React.FC<QueryGeneratorProps> = ({ initialData, ...props }
 
       console.log('Query response:', queryResponse.data);
 
-      // Check if we have a valid query response with subqueries
-      if (!queryResponse.data || !queryResponse.data.subqueries) {
-        throw new Error('Invalid query response from server');
-      }
+      // Store the query response immediately
+      const queryString = JSON.stringify(queryResponse.data);
+      setPubMedQuery(queryString);
 
-      // The response is already in the correct format, just stringify it
-      setPubMedQuery(JSON.stringify(queryResponse.data));
+      // Create the SavedQuery structure with the query we just generated
+      const updatedData: SavedQuery = {
+        id: Date.now().toString(),
+        projectId: initialData?.projectId || 'project-1',
+        name: 'New Query',
+        fileScreening: 'in_progress',
+        totalFiles: 0,
+        duplicates: 0,
+        fileSelection: 0,
+        criteria: 5,
+        lastModified: new Date().toISOString(),
+        currentStep: 'screening',
+        screeningStep: 'generator',
+        queryData: {
+          description: naturalLanguageQuery,
+          query: '',
+          projectTitle: 'New Query',
+          projectId: initialData?.projectId || 'project-1',
+          questions: questions,
+          answers: answers,
+          pubmedQuery: queryString, // Use the query we just generated
+          generatedQuery: true
+        }
+      };
+      
+      console.log('handleGenerateQuery - Sending data to parent:', updatedData);
+      props.onSaveQuery(updatedData);
 
-      // Generate synonyms with the formatted query
+      // Continue with synonyms generation...
       const synonymsResponse = await axios.post('http://localhost:8000/generate_synonyms', {
         description: naturalLanguageQuery,
         questions: questions,
         answers: answers,
-        // Convert the structured query back to a string format for the backend
         query: queryResponse.data.subqueries
           .map((sq: Subquery) => `(${sq.content})`)
           .join(' AND ')
@@ -429,40 +452,10 @@ const QueryGenerator: React.FC<QueryGeneratorProps> = ({ initialData, ...props }
 
     } catch (error) {
       console.error('Error generating query and synonyms:', error);
-      if ((error as any).response) {
-        console.error('Server response:', (error as any).response.data);
-      }
     } finally {
       setIsGeneratingPubMed(false);
       setIsGeneratingSynonyms(false);
     }
-
-    // After setting state, notify parent with complete SavedQuery structure
-    const updatedData: SavedQuery = {
-      id: Date.now().toString(),
-      projectId: initialData?.projectId || 'project-1',
-      name: 'New Query',
-      fileScreening: 'in_progress',
-      totalFiles: 0,
-      duplicates: 0,
-      fileSelection: 0,
-      criteria: 5,
-      lastModified: new Date().toISOString(),
-      currentStep: 'screening',
-      screeningStep: 'generator',
-      queryData: {
-        description: naturalLanguageQuery,
-        query: pubMedQuery,
-        projectTitle: 'New Query',
-        projectId: initialData?.projectId || 'project-1',
-        questions: questions,
-        answers: answers,
-        pubmedQuery: pubMedQuery,
-        generatedQuery: true
-      }
-    };
-    
-    props.onSaveQuery(updatedData);
   };
 
   const renderStep = () => {
