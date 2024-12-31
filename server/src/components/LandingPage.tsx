@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
-import { FaFolder, FaClock, FaFile, FaFilter, FaSearch, FaUser, FaCalendar } from 'react-icons/fa';
+import { FaFolder, FaClock, FaFile, FaFilter, FaSearch, FaUser, FaCalendar, FaTrash } from 'react-icons/fa';
 import { PiCalendarDots,PiBooksLight   } from "react-icons/pi";
 import { IoMdSearch } from "react-icons/io";
 import { GrUser } from "react-icons/gr";
 import { BsSliders } from "react-icons/bs";
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../store/store';
 import { Project } from '../store/projectSlice';
+import { deleteProject } from '../store/projectSlice';
 
 const LandingPage: React.FC = () => {
   const [showFilters, setShowFilters] = useState(false);
@@ -17,6 +18,7 @@ const LandingPage: React.FC = () => {
 
   const projects = useSelector((state: RootState) => state.projects.projects);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const formatCreatedAt = (dateString: string) => {
     const date = new Date(dateString);
@@ -26,44 +28,61 @@ const LandingPage: React.FC = () => {
     return `${diffDays} ${diffDays === 1 ? 'day' : 'days'} ago`;
   };
 
-  const ProjectCard: React.FC<{ project: Project }> = ({ project }) => (
-    <div 
-      onClick={() => navigate(`/project/${project.id}`)}
-      className="flex items-center justify-between bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer"
-    >
-      <div className="flex items-center space-x-4">
-        <div className="p-4 rounded-full bg-[#DCF8FF]">
-          <FaFolder className="w-6 h-6 text-[#068EF1]" />
-        </div>
-        <div>
-          <div className="flex items-center space-x-3">
-            <span className="font-medium text-gray-900 text-xl font-semibold">{project.name}</span>
-            <span className={`px-2 py-1 rounded-md text-xs font-medium ${
-              project.status === 'in_progress' 
-                ? 'bg-[#5CABFF] text-white' 
-                : 'bg-green-100 text-green-800'
-            }`}>
-              {project.status === 'in_progress' ? 'In progress' : 'Done'}
-            </span>
-            <span className="text-xs text-gray-500 bg-gray-100 rounded-md px-2 py-1">{project.author}</span>
+  const ProjectCard: React.FC<{ project: Project }> = ({ project }) => {
+    const handleDelete = (e: React.MouseEvent) => {
+      e.stopPropagation();
+      if (window.confirm('Are you sure you want to delete this project?')) {
+        dispatch(deleteProject(project.id));
+      }
+    };
+
+    return (
+      <div 
+        onClick={() => navigate(`/project/${project.id}`)}
+        className="flex items-center justify-between bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer group"
+      >
+        <div className="flex items-center space-x-4">
+          <div className="p-4 rounded-full bg-[#DCF8FF]">
+            <FaFolder className="w-6 h-6 text-[#068EF1]" />
           </div>
-          <div className="flex items-center space-x-4 mt-2 text-sm text-gray-500">
-            <div className="flex items-center space-x-1">
-              <FaClock className="w-4 h-4" />
-              <span>{formatCreatedAt(project.createdAt)}</span>
+          <div>
+            <div className="flex items-center space-x-3">
+              <span className="font-medium text-gray-900 text-xl font-semibold">{project.name}</span>
+              <span className={`px-2 py-1 rounded-md text-xs font-medium ${
+                project.status === 'in_progress' 
+                  ? 'bg-[#5CABFF] text-white' 
+                  : 'bg-green-100 text-green-800'
+              }`}>
+                {project.status === 'in_progress' ? 'In progress' : 'Done'}
+              </span>
+              <span className="text-xs text-gray-500 bg-gray-100 rounded-md px-2 py-1">{project.author}</span>
             </div>
-            <div className="flex items-center space-x-1">
-              <FaFile className="w-4 h-4" />
-              <span>{project.queryCount} queries</span>
+            <div className="flex items-center space-x-4 mt-2 text-sm text-gray-500">
+              <div className="flex items-center space-x-1">
+                <FaClock className="w-4 h-4" />
+                <span>{formatCreatedAt(project.createdAt)}</span>
+              </div>
+              <div className="flex items-center space-x-1">
+                <FaFile className="w-4 h-4" />
+                <span>{project.queryCount} queries</span>
+              </div>
             </div>
           </div>
         </div>
+        <button
+          onClick={handleDelete}
+          className="opacity-0 group-hover:opacity-100 text-gray-400 hover:text-red-600 transition-all p-2"
+        >
+          <FaTrash className="w-4 h-4" />
+        </button>
       </div>
-    </div>
-  );
+    );
+  };
 
   const ProjectSection: React.FC<{ title: string; status: 'in_progress' | 'done' }> = ({ title, status }) => {
-    const filteredProjects = projects.filter(project => project.status === status);
+    const filteredProjects = projects
+      .filter(project => project.status === status)
+      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
     
     return (
       <div className="mb-8">

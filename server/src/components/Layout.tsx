@@ -1,8 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { FaBars, FaPlus, FaSearch } from 'react-icons/fa';
+import { FaBars, FaPlus, FaSearch, FaTrash } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCurrentProjectTitle } from '../store/querySlice';
+import { deleteProject } from '../store/projectSlice';
 import logo from '../utils/evolutis-logo.png';
 import iconHome from '../utils/icon-home.png';
 import { RootState } from '../store/store';
@@ -63,25 +64,46 @@ const Layout: React.FC<LayoutProps> = ({ children, projectTitle, onProjectTitleC
     title, 
     projects,
     isDone = false 
-  }) => (
-    <div className="mb-4">
-      <div className="flex items-center justify-between px-4 py-2">
-        <span className="text-sm font-bold text-black">{title} ({projects.length})</span>
+  }) => {
+    const dispatch = useDispatch();
+
+    const handleDelete = (e: React.MouseEvent, projectId: string) => {
+      e.stopPropagation();
+      if (window.confirm('Are you sure you want to delete this project?')) {
+        dispatch(deleteProject(projectId));
+      }
+    };
+
+    return (
+      <div className="mb-4">
+        <div className="flex items-center justify-between px-4 py-2">
+          <span className="text-sm font-bold text-black">{title} ({projects.length})</span>
+        </div>
+        <div className="space-y-1">
+          {projects.map(project => (
+            <div
+              key={project.id}
+              className="group flex items-center justify-between px-8 py-2 hover:bg-gray-100"
+            >
+              <button
+                onClick={() => navigate(`/project/${project.id}`)}
+                className="flex items-center space-x-2 max-w-[160px]"
+              >
+                <span className={`flex-shrink-0 w-3 h-3 rounded-full ${isDone ? 'bg-green-500' : 'bg-blue-500'}`} />
+                <span className="text-sm text-gray-700 truncate">{project.name}</span>
+              </button>
+              <button
+                onClick={(e) => handleDelete(e, project.id)}
+                className="opacity-0 group-hover:opacity-100 text-gray-400 hover:text-red-600 transition-all flex-shrink-0"
+              >
+                <FaTrash className="w-3 h-3" />
+              </button>
+            </div>
+          ))}
+        </div>
       </div>
-      <div className="space-y-1">
-        {projects.map(project => (
-          <button
-            key={project.id}
-            onClick={() => navigate(`/project/${project.id}`)}
-            className="w-full px-8 py-2 text-left hover:bg-gray-100 flex items-center space-x-2"
-          >
-            <span className={`w-3 h-3 rounded-full ${isDone ? 'bg-green-500' : 'bg-blue-500'}`} />
-            <span className="text-sm text-gray-700 truncate">{project.name}</span>
-          </button>
-        ))}
-      </div>
-    </div>
-  );
+    );
+  };
 
   return (
     <div className="h-screen flex overflow-hidden bg-white">

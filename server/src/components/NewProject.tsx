@@ -5,7 +5,7 @@ import { TbCircleDotted } from "react-icons/tb";
 import { GrUser } from "react-icons/gr";
 import { AiOutlineTags } from "react-icons/ai";
 import { useDispatch, useSelector } from 'react-redux';
-import { addProject, updateProject } from '../store/projectSlice';
+import { addProject, updateProject, Project } from '../store/projectSlice';
 import { RootState } from '../store/store';
 import QueryTable from './QueryTable';
 
@@ -14,11 +14,66 @@ interface Tag {
   name: string;
 }
 
+const generateUniqueName = (projects: Project[], baseName: string = "New project"): string => {
+  let name = baseName;
+  let counter = 1;
+  
+  console.log('Generating unique name. Current projects:', projects.map(p => p.name));
+  
+  while (projects.some(p => p.name === name)) {
+    name = `${baseName} (${counter})`;
+    counter++;
+    console.log('Name already exists, trying:', name);
+  }
+  
+  console.log('Final unique name:', name);
+  return name;
+};
+
 const NewProject: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { projectId } = useParams<{ projectId: string }>();
+  const projects = useSelector((state: RootState) => state.projects.projects);
+  const hasDispatchedRef = React.useRef(false);
   
+  useEffect(() => {
+    if (!projectId && !hasDispatchedRef.current) {
+      console.log('Starting project creation...');
+      hasDispatchedRef.current = true;
+      
+      const newProjectId = Date.now().toString();
+      const existingNames = projects.map(p => p.name);
+      console.log('Existing project names:', existingNames);
+      
+      let name = "New project";
+      let counter = 1;
+      while (existingNames.includes(name)) {
+        name = `New project (${counter})`;
+        counter++;
+        console.log('Trying name:', name);
+      }
+      
+      const projectData = {
+        id: newProjectId,
+        name: name,
+        status: 'in_progress' as const,
+        author: "Fanny M.",
+        createdAt: new Date().toISOString(),
+        queryCount: 0,
+        tags: []
+      };
+      
+      console.log('Creating project with data:', projectData);
+      dispatch(addProject(projectData));
+      navigate(`/project/${newProjectId}`, { replace: true });
+    }
+    
+    return () => {
+      hasDispatchedRef.current = false;
+    };
+  }, [projectId]);  // Remove projects, dispatch, navigate from dependencies
+
   // Get project from store if editing existing project
   const existingProject = useSelector((state: RootState) => 
     projectId ? state.projects.projects.find(p => p.id === projectId) : null

@@ -1,10 +1,11 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { RootState } from '../store/store';
-import { FaChevronRight } from 'react-icons/fa';
+import { FaChevronRight, FaTrash } from 'react-icons/fa';
 import { Pipeline } from '../store/pipelineSlice';
 import { createSelector } from '@reduxjs/toolkit';
+import { deletePipeline } from '../store/pipelineSlice';
 
 interface QueryTableProps {
   projectId: string;
@@ -18,6 +19,7 @@ const selectPipelinesByProjectId = createSelector(
 );
 
 const QueryTable: React.FC<QueryTableProps> = ({ projectId }) => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   
   // Use the memoized selector
@@ -69,6 +71,13 @@ const QueryTable: React.FC<QueryTableProps> = ({ projectId }) => {
     });
   };
 
+  const handleDelete = (e: React.MouseEvent, pipelineId: string) => {
+    e.stopPropagation();
+    if (window.confirm('Are you sure you want to delete this pipeline?')) {
+      dispatch(deletePipeline(pipelineId));
+    }
+  };
+
   return (
     <div className="bg-white rounded-lg border border-gray-200">
       <table className="w-full">
@@ -100,15 +109,23 @@ const QueryTable: React.FC<QueryTableProps> = ({ projectId }) => {
         <tbody className="bg-white divide-y divide-gray-200">
           {pipelines.length > 0 ? (
             pipelines.map((pipeline: Pipeline) => (
-              <tr key={pipeline.id}>
+              <tr key={pipeline.id} className="group">
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  <button
-                    onClick={() => handleQueryClick(pipeline)}
-                    className="group flex items-center space-x-1 hover:text-[#068EF1] transition-colors duration-200"
-                  >
-                    <span className="font-medium">{pipeline.name}</span>
-                    <FaChevronRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
-                  </button>
+                  <div className="flex items-center justify-between">
+                    <button
+                      onClick={() => handleQueryClick(pipeline)}
+                      className="flex items-center space-x-1 hover:text-[#068EF1]"
+                    >
+                      <span className="font-medium">{pipeline.name}</span>
+                      <FaChevronRight className="w-3 h-3" />
+                    </button>
+                    <button
+                      onClick={(e) => handleDelete(e, pipeline.id)}
+                      className="opacity-0 group-hover:opacity-100 text-gray-400 hover:text-red-600 transition-all"
+                    >
+                      <FaTrash className="w-4 h-4" />
+                    </button>
+                  </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm">
                   <span className={`px-2 py-1 rounded-full text-xs ${

@@ -41,9 +41,12 @@ const projectSlice = createSlice({
           ? action.payload.queryCount(project.queryCount)
           : action.payload.queryCount;
       }
+    },
+    deleteProject: (state, action: PayloadAction<string>) => {
+      state.projects = state.projects.filter(p => p.id !== action.payload);
     }
   }
 });
 
-export const { addProject, updateProject, updateProjectQueries } = projectSlice.actions;
+export const { addProject, updateProject, updateProjectQueries, deleteProject } = projectSlice.actions;
 export default projectSlice.reducer; 

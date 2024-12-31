@@ -80,11 +80,14 @@ const pipelineSlice = createSlice({
           lastModified: new Date().toISOString()
         };
       }
+    },
+    deletePipeline: (state, action: PayloadAction<string>) => {
+      state.pipelines = state.pipelines.filter(p => p.id !== action.payload);
     }
   }
 });
 
-export const { createPipeline, updatePipeline } = pipelineSlice.actions;
+export const { createPipeline, updatePipeline, deletePipeline } = pipelineSlice.actions;
 export default pipelineSlice.reducer;
 
 declare module '../store/store' {
