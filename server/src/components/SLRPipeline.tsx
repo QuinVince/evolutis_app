@@ -6,8 +6,8 @@ import NewQuery from './NewQuery';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { createPipeline, updatePipeline } from '../store/pipelineSlice';
-import { updateProjectQueries } from '../store/projectSlice';
 import CriteriaSelection from './CriteriaSelection';
+import FileFilteringTemp from './FileFilteringTemp';
 
 interface SLRPipelineProps {
   mode?: 'generator' | 'parser';
@@ -54,7 +54,7 @@ interface PipelineState {
 
 const SLRPipeline: React.FC<SLRPipelineProps> = ({ mode: initialMode, initialData }) => {
   const dispatch = useDispatch();
-  const [activeTab, setActiveTab] = useState<'screening' | 'criteria' | 'selection'>('screening');
+  const [activeTab, setActiveTab] = useState<'screening' | 'criteria' | 'abstract'>('screening');
   const [slrTitle, setSlrTitle] = useState('New SLR');
   const [isEditingTitle, setIsEditingTitle] = useState(false);
   const projectTitle = initialData?.projectTitle || 'Project';
@@ -251,8 +251,8 @@ const SLRPipeline: React.FC<SLRPipelineProps> = ({ mode: initialMode, initialDat
         return renderScreeningContent();
       case 'criteria':
         return <CriteriaSelection />;
-      case 'selection':
-        return <FileSelection />;
+      case 'abstract':
+        return <FileFilteringTemp />;
       default:
         return null;
     }
