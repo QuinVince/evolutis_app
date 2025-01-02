@@ -55,7 +55,7 @@ const SampleTable: React.FC<SampleTableProps> = ({
             setCalculationComplete(true);
             onCalculationComplete();
           }
-        }, rowIndex * 500);
+        }, rowIndex * 800);
 
         timeoutsRef.current.push(timeout);
       });

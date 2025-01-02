@@ -22,11 +22,11 @@ const CriteriaSelection: React.FC<CriteriaSelectionProps> = ({ onCriteriaChange 
   
   // Suggested criteria - these would typically come from props or an API
   const [suggestedCriteria] = useState([
-    'Suggested criteria 1',
-    'Suggested criteria 2',
-    'Suggested criteria 3',
-    'Suggested criteria 4',
-    'Suggested criteria 5',
+    'Example criteria 1',
+    'Example criteria 2',
+    'Example criteria 3',
+    'Example criteria 4',
+    'Example criteria 5',
   ]);
 
   // Transform the JSON data to match the Article interface
