@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { FaPlus, FaTimes, FaCheck } from 'react-icons/fa';
 import bulbIcon from '../assets/image_bulb.png';
 import SynonymTooltip from './SynonymTooltip';
-import { mockDuplicatePairs } from '../utils/mockData';
-import { DuplicatePair } from './DuplicateAnalysisTable';
 import { useDispatch } from 'react-redux';
 import { saveQuery } from '../store/querySlice';
 import { SavedQuery } from '../App';
