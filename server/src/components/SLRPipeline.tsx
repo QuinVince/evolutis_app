@@ -3,12 +3,11 @@ import { FaEdit, FaCheck, FaChevronRight } from 'react-icons/fa';
 import QueryGenerator from './QueryGenerator';
 import QueryParser from './QueryParser';
 import NewQuery from './NewQuery';
-import DocumentAnalysis from './DocumentAnalysis';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { createPipeline, updatePipeline } from '../store/pipelineSlice';
 import { updateProjectQueries } from '../store/projectSlice';
-import { RootState } from '../store/store';
+import CriteriaSelection from './CriteriaSelection';
 
 interface SLRPipelineProps {
   mode?: 'generator' | 'parser';
@@ -30,19 +29,26 @@ const FileSelection: React.FC = () => (
 
 // Add this interface to track pipeline state
 interface PipelineState {
+  id: string;
+  projectId: string;
   name: string;
   fileScreening: 'in_progress' | 'completed';
-  totalFiles: number | null;
-  duplicates: number | null;
-  fileSelection: number | null;
-  criteria: number | null;
-  currentStep: 'screening' | 'criteria' | 'selection';
-  screeningStep: 'new' | 'parser' | 'generator';
+  totalFiles: number;
+  duplicates: number;
+  fileSelection: number;
+  criteria: number;
+  lastModified: string;
+  currentStep: 'screening' | 'selection';
+  screeningStep: 'generator' | 'parser';
   queryData: {
-    description?: string;
-    query?: string;
-    projectTitle?: string;
+    description: string;
+    query: string;
+    projectTitle: string;
     projectId: string;
+    questions: string[];
+    answers: Record<string, string>;
+    pubmedQuery: string;
+    generatedQuery: boolean;
   };
 }
 
@@ -55,7 +61,17 @@ const SLRPipeline: React.FC<SLRPipelineProps> = ({ mode: initialMode, initialDat
 
   // Add states for handling the screening flow
   const [screeningStep, setScreeningStep] = useState<'new' | 'parser' | 'generator'>('new');
-  const [queryData, setQueryData] = useState({
+  const [queryData, setQueryData] = useState<{
+    projectId: string;
+    description?: string;
+    query?: string;
+    projectTitle?: string;
+    questions?: string[];
+    answers?: Record<string, string>;
+    pubmedQuery?: string;
+    subqueries?: Array<{ content: string; operator: 'AND' | 'OR' }>;
+    generatedQuery?: boolean;
+  }>({
     ...initialData,
     projectId: initialData?.projectId || ''
   });
@@ -80,39 +96,45 @@ const SLRPipeline: React.FC<SLRPipelineProps> = ({ mode: initialMode, initialDat
   // New save handler
   const handleSave = () => {
     if (initialData?.projectId) {
+      console.log('handleSave - Current queryData:', queryData);
+      
       const newPipelineId = pipelineId || Date.now().toString();
       const pipelineState: PipelineState = {
+        id: newPipelineId,
+        projectId: initialData.projectId,
         name: slrTitle,
         fileScreening: 'in_progress',
-        totalFiles: null,
-        duplicates: null,
-        fileSelection: null,
-        criteria: null,
-        currentStep: activeTab,
-        screeningStep: screeningStep,
+        totalFiles: 0,
+        duplicates: 0,
+        fileSelection: 0,
+        criteria: 5,
+        lastModified: new Date().toISOString(),
+        currentStep: 'screening',
+        screeningStep: 'generator',
         queryData: {
-          ...queryData,
-          projectId: initialData?.projectId || ''
+          description: queryData.description || '',
+          query: queryData.query || '',
+          projectTitle: initialData.projectTitle || slrTitle,
+          projectId: initialData.projectId,
+          questions: queryData.questions || [],
+          answers: queryData.answers || {},
+          pubmedQuery: queryData.pubmedQuery || '',
+          generatedQuery: queryData.generatedQuery || false
         }
       };
       
+      console.log('handleSave - Final pipeline state:', pipelineState);
+
       if (!pipelineId) {
         setPipelineId(newPipelineId);
         dispatch(createPipeline({
-          id: newPipelineId,
-          projectId: initialData.projectId,
-          ...pipelineState
+          ...pipelineState,
+          lastModified: new Date().toISOString()
         }));
-
-        dispatch(updateProjectQueries({
-          projectId: initialData.projectId,
-          queryCount: (currentCount: number) => currentCount + 1
-        }));
+        console.log('handleSave - Created new pipeline');
       } else {
-        dispatch(updatePipeline({
-          id: pipelineId,
-          ...pipelineState
-        }));
+        dispatch(updatePipeline(pipelineState));
+        console.log('handleSave - Updated existing pipeline');
       }
       
       setIsDirty(false);
@@ -124,12 +146,25 @@ const SLRPipeline: React.FC<SLRPipelineProps> = ({ mode: initialMode, initialDat
   // Handler for NewQuery submission
   const handleQuerySubmit = (
     mode: 'generator' | 'parser', 
-    data: { description?: string; query?: string; projectId?: string }
+    data: { 
+      description?: string; 
+      query?: string; 
+      projectId?: string;
+      questions?: string[];
+      answers?: Record<string, string>;
+      pubmedQuery?: string;
+      generatedQuery?: boolean;
+    }
   ) => {
+    console.log('handleQuerySubmit - Received data:', data);
     setScreeningStep(mode);
     setQueryData({
       ...data,
-      projectId: initialData?.projectId || ''  // Ensure projectId is always a string
+      projectId: initialData?.projectId || ''
+    });
+    console.log('handleQuerySubmit - Updated queryData:', {
+      ...data,
+      projectId: initialData?.projectId || ''
     });
   };
 
@@ -158,28 +193,49 @@ const SLRPipeline: React.FC<SLRPipelineProps> = ({ mode: initialMode, initialDat
   };
 
   const tabs = [
-    { id: 'screening', label: 'File Screening' },
+    { id: 'screening', label: 'Query definition' },
     { id: 'criteria', label: 'Criteria Selection' },
-    { id: 'selection', label: 'File Selection' }
+    { id: 'abstract', label: 'Abstract review' }
   ];
 
   const renderScreeningContent = () => {
     switch (screeningStep) {
       case 'new':
         return (
-          <div className="py-8">
             <NewQuery 
               onSubmit={handleQuerySubmit}
               isEmbedded={true}
               projectId={initialData?.projectId}
             />
-          </div>
         );
       case 'generator':
         return (
           <QueryGenerator
             initialData={queryData}
-            onSaveQuery={() => {}}
+            onSaveQuery={(data) => {
+              console.log('QueryGenerator onSaveQuery - Raw data:', data);
+              console.log('QueryGenerator onSaveQuery - PubMed query:', data.queryData.pubmedQuery);
+              
+              let parsedSubqueries = [];
+              try {
+                if (data.queryData.pubmedQuery) {
+                  const parsed = JSON.parse(data.queryData.pubmedQuery);
+                  parsedSubqueries = parsed.subqueries || [];
+                  console.log('QueryGenerator onSaveQuery - Parsed subqueries:', parsedSubqueries);
+                }
+              } catch (error) {
+                console.error('Error parsing pubmedQuery:', error);
+              }
+
+              const updatedData = {
+                ...data.queryData,
+                subqueries: parsedSubqueries,
+                projectId: initialData?.projectId || ''
+              };
+              
+              console.log('QueryGenerator onSaveQuery - Updated queryData:', updatedData);
+              setQueryData(updatedData);
+            }}
             savedQueries={[]}
             onClearQueries={() => {}}
           />
@@ -194,18 +250,7 @@ const SLRPipeline: React.FC<SLRPipelineProps> = ({ mode: initialMode, initialDat
       case 'screening':
         return renderScreeningContent();
       case 'criteria':
-        return (
-          <DocumentAnalysis
-            analysisData={{
-              selectedQuery: null,
-              documents: [],
-              criteria: [],
-              analysisResults: {}
-            }}
-            updateAnalysisData={() => {}}
-            savedQueries={[]}
-          />
-        );
+        return <CriteriaSelection />;
       case 'selection':
         return <FileSelection />;
       default:
@@ -214,10 +259,8 @@ const SLRPipeline: React.FC<SLRPipelineProps> = ({ mode: initialMode, initialDat
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
-      {/* Existing content wrapped in a flex-grow div */}
-      <div className="flex-grow">
-        {/* Breadcrumb */}
+    <div className="relative min-h-screen flex flex-col">
+      <div className="flex-grow pb-16">
         <div className="bg-white px-6 py-4">
           <nav className="flex items-center space-x-2 text-sm">
             <Link to="/" className="text-gray-500 hover:text-gray-700">
@@ -235,7 +278,6 @@ const SLRPipeline: React.FC<SLRPipelineProps> = ({ mode: initialMode, initialDat
           </nav>
         </div>
 
-        {/* Header with editable title */}
         <div className="bg-white border-b border-gray-200 px-6 py-4">
           <div className="flex items-center justify-between">
             {isEditingTitle ? (
@@ -262,7 +304,6 @@ const SLRPipeline: React.FC<SLRPipelineProps> = ({ mode: initialMode, initialDat
           </div>
         </div>
 
-        {/* Tab Navigation - always visible */}
         <div className="bg-white border-b border-gray-200">
           <div className="px-6">
             <nav className="flex space-x-8">
@@ -283,14 +324,12 @@ const SLRPipeline: React.FC<SLRPipelineProps> = ({ mode: initialMode, initialDat
           </div>
         </div>
 
-        {/* Tab Content */}
         <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
           {renderTabContent()}
         </div>
       </div>
 
-      {/* Footer */}
-      <div className="bg-white border-t border-gray-200 px-6 py-4">
+      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-6 py-4 z-50">
         <div className="flex justify-end items-center max-w-7xl mx-auto">
           <button
             onClick={handleSave}

@@ -12,13 +12,17 @@ export interface Pipeline {
   fileSelection: number | null;
   criteria: number | null;
   lastModified: string;
-  currentStep: 'screening' | 'criteria' | 'selection';
+  currentStep: 'screening' | 'criteria' | 'abstract' | 'selection';
   screeningStep: 'new' | 'parser' | 'generator';
   queryData: {
     description?: string;
     query?: string;
     projectTitle?: string;
     projectId: string;
+    questions?: string[];
+    answers?: Record<string, string>;
+    pubmedQuery?: string;
+    generatedQuery?: boolean; // Flag to indicate if questions were already generated
   };
 }
 
@@ -34,27 +38,11 @@ const pipelineSlice = createSlice({
   name: 'pipeline',
   initialState,
   reducers: {
-    createPipeline: (state, action: PayloadAction<{ projectId: string; name: string; id: string }>) => {
+    createPipeline: (state, action: PayloadAction<Pipeline>) => {
       const exists = state.pipelines.some(p => p.id === action.payload.id);
       if (!exists) {
-        const newPipeline: Pipeline = {
-          id: action.payload.id,
-          projectId: action.payload.projectId,
-          name: action.payload.name,
-          fileScreening: 'in_progress',
-          totalFiles: null,
-          duplicates: null,
-          fileSelection: null,
-          criteria: null,
-          lastModified: new Date().toISOString(),
-          currentStep: 'screening',
-          screeningStep: 'new',
-          queryData: {
-            projectId: action.payload.projectId
-          }
-        };
-        console.log('Pipeline reducer - creating:', newPipeline);
-        state.pipelines.push(newPipeline);
+        state.pipelines.push(action.payload);
+        console.log('Pipeline reducer - creating:', action.payload);
       } else {
         console.log('Pipeline already exists, skipping creation:', action.payload.id);
       }
@@ -69,11 +57,14 @@ const pipelineSlice = createSlice({
           lastModified: new Date().toISOString()
         };
       }
+    },
+    deletePipeline: (state, action: PayloadAction<string>) => {
+      state.pipelines = state.pipelines.filter(p => p.id !== action.payload);
     }
   }
 });
 
-export const { createPipeline, updatePipeline } = pipelineSlice.actions;
+export const { createPipeline, updatePipeline, deletePipeline } = pipelineSlice.actions;
 export default pipelineSlice.reducer;
 
 declare module '../store/store' {
