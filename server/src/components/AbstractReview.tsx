@@ -4,6 +4,8 @@ import { FiPlusCircle  } from "react-icons/fi";
 import FullTable, { getArticleStatus } from './FullTable';
 import sampleArticlesData from '../assets/sample_articles_full.json';
 import { IoMdSearch } from "react-icons/io";
+import StatusCounter from './StatusCounter';
+import { HiOutlineDownload } from 'react-icons/hi';
 
 interface FileFilteringTempProps {
   onCriteriaChange?: (criteria: string[]) => void;
@@ -239,15 +241,37 @@ const FileFilteringTemp: React.FC<FileFilteringTempProps> = ({ onCriteriaChange 
     });
   };
 
+  // Add a function to count statuses
+  const getStatusCounts = (articles: Article[]) => {
+    return articles.reduce(
+      (acc, article) => {
+        const status = getArticleStatus(article.answers).toLowerCase();
+        switch (status) {
+          case 'included':
+            acc.included++;
+            break;
+          case 'excluded':
+            acc.excluded++;
+            break;
+          case 'unsure':
+            acc.unsure++;
+            break;
+        }
+        return acc;
+      },
+      { included: 0, excluded: 0, unsure: 0 }
+    );
+  };
+
   return (
     <div className="relative flex flex-col h-full overflow-visible">
       <div className="flex-1 pb-20 overflow-visible">
         {/* Input Section with Toggle */}
-        <div className="mb-6">
+            <div className="mb-6">
           <div className="flex items-center justify-start mb-4">
             <h1 className="text-2xl font-semibold">Abstract review</h1>
-          </div>
-                </div>
+              </div>
+            </div>
 
         {/* Active Criteria */}
         {showCriteria && activeCriteria.length > 0 && (
@@ -296,19 +320,26 @@ const FileFilteringTemp: React.FC<FileFilteringTempProps> = ({ onCriteriaChange 
 
       {/* Footer */}
       <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-6 py-4 z-[100]">
-        <div className="flex justify-end items-center gap-4">
-                      <button 
-            onClick={handleApply}
-            disabled={buttonState.disabled}
-            className={`px-4 py-2 rounded-lg transition-colors ${buttonState.className}`}
-                      >
-            {buttonState.text}
-                      </button>
-                            <button
-            className="px-4 py-2 rounded-lg bg-[#068EF1] text-white hover:bg-[#0576C8]"
-                            >
-            Save Pipeline
-                            </button>
+        <div className="flex justify-between items-center max-w-[1920px] mx-auto w-full">
+          {/* Status counter with margin matching sidebar width */}
+          <div className="ml-64">
+            <StatusCounter {...getStatusCounts(sampleArticles)} />
+          </div>
+
+          {/* Action buttons */}
+          <div className="flex items-center gap-4">
+              <button
+              className="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50 flex items-center gap-2"
+              >
+              <HiOutlineDownload className="w-5 h-5" />
+                Export
+              </button>
+              <button
+              className="px-4 py-2 rounded-lg bg-[#068EF1] text-white hover:bg-[#0576C8]"
+              >
+              Save Pipeline
+              </button>
+              </div>
             </div>
       </div>
     </div>

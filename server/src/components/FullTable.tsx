@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useRef } from 'react';
 import { IoMdInformationCircle, IoMdSearch } from "react-icons/io";
 import { IoCalendarOutline } from "react-icons/io5";
 import { SCREENING_CRITERIA } from '../utils/mockData';
@@ -10,6 +10,7 @@ import { GiMedicalDrip } from "react-icons/gi";
 import { GrDocumentMissing } from "react-icons/gr";
 import { BsStars } from "react-icons/bs";
 import AnswerSelectionModal from './AnswerSelectionModal';
+import AbstractModal from './AbstractModal';
 
 interface Article {
   title: string;
@@ -138,6 +139,7 @@ const FullTable: React.FC<FullTableProps> = ({
     rowIndex: number;
     columnIndex: number;
     currentAnswer: string;
+    position: { x: number; y: number };
   } | null>(null);
 
   const STATUS_OPTIONS = [
@@ -166,10 +168,10 @@ const FullTable: React.FC<FullTableProps> = ({
         return 'Yes';
       case 'no':
         return 'No';
-      case 'unsure':
-        return 'Unsure';
+      case 'uncertain':
+        return 'uncertain';
       default:
-        return 'Not evaluated';
+        return 'uncertain';
     }
   };
 
@@ -183,6 +185,9 @@ const FullTable: React.FC<FullTableProps> = ({
     position: { x: 0, y: 0 },
     criteriaIndex: 0
   });
+
+  // Add a ref for the table container
+  const tableContainerRef = useRef<HTMLDivElement>(null);
 
   // Add handler for answer changes
   const handleAnswerChange = (answer: string, note: string) => {
@@ -248,7 +253,7 @@ const FullTable: React.FC<FullTableProps> = ({
         </div>
       </div>
 
-      <div className="relative">
+      <div className="relative" ref={tableContainerRef}>
         <div className="overflow-hidden rounded-xl border border-gray-200">
           <div className="flex">
             {/* Fixed columns (Title, Abstract, Status, Cause) */}
@@ -389,11 +394,22 @@ const FullTable: React.FC<FullTableProps> = ({
                         <td 
                           key={columnIndex} 
                           className={`px-6 whitespace-nowrap text-sm border-b border-r border-gray-200 ${ROW_HEIGHT} cursor-pointer hover:bg-gray-50`}
-                          onClick={() => setEditingCell({
-                            rowIndex,
-                            columnIndex,
-                            currentAnswer: article.answers[columnIndex] || ''
-                          })}
+                          onClick={(e) => {
+                            const rect = e.currentTarget.getBoundingClientRect();
+                            const containerRect = tableContainerRef.current?.getBoundingClientRect();
+                            
+                            if (containerRect) {
+                              setEditingCell({
+                                rowIndex,
+                                columnIndex,
+                                currentAnswer: article.answers[columnIndex] || '',
+                                position: {
+                                  x: rect.left - containerRect.left,
+                                  y: rect.bottom - containerRect.top + 4
+                                }
+                              });
+                            }
+                          }}
                         >
                           <div className="h-full flex items-center">
                             <div className="flex items-center gap-2">
@@ -438,9 +454,11 @@ const FullTable: React.FC<FullTableProps> = ({
 
         {/* Abstract Modal */}
         {selectedArticle && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            {/* Modal content */}
-          </div>
+          <AbstractModal
+            title={selectedArticle.title}
+            abstract={selectedArticle.abstract}
+            onClose={() => setSelectedArticle(null)}
+          />
         )}
       </div>
 
@@ -458,6 +476,7 @@ const FullTable: React.FC<FullTableProps> = ({
           onClose={() => setEditingCell(null)}
           onSave={handleAnswerChange}
           currentAnswer={editingCell.currentAnswer}
+          position={editingCell.position}
         />
       )}
     </div>
