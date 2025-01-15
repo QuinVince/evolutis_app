@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FaPlus, FaTimes } from 'react-icons/fa';
+import { FaPlus, FaTimes,FaChevronDown } from 'react-icons/fa';
 import { GiMedicalDrip } from "react-icons/gi";
 import { GrDocumentMissing } from "react-icons/gr";
 import SampleTable from './SampleTable';
@@ -61,6 +61,7 @@ const CriteriaSelection: React.FC<CriteriaSelectionProps> = ({ onCriteriaChange 
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [showTipsTooltip, setShowTipsTooltip] = useState(false);
   const [showCategoryDropdown, setShowCategoryDropdown] = useState(false);
+  const [showCategoryWarning, setShowCategoryWarning] = useState(false);
   
   // Transform the JSON data to match the Article interface
   const sampleArticles = sampleArticlesData.map(article => ({
@@ -85,6 +86,13 @@ const CriteriaSelection: React.FC<CriteriaSelectionProps> = ({ onCriteriaChange 
   }));
 
   const handleAddCriterion = () => {
+    if (!selectedCategory) {
+      setShowCategoryWarning(true);
+      // Hide warning after 3 seconds
+      setTimeout(() => setShowCategoryWarning(false), 3000);
+      return;
+    }
+
     if (inputValue.trim() && activeCriteria.length < 7) {
       const newCriterion = {
         id: Date.now().toString(),
@@ -93,6 +101,7 @@ const CriteriaSelection: React.FC<CriteriaSelectionProps> = ({ onCriteriaChange 
       };
       setActiveCriteria([...activeCriteria, newCriterion]);
       setInputValue('');
+      setShowCategoryWarning(false);
       setIsCalculating(false);
       onCriteriaChange?.([...activeCriteria, newCriterion].map(c => c.text));
     }
@@ -171,7 +180,7 @@ const CriteriaSelection: React.FC<CriteriaSelectionProps> = ({ onCriteriaChange 
         {/* Input Section with Toggle */}
         <div className="mb-6">
           <div className="flex items-center justify-start mb-4">
-            <h1 className="text-2xl font-semibold">Criteria definition</h1>
+            <h1 className="text-2xl font-semibold">Criteria selection</h1>
             <button
               onClick={() => setShowCriteria(!showCriteria)}
               className="pl-4 text-[#0076F5] hover:text-[#0056b3] text-sm underline"
@@ -196,7 +205,7 @@ const CriteriaSelection: React.FC<CriteriaSelectionProps> = ({ onCriteriaChange 
                   <div className="relative ">
                     <button
                       onClick={() => setShowCategoryDropdown(!showCategoryDropdown)}
-                      className={`w-45 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#068EF1] bg-white flex items-center gap-2 ${
+                      className={`w-40 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#068EF1] bg-white flex items-center gap-2 ${
                         selectedCategory ? 'border-[#068EF1]' : 'border-gray-200' 
                       }`}
                     >
@@ -206,9 +215,13 @@ const CriteriaSelection: React.FC<CriteriaSelectionProps> = ({ onCriteriaChange 
                             .flatMap(group => group.items)
                             .find(item => item.value === selectedCategory)?.icon}
                           <span>{selectedCategory}</span>
+                          <FaChevronDown className="ml-auto text-gray-400" />
                         </>
                       ) : (
-                        <span className="text-gray-500">Select category</span>
+                        <>
+                          <span className="text-gray-500">Select category</span>
+                          <FaChevronDown className="ml-auto text-gray-400" />
+                        </>
                       )}
                     </button>
 
@@ -247,17 +260,29 @@ const CriteriaSelection: React.FC<CriteriaSelectionProps> = ({ onCriteriaChange 
                     )}
                   </div>
 
-                  <button
-                    onClick={handleAddCriterion}
-                    disabled={!inputValue.trim() || activeCriteria.length >= 7}
-                    className={`px-4 py-2 rounded-lg transition-colors ${
-                      inputValue.trim() 
-                        ? 'bg-[#068EF1] text-white hover:bg-[#0576C8]' 
-                        : 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                    }`}
-                  >
-                    Add
-                  </button>
+                  <div className="relative">
+                    <button
+                      onClick={handleAddCriterion}
+                      disabled={!inputValue.trim() || activeCriteria.length >= 7}
+                      className={`px-4 py-2 rounded-lg transition-colors ${
+                        inputValue.trim() 
+                          ? 'bg-[#068EF1] text-white hover:bg-[#0576C8]' 
+                          : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                      }`}
+                    >
+                      Add
+                    </button>
+                    
+                    {/* Warning message */}
+                    {showCategoryWarning && (
+                      <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-48 
+                                    bg-red-50 text-red-600 text-xs rounded-lg py-2 px-3 shadow-lg border border-red-200">
+                        Please select a category first
+                        <div className="absolute left-1/2 bottom-0 transform -translate-x-1/2 translate-y-full 
+                                      border-4 border-transparent border-t-red-50"/>
+                      </div>
+                    )}
+                  </div>
 
                   <div className="w-px h-6 bg-gray-300 mx-2" />
 

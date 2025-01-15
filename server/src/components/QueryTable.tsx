@@ -166,7 +166,7 @@ const QueryTable: React.FC<QueryTableProps> = ({ projectId }) => {
           ) : (
             <tr>
               <td colSpan={7} className="px-6 py-4 text-center text-gray-500">
-                No queries yet. Click "New Query" to create one.
+                No reviews yet. Click "New review" to create one.
               </td>
             </tr>
           )}
