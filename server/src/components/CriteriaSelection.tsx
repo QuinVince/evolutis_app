@@ -36,7 +36,7 @@ const CRITERIA_CATEGORIES: {
   items: CategoryItem[];
 }[] = [
   {
-    group: "Main criterias", 
+    group: "Main criteria", 
     items: [
       { value: "Language", icon: <HiLanguage className="w-4 h-4 text-gray-800" /> },
       { value: "Publication", icon: <IoNewspaperOutline className="w-4 h-4 text-gray-800" /> },
@@ -45,9 +45,9 @@ const CRITERIA_CATEGORIES: {
     ]
   },
   {
-    group: "Other",
+    group: "Flags",
     items: [
-      { value: "Unusable data", icon: <GrDocumentMissing className="w-4 h-4 text-gray-800" /> }
+      { value: "Other", icon: <GrDocumentMissing className="w-4 h-4 text-gray-800" /> }
     ]
   }
 ];

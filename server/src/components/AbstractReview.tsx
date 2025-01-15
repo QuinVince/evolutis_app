@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { FaPlus, FaTimes } from 'react-icons/fa';
 import { FiPlusCircle  } from "react-icons/fi";
-import FullTable from './FullTable';
+import FullTable, { getArticleStatus } from './FullTable';
 import sampleArticlesData from '../assets/sample_articles_full.json';
 import { IoMdSearch } from "react-icons/io";
 
@@ -48,16 +48,40 @@ const FileFilteringTemp: React.FC<FileFilteringTempProps> = ({ onCriteriaChange 
   const [searchQuery, setSearchQuery] = useState('');
   const itemsPerPage = 25;
 
+  // Add new states for filtering
+  const [statusFilter, setStatusFilter] = useState<string>('all');
+
+  // Add filter handler
+  const handleFilterChange = (filters: { status: string; search: string }) => {
+    setStatusFilter(filters.status);
+    setSearchQuery(filters.search);
+    setCurrentPage(1); // Reset to first page when filters change
+  };
+
   // Filter and paginate articles
   const filteredArticles = useMemo(() => {
     return sampleArticles.filter(article => {
-      const searchLower = searchQuery.toLowerCase();
-      return (
-        article.title.toLowerCase().includes(searchLower) ||
-        article.abstract.toLowerCase().includes(searchLower)
-      );
+      // Status filter
+      if (statusFilter !== 'all') {
+        const articleStatus = getArticleStatus(article.answers).toLowerCase();
+        if (articleStatus !== statusFilter) {
+          return false;
+        }
+      }
+
+      // Search query filter
+      if (searchQuery) {
+        const query = searchQuery.toLowerCase();
+        const matchesTitle = article.title.toLowerCase().includes(query);
+        const matchesAbstract = article.abstract.toLowerCase().includes(query);
+        if (!matchesTitle && !matchesAbstract) {
+          return false;
+        }
+      }
+
+      return true;
     });
-  }, [sampleArticles, searchQuery]);
+  }, [sampleArticles, statusFilter, searchQuery]);
 
   const paginatedArticles = useMemo(() => {
     const startIndex = (currentPage - 1) * itemsPerPage;
@@ -174,20 +198,20 @@ const FileFilteringTemp: React.FC<FileFilteringTempProps> = ({ onCriteriaChange 
             {page}
           </button>
         ))}
-        <button
+                  <button
           onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
           disabled={currentPage === totalPages}
           className="px-3 py-1 rounded-lg border border-gray-300 disabled:opacity-50 disabled:cursor-not-allowed"
-        >
+                  >
           Next
-        </button>
+                  </button>
       </div>
-    </div>
+                </div>
   );
 
   return (
-    <div className="relative flex flex-col h-full">
-      <div className="flex-1 pb-20">
+    <div className="relative flex flex-col h-full overflow-visible">
+      <div className="flex-1 pb-20 overflow-visible">
         {/* Input Section with Toggle */}
         <div className="mb-6">
           <div className="flex items-center justify-start mb-4">
@@ -211,16 +235,16 @@ const FileFilteringTemp: React.FC<FileFilteringTempProps> = ({ onCriteriaChange 
                 className="flex-grow px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#068EF1] focus:border-transparent"
                 disabled={activeCriteria.length >= 7}
               />
-              <button
+                <button
                 onClick={handleAddCriterion}
                 disabled={!inputValue.trim() || activeCriteria.length >= 7}
                 className="p-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <FiPlusCircle className="w-5 h-5 text-gray-600" />
-              </button>
+                  </button>
             </div>
           )}
-        </div>
+                </div>
 
         {/* Active Criteria */}
         {showCriteria && activeCriteria.length > 0 && (
@@ -257,28 +281,31 @@ const FileFilteringTemp: React.FC<FileFilteringTempProps> = ({ onCriteriaChange 
         <FullTable 
           articles={paginatedArticles}
           criteria={activeCriteria.map(c => truncateText(c.text, 30))}
+          onFilterChange={handleFilterChange}
+          statusFilter={statusFilter}
+          searchQuery={searchQuery}
         />
 
         {/* Add pagination controls */}
         <PaginationControls />
-      </div>
+                  </div>
 
       {/* Footer */}
       <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-6 py-4 z-[100]">
         <div className="flex justify-end items-center gap-4">
-          <button
+                      <button 
             onClick={handleApply}
             disabled={buttonState.disabled}
             className={`px-4 py-2 rounded-lg transition-colors ${buttonState.className}`}
-          >
+                      >
             {buttonState.text}
-          </button>
-          <button
+                      </button>
+                            <button
             className="px-4 py-2 rounded-lg bg-[#068EF1] text-white hover:bg-[#0576C8]"
-          >
+                            >
             Save Pipeline
-          </button>
-        </div>
+                            </button>
+            </div>
       </div>
     </div>
   );
