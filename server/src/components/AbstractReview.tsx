@@ -14,6 +14,19 @@ interface Criterion {
   text: string;
 }
 
+interface Article {
+  title: string;
+  abstract: string;
+  answers: string[];
+  justifications: string[];
+  status?: 'Included' | 'Excluded' | 'Unsure';
+  cause?: string;
+  comment?: string;
+  pubmed_id?: number;
+  date?: string;
+  manuallyEdited?: boolean;
+}
+
 const FileFilteringTemp: React.FC<FileFilteringTempProps> = ({ onCriteriaChange }) => {
   const [inputValue, setInputValue] = useState('');
   const [activeCriteria, setActiveCriteria] = useState<Criterion[]>([]);
@@ -21,32 +34,34 @@ const FileFilteringTemp: React.FC<FileFilteringTempProps> = ({ onCriteriaChange 
   const [hasCalculated, setHasCalculated] = useState(false);
   const [showCriteria, setShowCriteria] = useState(true);
   
-  // Transform the JSON data to match the Article interface
-  const sampleArticles = sampleArticlesData.map(article => ({
-    title: article.title,
-    abstract: article.abstract,
-    answers: [
-      article["Answer 1"] || '',
-      article["Answer 2"] || '',
-      article["Answer 3"] || '',
-      article["Answer 4"] || '',
-      article["Answer 5"] || '',
-      article["Answer 6"] || ''
-    ],
-    justifications: [
-      article["Justification 1"] || '',
-      article["Justification 2"] || '',
-      article["Justification 3"] || '',
-      article["Justification 4"] || '',
-      article["Justification 5"] || '',
-      article["Justification 6"] || ''
-    ]
-  }));
+  // Add sampleArticles state
+  const [sampleArticles, setSampleArticles] = useState(
+    sampleArticlesData.map(article => ({
+      title: article.title,
+      abstract: article.abstract,
+      answers: [
+        article["Answer 1"] || '',
+        article["Answer 2"] || '',
+        article["Answer 3"] || '',
+        article["Answer 4"] || '',
+        article["Answer 5"] || '',
+        article["Answer 6"] || ''
+      ],
+      justifications: [
+        article["Justification 1"] || '',
+        article["Justification 2"] || '',
+        article["Justification 3"] || '',
+        article["Justification 4"] || '',
+        article["Justification 5"] || '',
+        article["Justification 6"] || ''
+      ]
+    }))
+  );
 
   // Add new states for pagination and filtering
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState('');
-  const itemsPerPage = 25;
+  const itemsPerPage = 15;
 
   // Add new states for filtering
   const [statusFilter, setStatusFilter] = useState<string>('all');
@@ -209,41 +224,29 @@ const FileFilteringTemp: React.FC<FileFilteringTempProps> = ({ onCriteriaChange 
                 </div>
   );
 
+  // Add handler for article updates
+  const handleArticlesUpdate = (updatedArticles: Article[]) => {
+    // Update the articles in sampleArticles state
+    setSampleArticles(prevArticles => {
+      const newArticles = [...prevArticles];
+      updatedArticles.forEach(article => {
+        const index = newArticles.findIndex(a => a.title === article.title);
+        if (index !== -1) {
+          newArticles[index] = article;
+        }
+      });
+      return newArticles;
+    });
+  };
+
   return (
     <div className="relative flex flex-col h-full overflow-visible">
       <div className="flex-1 pb-20 overflow-visible">
         {/* Input Section with Toggle */}
         <div className="mb-6">
           <div className="flex items-center justify-start mb-4">
-            <h1 className="text-2xl font-semibold">Criteria definition</h1>
-            <button
-              onClick={() => setShowCriteria(!showCriteria)}
-              className="pl-4 text-[#0076F5] hover:text-[#0056b3] text-sm underline"
-            >
-              {showCriteria ? 'Hide criteria' : 'Show criteria'}
-            </button>
+            <h1 className="text-2xl font-semibold">Abstract review</h1>
           </div>
-          
-          {showCriteria && (
-            <div className="flex gap-2">
-              <input
-                type="text"
-                value={inputValue}
-                onChange={(e) => setInputValue(e.target.value)}
-                onKeyPress={handleKeyPress}
-                placeholder="Define your criteria"
-                className="flex-grow px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#068EF1] focus:border-transparent"
-                disabled={activeCriteria.length >= 7}
-              />
-                <button
-                onClick={handleAddCriterion}
-                disabled={!inputValue.trim() || activeCriteria.length >= 7}
-                className="p-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                <FiPlusCircle className="w-5 h-5 text-gray-600" />
-                  </button>
-            </div>
-          )}
                 </div>
 
         {/* Active Criteria */}
@@ -284,6 +287,7 @@ const FileFilteringTemp: React.FC<FileFilteringTempProps> = ({ onCriteriaChange 
           onFilterChange={handleFilterChange}
           statusFilter={statusFilter}
           searchQuery={searchQuery}
+          onArticlesUpdate={handleArticlesUpdate}
         />
 
         {/* Add pagination controls */}

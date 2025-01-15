@@ -8,6 +8,8 @@ import { IoNewspaperOutline } from "react-icons/io5";
 import { BiTargetLock } from "react-icons/bi";
 import { GiMedicalDrip } from "react-icons/gi";
 import { GrDocumentMissing } from "react-icons/gr";
+import { BsStars } from "react-icons/bs";
+import AnswerSelectionModal from './AnswerSelectionModal';
 
 interface Article {
   title: string;
@@ -19,6 +21,7 @@ interface Article {
   comment?: string;
   pubmed_id?: number;
   date?: string;
+  manuallyEdited?: boolean;
 }
 
 interface FullTableProps {
@@ -27,6 +30,7 @@ interface FullTableProps {
   onFilterChange: (filters: { status: string; search: string }) => void;
   statusFilter: string;
   searchQuery: string;
+  onArticlesUpdate: (articles: Article[]) => void;
 }
 
 // Add new type for status
@@ -80,15 +84,61 @@ const getCategoryIcon = (category: string) => {
   }
 };
 
+// Add helper function to get cause information
+const getCauseInfo = (answers: string[], criteria: typeof SCREENING_CRITERIA) => {
+  // If all answers are yes, return null
+  if (answers.every(answer => answer.toLowerCase() === 'yes')) {
+    return null;
+  }
+
+  // Get unique categories with no/uncertain answers (excluding Flags)
+  const categories = new Set<string>();
+  const hasNo = answers.some(answer => answer.toLowerCase() === 'no');
+
+  answers.forEach((answer, index) => {
+    const category = criteria[index].category;
+    if (category !== 'Flags' && 
+        (answer.toLowerCase() === 'no' || answer.toLowerCase() === 'uncertain')) {
+      categories.add(category);
+    }
+  });
+
+  // Sort categories in specified order
+  const orderMap = {
+    'Language': 1,
+    'Publication': 2,
+    'Scope': 3,
+    'Device': 4
+  };
+
+  const sortedCategories = Array.from(categories).sort((a, b) => 
+    (orderMap[a as keyof typeof orderMap] || 999) - (orderMap[b as keyof typeof orderMap] || 999)
+  );
+
+  return {
+    dotColor: hasNo ? 'bg-[#E08F8F]' : 'bg-[#D9D9D9]',
+    categories: sortedCategories
+  };
+};
+
+// Update the row height constant at the top of the component
+const ROW_HEIGHT = "h-[41px]";
+
 const FullTable: React.FC<FullTableProps> = ({ 
   articles, 
   criteria, 
   onFilterChange,
   statusFilter,
-  searchQuery 
+  searchQuery,
+  onArticlesUpdate
 }) => {
   const [selectedArticle, setSelectedArticle] = useState<Article | null>(null);
   const [dateFilter, setDateFilter] = useState<string>('');
+  const [editingCell, setEditingCell] = useState<{
+    rowIndex: number;
+    columnIndex: number;
+    currentAnswer: string;
+  } | null>(null);
 
   const STATUS_OPTIONS = [
     { value: 'all', label: 'All Status' },
@@ -100,11 +150,11 @@ const FullTable: React.FC<FullTableProps> = ({
   const getAnswerColor = (answer: string) => {
     switch (answer.toLowerCase()) {
       case 'yes':
-        return 'bg-green-500';
+        return 'bg-[#9FE5A1]';
       case 'no':
-        return 'bg-red-500';
-      case 'uncertain':
-        return 'bg-gray-400';
+        return 'bg-[#E08F8F]';
+      case 'unsure':
+        return 'bg-[#D9D9D9]';
       default:
         return 'bg-gray-200';
     }
@@ -116,8 +166,8 @@ const FullTable: React.FC<FullTableProps> = ({
         return 'Yes';
       case 'no':
         return 'No';
-      case 'uncertain':
-        return 'Uncertain';
+      case 'unsure':
+        return 'Unsure';
       default:
         return 'Not evaluated';
     }
@@ -133,6 +183,29 @@ const FullTable: React.FC<FullTableProps> = ({
     position: { x: 0, y: 0 },
     criteriaIndex: 0
   });
+
+  // Add handler for answer changes
+  const handleAnswerChange = (answer: string, note: string) => {
+    if (!editingCell) return;
+
+    const { rowIndex, columnIndex } = editingCell;
+    const updatedArticles = [...articles];
+    const article = { ...updatedArticles[rowIndex] };
+
+    // Update answer
+    article.answers[columnIndex] = answer;
+    article.manuallyEdited = true;
+
+    // Update comment if note provided
+    if (note) {
+      article.comment = note;
+    }
+
+    updatedArticles[rowIndex] = article;
+    // You'll need to implement this handler in the parent component
+    onArticlesUpdate(updatedArticles);
+    setEditingCell(null);
+  };
 
   return (
     <div className="space-y-4">
@@ -183,8 +256,8 @@ const FullTable: React.FC<FullTableProps> = ({
               <table className="w-full table-fixed">
                 <colgroup>
                   <col className="w-[45%]" /> {/* Title */}
-                  <col className="w-[12%]" /> {/* Abstract */}
-                  <col className="w-[12%]" /> {/* Status */}
+                  <col className="w-[13%]" /> {/* Abstract */}
+                  <col className="w-[13%]" /> {/* Status */}
                   <col className="w-[20%]" /> {/* Cause */}
                 </colgroup>
                 <thead className="bg-[#E9EDF1]">
@@ -205,13 +278,13 @@ const FullTable: React.FC<FullTableProps> = ({
                 </thead>
                 <tbody className="bg-white">
                   {articles.map((article, rowIndex) => (
-                    <tr key={rowIndex} className="bg-white" style={{ height: '41px' }}>
-                      <td className="px-6 py-2 text-sm text-[#5C5C5C] font-semibold border-b border-r border-gray-200">
+                    <tr key={rowIndex} className={`bg-white ${ROW_HEIGHT}`}>
+                      <td className={`px-6 text-sm text-[#5C5C5C] font-semibold border-b border-r border-gray-200 ${ROW_HEIGHT}`}>
                         <div className="truncate" title={article.title}>
                           {article.title}
                         </div>
                       </td>
-                      <td className="px-2 py-2 text-sm border-b border-r border-gray-200">
+                      <td className={`px-2 text-sm border-b border-r border-gray-200 ${ROW_HEIGHT}`}>
                         <div className="flex justify-center">
                           <button
                             onClick={() => setSelectedArticle(article)}
@@ -222,15 +295,40 @@ const FullTable: React.FC<FullTableProps> = ({
                         </div>
                       </td>
                       <td 
-                        className={`py-2 text-sm border-b border-r border-gray-200 text-center ${
+                        className={`text-sm border-b border-r border-gray-200 text-center ${ROW_HEIGHT} relative ${
                           article.answers.length > 0 ? getStatusStyle(getArticleStatus(article.answers)) : ''
                         }`}
                       >
-                        {article.answers.length > 0 && getArticleStatus(article.answers)}
+                        <div className="h-full flex items-center justify-center font-medium">
+                          <div className="relative">
+                            {article.answers.length > 0 && getArticleStatus(article.answers)}
+                            {article.manuallyEdited && (
+                              <div className="absolute -top-1 -right-5">
+                                <BsStars className="w-3 h-3 text-black" />
+                              </div>
+                            )}
+                          </div>
+                        </div>
                       </td>
-                      <td className="px-6 py-2 text-sm border-b border-r border-gray-200">
-                        <div className="text-center">
-                          {article.cause || '-'}
+                      <td className={`px-6 text-sm border-b border-r border-gray-200 ${ROW_HEIGHT}`}>
+                        <div className="flex items-center gap-2">
+                          {(() => {
+                            const causeInfo = getCauseInfo(article.answers, SCREENING_CRITERIA);
+                            if (!causeInfo) return null;
+
+                            return (
+                              <>
+                                <div className={`w-2 h-2 rounded-full ${causeInfo.dotColor}`} />
+                                <div className="flex items-center gap-1 bg-white rounded-md border border-gray-300 px-2 py-1">
+                                  {causeInfo.categories.map((category, i) => (
+                                    <div key={i} className="w-4 h-4">
+                                      {getCategoryIcon(category)}
+                                    </div>
+                                  ))}
+                                </div>
+                              </>
+                            );
+                          })()}
                         </div>
                       </td>
                     </tr>
@@ -271,7 +369,7 @@ const FullTable: React.FC<FullTableProps> = ({
                       >
                         <div className="flex items-center justify-center gap-2">
                           <span>{`C${i + 1}`}</span>
-                          <div className="bg-white rounded-md border border-gray-500 w-6 h-6 flex items-center justify-center">
+                          <div className="bg-white rounded-md border border-gray-400 w-6 h-6 flex items-center justify-center">
                             {getCategoryIcon(SCREENING_CRITERIA[i].category)}
                           </div>
                         </div>
@@ -286,37 +384,46 @@ const FullTable: React.FC<FullTableProps> = ({
                 </thead>
                 <tbody className="bg-white">
                   {articles.map((article, rowIndex) => (
-                    <tr key={rowIndex} className="bg-white" style={{ height: '41px' }}>
+                    <tr key={rowIndex} className={`bg-white ${ROW_HEIGHT}`}>
                       {Array(6).fill(0).map((_, columnIndex) => (
-                        <td key={columnIndex} className="px-6 py-2 whitespace-nowrap text-sm border-b border-r border-gray-200">
-                          <div className="flex justify-start items-center h-full">
+                        <td 
+                          key={columnIndex} 
+                          className={`px-6 whitespace-nowrap text-sm border-b border-r border-gray-200 ${ROW_HEIGHT} cursor-pointer hover:bg-gray-50`}
+                          onClick={() => setEditingCell({
+                            rowIndex,
+                            columnIndex,
+                            currentAnswer: article.answers[columnIndex] || ''
+                          })}
+                        >
+                          <div className="h-full flex items-center">
                             <div className="flex items-center gap-2">
                               <div className="flex items-center gap-1.5">
                                 <div 
                                   className={`w-2 h-2 rounded-full ${getAnswerColor(article.answers[columnIndex] || '')}`}
                                 />
-                                <span className="text-s font-semibold text-gray-600">
+                                <span className="text-sm text-gray-600">
                                   {getAnswerLabel(article.answers[columnIndex] || '')}
                                 </span>
                               </div>
-                              <div className="relative group flex items-center">
-                                <button className="text-gray-400 hover:text-gray-600 flex items-center">
-                                  <IoMdInformationCircle className="w-4 h-4 text-gray-500" />
-                                </button>
-                                <div className="opacity-0 invisible group-hover:opacity-100 group-hover:visible 
-                                            fixed ml-[-150px] bottom-auto transform -translate-y-full
-                                            bg-gray-900 text-white text-xs rounded-lg py-2 px-3 w-48 z-[200]
-                                            whitespace-normal text-left mt-[-10px]">
-                                  {article.justifications[columnIndex] || 'No justification provided'}
-                                  <div className="absolute left-1/2 bottom-0 transform -translate-x-1/2 translate-y-full
-                                              border-4 border-transparent border-t-gray-900"/>
+                              {article.justifications[columnIndex] && (
+                                <div className="relative group">
+                                  <button className="text-gray-400 hover:text-gray-600">
+                                    <IoMdInformationCircle className="w-4 h-4" />
+                                  </button>
+                                  <div className="opacity-0 invisible group-hover:opacity-100 group-hover:visible 
+                                               absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2
+                                               bg-gray-900 text-white text-xs rounded-lg py-2 px-3 w-48 z-[200]">
+                                    {article.justifications[columnIndex]}
+                                    <div className="absolute left-1/2 bottom-0 transform -translate-x-1/2 translate-y-full
+                                                 border-4 border-transparent border-t-gray-900"/>
+                                  </div>
                                 </div>
-                              </div>
+                              )}
                             </div>
                           </div>
                         </td>
                       ))}
-                      <td className="px-6 py-2 text-sm border-b border-r border-gray-200">
+                      <td className={`px-6 text-sm border-b border-r border-gray-200 ${ROW_HEIGHT}`}>
                         <div className="text-center">
                           {article.comment || '-'}
                         </div>
@@ -343,6 +450,16 @@ const FullTable: React.FC<FullTableProps> = ({
         isVisible={tooltipState.visible}
         position={tooltipState.position}
       />
+
+      {/* Add the modal */}
+      {editingCell && (
+        <AnswerSelectionModal
+          isOpen={true}
+          onClose={() => setEditingCell(null)}
+          onSave={handleAnswerChange}
+          currentAnswer={editingCell.currentAnswer}
+        />
+      )}
     </div>
   );
 };
