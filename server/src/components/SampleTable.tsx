@@ -115,10 +115,10 @@ const SampleTable: React.FC<SampleTableProps> = ({
       </colgroup>
       <thead className="bg-[#E9EDF1]">
         <tr>
-          <th className="px-6 py-3 text-left text-xs font-bold text-black uppercase tracking-wider border border-gray-200">
+          <th className="px-6 py-3 text-left text-sm font-bold text-black tracking-wider border border-gray-200">
             Title
           </th>
-          <th className="px-6 py-2 text-center text-[10px] font-bold text-black uppercase tracking-wider border border-gray-200">
+          <th className="px-6 py-2 text-center text-sm font-bold text-black tracking-wider border border-gray-200">
             Abstract
           </th>
         </tr>
@@ -137,7 +137,7 @@ const SampleTable: React.FC<SampleTableProps> = ({
                   onClick={() => setSelectedArticle(article)}
                   className="text-[#0076F5] hover:text-[#0056b3] underline text-center text-s whitespace-nowrap"
                 >
-                  See abstract
+                  Abstract
                 </button>
               </div>
             </td>

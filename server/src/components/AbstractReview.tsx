@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { FaPlus, FaTimes } from 'react-icons/fa';
 import { FiPlusCircle  } from "react-icons/fi";
-import SampleTable from './SampleTable';
+import FullTable from './FullTable';
 import sampleArticlesData from '../assets/sample_articles_full.json';
 import { IoMdSearch } from "react-icons/io";
 
@@ -21,15 +21,6 @@ const FileFilteringTemp: React.FC<FileFilteringTempProps> = ({ onCriteriaChange 
   const [hasCalculated, setHasCalculated] = useState(false);
   const [showCriteria, setShowCriteria] = useState(true);
   
-  // Suggested criteria - these would typically come from props or an API
-  const [suggestedCriteria] = useState([
-    'I want to select articles where the population studied is adult having a hip condition or needing a revision hip surgery',
-    'I want to select articles where a total hip arthroplasty is performed using a cementless revision stem in the indication of a revision total hip arthroplasty or complex primary total hip arthroplasty (bone defect for example)',
-    'I want to select articles where at least one of the following outcomes is evaluated:\n- A clinical score used in orthopaedics\n- A survival rate\n- A comparison with a group using another type of device\n- A radiological evaluation\nThe complications and/or revision rates are reported',
-    'I only want to exclude cadaver studies, case reports, surgical techniques, mechanical or in-vivo studies, finite element studies. I only want articles reporting or gathering clinical data on humans.',
-    "I want to exclude documents that report data on modular stems only. I'm only interested in monoblock ones or its comparison to another type.",
-  ]);
-
   // Transform the JSON data to match the Article interface
   const sampleArticles = sampleArticlesData.map(article => ({
     title: article.title,
@@ -98,18 +89,6 @@ const FileFilteringTemp: React.FC<FileFilteringTempProps> = ({ onCriteriaChange 
     setActiveCriteria(activeCriteria.filter(c => c.id !== id));
     setIsCalculating(false);
     onCriteriaChange?.(activeCriteria.filter(c => c.id !== id).map(c => c.text));
-  };
-
-  const handleSuggestedCriterionClick = (text: string) => {
-    if (activeCriteria.length < 7) {
-      const newCriterion = {
-        id: Date.now().toString(),
-        text
-      };
-      setActiveCriteria([...activeCriteria, newCriterion]);
-      setIsCalculating(false);
-      onCriteriaChange?.([...activeCriteria, newCriterion].map(c => c.text));
-    }
   };
 
   const truncateText = (text: string, maxLength: number = 50) => {
@@ -272,58 +251,12 @@ const FileFilteringTemp: React.FC<FileFilteringTempProps> = ({ onCriteriaChange 
           </div>
         )}
 
-        {/* Suggested Criteria */}
-        {showCriteria && activeCriteria.length < 7 && (
-          <div className="mb-8">
-            <div className="flex items-center gap-4 mb-3">
-              <h2 className="text-sm font-medium text-gray-500">Examples</h2>
-              <div className="flex flex-wrap gap-2">
-                {suggestedCriteria
-                  .filter(text => !activeCriteria.some(c => c.text === text))
-                  .map((text, index) => (
-                    <button
-                      key={index}
-                      onClick={() => handleSuggestedCriterionClick(text)}
-                      className="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm text-gray-700 transition-colors relative group"
-                    >
-                      <span className="block truncate max-w-[300px]">
-                        {truncateText(text, 50)}
-                      </span>
-                      <div className="opacity-0 invisible group-hover:opacity-100 group-hover:visible absolute left-0 bottom-full mb-2 bg-gray-800 text-white rounded-lg p-3 shadow-lg z-10 w-96 text-left">
-                        <div className="whitespace-pre-line">{text}</div>
-                        <div className="absolute bottom-[-6px] left-4 w-3 h-3 bg-gray-800 transform rotate-45"></div>
-                      </div>
-                    </button>
-                  ))}
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Add search bar before the results section */}
-        <div className="mb-6">
-          <div className="relative">
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search in title or abstract..."
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#068EF1]"
-            />
-            <IoMdSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-          </div>
-        </div>
 
         {/* Results section */}
-        <h2 className="text-xl font-bold text-gray-900 mb-4">
-          Results on {filteredArticles.length} papers
-        </h2>
         
-        <SampleTable 
+        <FullTable 
           articles={paginatedArticles}
           criteria={activeCriteria.map(c => truncateText(c.text, 30))}
-          isCalculating={isCalculating}
-          onCalculationComplete={handleCalculationComplete}
         />
 
         {/* Add pagination controls */}

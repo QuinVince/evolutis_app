@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { createPipeline, updatePipeline } from '../store/pipelineSlice';
 import CriteriaSelection from './CriteriaSelection';
-import FileFilteringTemp from './FileFilteringTemp';
+import FileFilteringTemp from './AbstractReview';
 
 interface SLRPipelineProps {
   mode?: 'generator' | 'parser';
