@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { BsCalendar3 } from "react-icons/bs";
 import { HiOutlineDocumentSearch } from "react-icons/hi";
+import { IoInformationCircleOutline } from "react-icons/io5";
+import { IoMdInformationCircle } from "react-icons/io";
+
 interface Article {
   title: string;
   abstract: string;
@@ -55,7 +58,7 @@ const SampleTable: React.FC<SampleTableProps> = ({
             setCalculationComplete(true);
             onCalculationComplete();
           }
-        }, rowIndex * 500);
+        }, rowIndex * 800);
 
         timeoutsRef.current.push(timeout);
       });
@@ -89,9 +92,9 @@ const SampleTable: React.FC<SampleTableProps> = ({
   const getAnswerLabel = (answer: string): string => {
     switch (answer.toLowerCase()) {
       case 'yes':
-        return 'Included';
+        return 'Yes';
       case 'no':
-        return 'Excluded';
+        return 'No';
       case 'uncertain':
         return 'Uncertain';
       default:
@@ -110,19 +113,19 @@ const SampleTable: React.FC<SampleTableProps> = ({
         <col className="w-[70%]" />
         <col className="w-[30%]" />
       </colgroup>
-      <thead className="bg-gray-50">
+      <thead className="bg-[#E9EDF1]">
         <tr>
-          <th className="px-6 py-3 text-left text-xs font-bold text-black uppercase tracking-wider border border-gray-200">
+          <th className="px-6 py-3 text-left text-sm font-bold text-black tracking-wider border border-gray-200">
             Title
           </th>
-          <th className="px-6 py-2 text-center text-[10px] font-bold text-black uppercase tracking-wider border border-gray-200">
+          <th className="px-6 py-2 text-center text-sm font-bold text-black tracking-wider border border-gray-200">
             Abstract
           </th>
         </tr>
       </thead>
-      <tbody className="bg-white divide-y divide-gray-200">
+      <tbody className="bg-white">
         {articles.map((article, rowIndex) => (
-          <tr key={rowIndex} className={rowIndex % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
+          <tr key={rowIndex} className="bg-white">
             <td className="px-6 py-2 text-sm text-[#5C5C5C] font-semibold border border-gray-200">
               <div className="truncate" title={article.title}>
                 {article.title}
@@ -134,7 +137,7 @@ const SampleTable: React.FC<SampleTableProps> = ({
                   onClick={() => setSelectedArticle(article)}
                   className="text-[#0076F5] hover:text-[#0056b3] underline text-center text-s whitespace-nowrap"
                 >
-                  See abstract
+                  Abstract
                 </button>
               </div>
             </td>
@@ -145,79 +148,112 @@ const SampleTable: React.FC<SampleTableProps> = ({
   );
 
   const renderFullTable = () => (
-    <table className="w-full table-fixed divide-y divide-gray-200 border-collapse">
-      <colgroup>
-        <col className="w-[42%]" />
-        <col className="w-[10%]" />
-        {criteria.map((_, i) => (
-          <col key={i} className="w-[8%]" />
-        ))}
-      </colgroup>
-      <thead className="bg-gray-50">
-        <tr>
-          <th className="px-6 py-3 text-left text-xs font-bold text-black uppercase tracking-wider border border-gray-200">
-            Title
-          </th>
-          <th className="px-6 py-2 text-center text-[10px] font-bold text-black uppercase tracking-wider border border-gray-200">
-            Abstract
-          </th>
-          {criteria.map((_, i) => (
-            <th 
-              key={i}
-              className="px-2 py-2 text-center text-[10px] font-bold text-black uppercase tracking-wider border border-gray-200"
-            >
-              {`Criteria ${i + 1}`}
-            </th>
-          ))}
-        </tr>
-      </thead>
-      <tbody className="bg-white divide-y divide-gray-200">
-        {articles.map((article, rowIndex) => (
-          <tr key={rowIndex} className={rowIndex % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
-            <td className="px-6 py-2 text-sm text-[#5C5C5C] font-semibold border border-gray-200">
-              <div className="truncate" title={article.title}>
-                {article.title}
-              </div>
-            </td>
-            <td className="px-2 py-2 text-sm border border-gray-200">
-              <div className="flex justify-center">
-                <button
-                  onClick={() => setSelectedArticle(article)}
-                  className="text-[#0076F5] hover:text-[#0056b3] underline text-center text-s whitespace-nowrap"
-                >
-                  See abstract
-                </button>
-              </div>
-            </td>
-            {criteria.map((_, columnIndex) => (
-              <td key={columnIndex} className="px-6 py-1 whitespace-nowrap text-sm text-center border border-gray-200">
-                <div className="flex justify-center items-center">
-                  {(isCalculating || calculationComplete) && isRowLoaded(rowIndex) && (
-                    <div className="relative group">
-                      <div className="w-5 h-5 rounded-md border-2 border-gray-300 flex items-center justify-center">
-                        <div 
-                          className={`w-2 h-2 rounded-full ${getAnswerColor(article.answers[columnIndex])}`}
-                        />
+    <div className="relative">
+      <div className="overflow-hidden rounded-xl border border-gray-200">
+        <div className="flex">
+          {/* Fixed columns (Title + Abstract) */}
+          <div className="w-[52%] flex-shrink-0 border-r border-gray-200">
+            <table className="w-full table-fixed">
+              <colgroup>
+                <col className="w-[80%]" />
+                <col className="w-[20%]" />
+              </colgroup>
+              <thead className="bg-[#E9EDF1]">
+                <tr>
+                  <th className="px-6 py-3 text-left text-sm font-bold text-black tracking-wider border-b border-r border-gray-200">
+                    Title
+                  </th>
+                  <th className="px-6 py-3 text-center text-sm font-bold text-black tracking-wider border-b border-r border-gray-200">
+                    Abstract
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="bg-white">
+                {articles.map((article, rowIndex) => (
+                  <tr key={rowIndex} className="bg-white" style={{ height: '41px' }}>
+                    <td className="px-6 py-2 text-sm text-[#5C5C5C] font-semibold border-b border-r border-gray-200">
+                      <div className="truncate" title={article.title}>
+                        {article.title}
                       </div>
-                      {/* Tooltip */}
-                      <div className="opacity-0 invisible group-hover:opacity-100 group-hover:visible 
-                                    absolute left-1/2 bottom-full transform -translate-x-1/2 -translate-y-2
-                                    bg-gray-900 text-white text-xs rounded py-1 px-2 w-48 z-50
-                                    whitespace-normal text-left">
-                        {article.justifications[columnIndex] || 'No justification provided'}
-                        {/* Arrow */}
-                        <div className="absolute left-1/2 bottom-0 transform -translate-x-1/2 translate-y-full
-                                      border-4 border-transparent border-t-gray-900"/>
+                    </td>
+                    <td className="px-2 py-2 text-sm border-b border-r border-gray-200">
+                      <div className="flex justify-center">
+                        <button
+                          onClick={() => setSelectedArticle(article)}
+                          className="text-[#0076F5] hover:text-[#0056b3] underline text-center text-s whitespace-nowrap"
+                        >
+                          Abstract
+                        </button>
                       </div>
-                    </div>
-                  )}
-                </div>
-              </td>
-            ))}
-          </tr>
-        ))}
-      </tbody>
-    </table>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Scrollable criteria columns */}
+          <div className="flex-1 overflow-x-auto">
+            <table className="w-full table-fixed">
+              <colgroup>
+                {criteria.map((_, i) => (
+                  <col key={i} className="w-[140px]" />
+                ))}
+              </colgroup>
+              <thead className="bg-[#E9EDF1]">
+                <tr>
+                  {criteria.map((_, i) => (
+                    <th 
+                      key={i}
+                      className="px-2 py-3 text-center text-sm font-bold text-gray-700 tracking-wider border-b border-r border-gray-200 sticky top-0"
+                    >
+                      {`Criteria ${i + 1}`}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody className="bg-white">
+                {articles.map((article, rowIndex) => (
+                  <tr key={rowIndex} className="bg-white" style={{ height: '41px' }}>
+                    {criteria.map((_, columnIndex) => (
+                      <td key={columnIndex} className="px-6 py-2 whitespace-nowrap text-sm border-b border-r border-gray-200">
+                        <div className="flex justify-start items-center h-full">
+                          {(isCalculating || calculationComplete) && isRowLoaded(rowIndex) && (
+                            <div className="flex items-center gap-2">
+                              <div className="flex items-center gap-1.5">
+                                <div 
+                                  className={`w-2 h-2 rounded-full ${getAnswerColor(article.answers[columnIndex])}`}
+                                />
+                                <span className="text-s font-semibold text-gray-600">
+                                  {getAnswerLabel(article.answers[columnIndex])}
+                                </span>
+                              </div>
+                              <div className="relative group flex items-center">
+                                <button className="text-gray-400 hover:text-gray-600 flex items-center">
+                                  <IoMdInformationCircle className="w-4 h-4 text-gray-500" />
+                                </button>
+                                <div className="opacity-0 invisible group-hover:opacity-100 group-hover:visible 
+                                            fixed ml-[-150px] bottom-auto transform -translate-y-full
+                                            bg-gray-900 text-white text-xs rounded-lg py-2 px-3 w-48 z-[200]
+                                            whitespace-normal text-left mt-[-10px]">
+                                  {article.justifications[columnIndex] || 'No justification provided'}
+                                  <div className="absolute left-1/2 bottom-0 transform -translate-x-1/2 translate-y-full
+                                              border-4 border-transparent border-t-gray-900"/>
+                                </div>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 
   return (
