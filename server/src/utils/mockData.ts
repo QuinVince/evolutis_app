@@ -1,5 +1,10 @@
 import { DuplicatePair } from '../components/DuplicateAnalysisTable';
 import { Document } from '../components/DocumentAnalysis';
+import { HiLanguage } from "react-icons/hi2";
+import { IoNewspaperOutline } from "react-icons/io5";
+import { BiTargetLock } from "react-icons/bi";
+import { GiMedicalDrip } from "react-icons/gi";
+import { GrDocumentMissing } from "react-icons/gr";
 
 export const mockDuplicatePairs: DuplicatePair[] = [
   { 
@@ -652,5 +657,49 @@ export const mockPipelines = [
       }),
       generatedQuery: true
     }
+  }
+];
+
+export const SCREENING_CRITERIA = [
+  {
+    id: 1,
+    shortName: "C1",
+    category: "Scope",
+    description: "I want to select articles where the population studied is adult having a hip arthroplasty"
+  },
+  {
+    id: 2,
+    shortName: "C2",
+    category: "Device",
+    description: "I want to select articles where a total hip arthroplasty is performed using a cementless revision stem in the indication of a revision total hip arthroplasty or complex primary total hip arthroplasty (bone defect for example). If no mention of the stem, mark as uncertain"
+  },
+  {
+    id: 3,
+    shortName: "C3",
+    category: "Flags",
+    description: `I want to select articles where at least one of the following outcomes is evaluated:
+• A clinical score used in orthopaedics
+• A survival rate
+• A comparison with a group using another type of device
+• A radiological evaluation
+The complications and/or revision rates are reported`
+  },
+  {
+    id: 4,
+    shortName: "C4",
+    category: "Publication",
+    description: "I only want to exclude cadaver studies, case reports, surgical techniques, mechanical or in-vivo studies, finite element studies. I only want articles reporting or gathering clinical data on humans."
+  },
+  {
+    id: 5,
+    shortName: "C5",
+    category: "Device",
+    description: "I want to exclude documents that report data on modular stems only. I'm only interested in monoblock ones or its comparison to another type."
+  },
+  {
+    id: 6,
+    shortName: "C6",
+    category: "Language",
+    description: "I want to include articles in French or English only."
   }
 ];
