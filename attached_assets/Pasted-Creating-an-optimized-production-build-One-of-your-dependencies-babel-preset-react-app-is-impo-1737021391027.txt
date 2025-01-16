@@ -1,0 +1,126 @@
+Creating an optimized production build...
+One of your dependencies, babel-preset-react-app, is importing the
+"@babel/plugin-proposal-private-property-in-object" package without
+declaring it in its dependencies. This is currently working because
+"@babel/plugin-proposal-private-property-in-object" is already in your
+node_modules folder for unrelated reasons, but it may break at any time.
+
+babel-preset-react-app is part of the create-react-app project, which
+is not maintianed anymore. It is thus unlikely that this bug will
+ever be fixed. Add "@babel/plugin-proposal-private-property-in-object" to
+your devDependencies to work around this error. This will make this message
+go away.
+  
+Compiled with warnings.
+
+[eslint] 
+src/components/AbstractReview.tsx
+  Line 2:10:   'FaPlus' is defined but never used                              @typescript-eslint/no-unused-vars
+  Line 3:10:   'FiPlusCircle' is defined but never used                        @typescript-eslint/no-unused-vars
+  Line 6:10:   'IoMdSearch' is defined but never used                          @typescript-eslint/no-unused-vars
+  Line 37:24:  'setShowCriteria' is assigned a value but never used            @typescript-eslint/no-unused-vars
+  Line 123:9:  'handleKeyPress' is assigned a value but never used             @typescript-eslint/no-unused-vars
+  Line 139:9:  'handleApply' is assigned a value but never used                @typescript-eslint/no-unused-vars
+  Line 145:9:  'handleCalculationComplete' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  Line 188:9:  'buttonState' is assigned a value but never used                @typescript-eslint/no-unused-vars
+
+src/components/CriteriaSelection.tsx
+  Line 2:10:   'FaPlus' is defined but never used                  @typescript-eslint/no-unused-vars
+  Line 11:10:  'IoPhonePortraitOutline' is defined but never used  @typescript-eslint/no-unused-vars
+  Line 12:10:  'MdOutlineDataObject' is defined but never used     @typescript-eslint/no-unused-vars
+  Line 29:11:  'CriteriaCategory' is defined but never used        @typescript-eslint/no-unused-vars
+
+src/components/FullTable.tsx
+  Line 1:27:  'useMemo' is defined but never used  @typescript-eslint/no-unused-vars
+
+src/components/LandingPage.tsx
+  Line 2:10:  'FaFolder' is defined but never used      @typescript-eslint/no-unused-vars
+  Line 2:20:  'FaClock' is defined but never used       @typescript-eslint/no-unused-vars
+  Line 2:29:  'FaFile' is defined but never used        @typescript-eslint/no-unused-vars
+  Line 2:37:  'FaFilter' is defined but never used      @typescript-eslint/no-unused-vars
+  Line 2:47:  'FaSearch' is defined but never used      @typescript-eslint/no-unused-vars
+  Line 2:57:  'FaUser' is defined but never used        @typescript-eslint/no-unused-vars
+  Line 2:65:  'FaCalendar' is defined but never used    @typescript-eslint/no-unused-vars
+  Line 3:25:  'PiBooksLight' is defined but never used  @typescript-eslint/no-unused-vars
+
+src/components/NewProject.tsx
+  Line 17:7:    'generateUniqueName' is assigned a value but never used                                                                                    @typescript-eslint/no-unused-vars
+  Line 23:24:   Function declared in a loop contains unsafe references to variable(s) 'name'                                                               no-loop-func
+  Line 89:6:    React Hook useEffect has missing dependencies: 'dispatch', 'navigate', and 'projects'. Either include them or remove the dependency array  react-hooks/exhaustive-deps
+  Line 102:26:  'setLocalProjectId' is assigned a value but never used                                                                                     @typescript-eslint/no-unused-vars
+  Line 144:6:   React Hook useEffect has missing dependencies: 'existingProject' and 'projectId'. Either include them or remove the dependency array       react-hooks/exhaustive-deps
+
+src/components/PubMedQueryBuilder.tsx
+  Line 53:10:  'processedQuery' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  Line 68:10:  'needsSave' is assigned a value but never used       @typescript-eslint/no-unused-vars
+
+src/components/QueryGenerator.tsx
+  Line 103:6:   React Hook useEffect has a missing dependency: 'handleGenerateQuestions'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+  Line 157:10:  'projectId' is assigned a value but never used                                                                              @typescript-eslint/no-unused-vars
+  Line 323:9:   'handleReturn' is assigned a value but never used                                                                           @typescript-eslint/no-unused-vars
+  Line 462:9:   'renderStep' is assigned a value but never used                                                                             @typescript-eslint/no-unused-vars
+
+src/components/QueryParser.tsx
+  Line 16:9:  'location' is assigned a value but never used                                                                                       @typescript-eslint/no-unused-vars
+  Line 25:6:  React Hook useEffect has missing dependencies: 'currentQuery' and 'parseQuery'. Either include them or remove the dependency array  react-hooks/exhaustive-deps
+
+src/components/SLRPipeline.tsx
+  Line 23:7:   'FileSelection' is assigned a value but never used      @typescript-eslint/no-unused-vars
+  Line 79:10:  'isDirty' is assigned a value but never used            @typescript-eslint/no-unused-vars
+  Line 90:9:   'handleTitleChange' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+src/components/SampleTable.tsx
+  Line 4:10:  'IoInformationCircleOutline' is defined but never used                                                                                                                                                                                                                      @typescript-eslint/no-unused-vars
+  Line 73:6:  React Hook useEffect has missing dependencies: 'articles' and 'onCalculationComplete'. Either include them or remove the dependency array. If 'onCalculationComplete' changes too often, find the parent component that defines it and wrap that definition in useCallback  react-hooks/exhaustive-deps
+
+src/utils/mockData.ts
+  Line 3:10:  'HiLanguage' is defined but never used          @typescript-eslint/no-unused-vars
+  Line 4:10:  'IoNewspaperOutline' is defined but never used  @typescript-eslint/no-unused-vars
+  Line 5:10:  'BiTargetLock' is defined but never used        @typescript-eslint/no-unused-vars
+  Line 6:10:  'GiMedicalDrip' is defined but never used       @typescript-eslint/no-unused-vars
+  Line 7:10:  'GrDocumentMissing' is defined but never used   @typescript-eslint/no-unused-vars
+
+Search for the keywords to learn more about each warning.
+To ignore, add // eslint-disable-next-line to the line before.
+
+File sizes after gzip:
+
+  343.75 kB  build/static/js/main.2137827d.js
+  6.51 kB    build/static/css/main.9b556f94.css
+
+The project was built assuming it is hosted at /.
+You can control this with the homepage field in your package.json.
+
+The build folder is ready to be deployed.
+You may serve it with a static server:
+
+  npm install -g serve
+  serve -s build
+
+Find out more about deployment here:
+
+  https://cra.link/deployment
+
+DEBUG:backend.app:All routes registered:
+DEBUG:backend.app:{'GET', 'HEAD'} /openapi.json
+DEBUG:backend.app:{'GET', 'HEAD'} /docs
+DEBUG:backend.app:{'GET', 'HEAD'} /docs/oauth2-redirect
+DEBUG:backend.app:{'GET', 'HEAD'} /redoc
+DEBUG:backend.app:{'POST'} /generate_questions
+DEBUG:backend.app:{'POST'} /generate_pubmed_query
+DEBUG:backend.app:{'POST'} /generate_synonyms
+DEBUG:backend.app:{'GET'} /test_synonyms
+DEBUG:backend.app:{'POST'} /export_prisma
+DEBUG:backend.app:{'POST'} /generate_stats
+DEBUG:backend.app:Serving static files from /home/runner/workspace/backend/../server/build
+INFO:     Started server process [1072]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     172.31.196.8:53300 - "GET / HTTP/1.1" 200 OK
+INFO:     172.31.196.8:53300 - "GET /static/css/main.9b556f94.css HTTP/1.1" 200 OK
+INFO:     172.31.196.8:53300 - "GET /static/js/main.2137827d.js HTTP/1.1" 200 OK
+^CINFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [1072]
