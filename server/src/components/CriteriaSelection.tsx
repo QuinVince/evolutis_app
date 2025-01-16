@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { FaPlus, FaTimes,FaChevronDown } from 'react-icons/fa';
-import { GiMedicalDrip } from "react-icons/gi";
-import { GrDocumentMissing } from "react-icons/gr";
+import { FaTimes } from 'react-icons/fa/index.js';
+import { FaChevronDown } from 'react-icons/fa/index.js';
+import { GiMedicalDrip } from "react-icons/gi/index.js";
+import { GrDocumentMissing } from "react-icons/gr/index.js";
 import SampleTable from './SampleTable';
 import sampleArticlesData from '../assets/sample_articles.json';
-import { IoInformationCircleOutline } from "react-icons/io5";
-import { HiLanguage } from "react-icons/hi2";
-import { IoNewspaperOutline } from "react-icons/io5";
-import { BiTargetLock } from "react-icons/bi";
-import { IoPhonePortraitOutline } from "react-icons/io5";
-import { MdOutlineDataObject } from "react-icons/md";
+import { IoInformationCircleOutline, IoNewspaperOutline } from "react-icons/io5/index.js";
+import { HiLanguage } from "react-icons/hi2/index.js";
+import { BiTargetLock } from "react-icons/bi/index.js";
+// import { IoPhonePortraitOutline } from "react-icons/io5";
+// import { MdOutlineDataObject } from "react-icons/md";
 
 interface CriteriaSelectionProps {
   onCriteriaChange?: (criteria: string[]) => void;
