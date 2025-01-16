@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FaPlus, FaTimes,FaChevronDown } from 'react-icons/fa';
+import { FaTimes,FaChevronDown } from 'react-icons/fa';
 import { GiMedicalDrip } from "react-icons/gi";
 import { GrDocumentMissing } from "react-icons/gr";
 import SampleTable from './SampleTable';
@@ -8,8 +8,7 @@ import { IoInformationCircleOutline } from "react-icons/io5";
 import { HiLanguage } from "react-icons/hi2";
 import { IoNewspaperOutline } from "react-icons/io5";
 import { BiTargetLock } from "react-icons/bi";
-import { IoPhonePortraitOutline } from "react-icons/io5";
-import { MdOutlineDataObject } from "react-icons/md";
+
 
 interface CriteriaSelectionProps {
   onCriteriaChange?: (criteria: string[]) => void;
