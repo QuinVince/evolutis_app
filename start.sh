@@ -9,7 +9,7 @@ pip install -r backend/requirements.txt
 # Navigate to the frontend and build it
 cd server
 npm install
-npm run build
+NODE_OPTIONS=--max_old_space_size=512 npm run build --production
 cd ..
 
 # Start the FastAPI backend
