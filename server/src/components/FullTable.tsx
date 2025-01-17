@@ -5,8 +5,8 @@ import { SCREENING_CRITERIA } from '../utils/mockData';
 import CriteriaTooltip from './CriteriaTooltip';
 import { HiLanguage } from "react-icons/hi2";
 import { IoNewspaperOutline } from "react-icons/io5";
-import { BiTargetLock } from "react-icons/bi";
-import { GiMedicalDrip } from "react-icons/gi";
+import { HiOutlineCheckCircle } from "react-icons/hi2";
+import { PiToolboxBold } from "react-icons/pi";
 import { GrDocumentMissing } from "react-icons/gr";
 import { BsStars } from "react-icons/bs";
 import AnswerSelectionModal from './AnswerSelectionModal';
@@ -75,9 +75,9 @@ const getCategoryIcon = (category: string) => {
     case 'Publication':
       return <IoNewspaperOutline className="w-4 h-4 text-gray-800" />;
     case 'Scope':
-      return <BiTargetLock className="w-4 h-4 text-gray-800" />;
+      return <HiOutlineCheckCircle className="w-4 h-4 text-gray-800" />;
     case 'Device':
-      return <GiMedicalDrip className="w-4 h-4 text-gray-800" />;
+      return <PiToolboxBold className="w-4 h-4 text-gray-800" />;
     case 'Flags':
       return <GrDocumentMissing className="w-4 h-4 text-gray-800" />;
     default:

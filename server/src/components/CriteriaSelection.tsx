@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { FaTimes,FaChevronDown } from 'react-icons/fa';
-import { GiMedicalDrip } from "react-icons/gi";
-import { GrDocumentMissing } from "react-icons/gr";
 import SampleTable from './SampleTable';
 import sampleArticlesData from '../assets/sample_articles.json';
 import { IoInformationCircleOutline } from "react-icons/io5";
 import { HiLanguage } from "react-icons/hi2";
 import { IoNewspaperOutline } from "react-icons/io5";
-import { BiTargetLock } from "react-icons/bi";
+import { HiOutlineCheckCircle } from "react-icons/hi2";
+import { PiToolboxBold } from "react-icons/pi";
+import { GrDocumentMissing } from "react-icons/gr";
 
 
 
@@ -34,10 +34,9 @@ interface CriteriaCategory {
 // Define icons outside to prevent re-creation on each render
 const LanguageIcon = <HiLanguage className="w-4 h-4 text-gray-800" />;
 const PublicationIcon = <IoNewspaperOutline className="w-4 h-4 text-gray-800" />;
-const ScopeIcon = <BiTargetLock className="w-4 h-4 text-gray-800" />;
-const DeviceIcon = <GiMedicalDrip className="w-4 h-4 text-gray-800" />;
+const ScopeIcon = <HiOutlineCheckCircle className="w-4 h-4 text-gray-800" />;
+const DeviceIcon = <PiToolboxBold className="w-4 h-4 text-gray-800" />;
 const UnusableDataIcon = <GrDocumentMissing className="w-4 h-4 text-gray-800" />;
-
 
 const CRITERIA_CATEGORIES: {
   group: string;
