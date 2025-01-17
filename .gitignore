@@ -1,1 +1,28 @@
+# Node modules in all locations
+node_modules/
+**/node_modules/
+./node_modules/
+server/node_modules/
+backend/node_modules/
+
+# Python related
+__pycache__/
+*.pyc
+venv/
+.venv/
+
+# Environment files
+.env
+**/.env
 backend/.env
+
+# Build directories
+/build
+/dist
+server/build
+**/build
+
+# IDE and system files
+.DS_Store
+.idea/
+.vscode/

@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { FaPlus, FaTimes,FaChevronDown } from 'react-icons/fa';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import { FaTimes,FaChevronDown } from 'react-icons/fa';
 import { GiMedicalDrip } from "react-icons/gi";
 import { GrDocumentMissing } from "react-icons/gr";
 import SampleTable from './SampleTable';
@@ -8,8 +8,8 @@ import { IoInformationCircleOutline } from "react-icons/io5";
 import { HiLanguage } from "react-icons/hi2";
 import { IoNewspaperOutline } from "react-icons/io5";
 import { BiTargetLock } from "react-icons/bi";
-import { IoPhonePortraitOutline } from "react-icons/io5";
-import { MdOutlineDataObject } from "react-icons/md";
+
+
 
 interface CriteriaSelectionProps {
   onCriteriaChange?: (criteria: string[]) => void;
@@ -31,6 +31,14 @@ interface CriteriaCategory {
   items: CategoryItem[];
 }
 
+// Define icons outside to prevent re-creation on each render
+const LanguageIcon = <HiLanguage className="w-4 h-4 text-gray-800" />;
+const PublicationIcon = <IoNewspaperOutline className="w-4 h-4 text-gray-800" />;
+const ScopeIcon = <BiTargetLock className="w-4 h-4 text-gray-800" />;
+const DeviceIcon = <GiMedicalDrip className="w-4 h-4 text-gray-800" />;
+const UnusableDataIcon = <GrDocumentMissing className="w-4 h-4 text-gray-800" />;
+
+
 const CRITERIA_CATEGORIES: {
   group: string;
   items: CategoryItem[];
@@ -38,16 +46,16 @@ const CRITERIA_CATEGORIES: {
   {
     group: "Main criteria", 
     items: [
-      { value: "Language", icon: <HiLanguage className="w-4 h-4 text-gray-800" /> },
-      { value: "Publication", icon: <IoNewspaperOutline className="w-4 h-4 text-gray-800" /> },
-      { value: "Scope", icon: <BiTargetLock className="w-4 h-4 text-gray-800" /> },
-      { value: "Device", icon: <GiMedicalDrip className="w-4 h-4 text-gray-800" /> }
+      { value: "Language", icon: LanguageIcon  },
+      { value: "Publication", icon: PublicationIcon  },
+      { value: "Scope", icon: ScopeIcon  },
+      { value: "Device", icon: DeviceIcon }
     ]
   },
   {
     group: "Flags",
     items: [
-      { value: "Other", icon: <GrDocumentMissing className="w-4 h-4 text-gray-800" /> }
+      { value: "Other", icon: UnusableDataIcon  }
     ]
   }
 ];
@@ -63,83 +71,7 @@ const CriteriaSelection: React.FC<CriteriaSelectionProps> = ({ onCriteriaChange 
   const [showCategoryDropdown, setShowCategoryDropdown] = useState(false);
   const [showCategoryWarning, setShowCategoryWarning] = useState(false);
   
-  // Transform the JSON data to match the Article interface
-  const sampleArticles = sampleArticlesData.map(article => ({
-    title: article.title,
-    abstract: article.abstract,
-    answers: [
-      article["Answer 1"] || '',
-      article["Answer 2"] || '',
-      article["Answer 3"] || '',
-      article["Answer 4"] || '',
-      article["Answer 5"] || '',
-      article["Answer 6"] || ''
-    ],
-    justifications: [
-      article["Justification 1"] || '',
-      article["Justification 2"] || '',
-      article["Justification 3"] || '',
-      article["Justification 4"] || '',
-      article["Justification 5"] || '',
-      article["Justification 6"] || ''
-    ]
-  }));
-
-  const handleAddCriterion = () => {
-    if (!selectedCategory) {
-      setShowCategoryWarning(true);
-      // Hide warning after 3 seconds
-      setTimeout(() => setShowCategoryWarning(false), 3000);
-      return;
-    }
-
-    if (inputValue.trim() && activeCriteria.length < 7) {
-      const newCriterion = {
-        id: Date.now().toString(),
-        text: inputValue.trim(),
-        category: selectedCategory
-      };
-      setActiveCriteria([...activeCriteria, newCriterion]);
-      setInputValue('');
-      setShowCategoryWarning(false);
-      setIsCalculating(false);
-      onCriteriaChange?.([...activeCriteria, newCriterion].map(c => c.text));
-    }
-  };
-
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
-      handleAddCriterion();
-    }
-  };
-
-  const handleRemoveCriterion = (id: string) => {
-    setActiveCriteria(activeCriteria.filter(c => c.id !== id));
-    setIsCalculating(false);
-    onCriteriaChange?.(activeCriteria.filter(c => c.id !== id).map(c => c.text));
-  };
-
-  const truncateText = (text: string, maxLength: number = 50) => {
-    return text.length > maxLength ? `${text.substring(0, maxLength)}...` : text;
-  };
-
-  const handleApply = () => {
-    if (activeCriteria.length > 0 && !isCalculating && !hasCalculated) {
-      setIsCalculating(true);
-    }
-  };
-
-  const handleCalculationComplete = () => {
-    setIsCalculating(false);
-    setHasCalculated(true);
-  };
-
-  // Reset hasCalculated when criteria change
-  useEffect(() => {
-    setHasCalculated(false);
-  }, [activeCriteria.length]);
-
-  // Add this function to determine button state
+  // Define getApplyButtonState before using it in useMemo
   const getApplyButtonState = () => {
     if (activeCriteria.length === 0) {
       return {
@@ -172,7 +104,92 @@ const CriteriaSelection: React.FC<CriteriaSelectionProps> = ({ onCriteriaChange 
     };
   };
 
-  const buttonState = getApplyButtonState();
+  // Memoize category items to prevent recreation
+  const MEMOIZED_CRITERIA_CATEGORIES = useMemo(() => CRITERIA_CATEGORIES, []);
+
+  // Memoize button state
+  const buttonState = useMemo(() => getApplyButtonState(), [activeCriteria.length, isCalculating, hasCalculated]);
+
+  // Memoize handlers
+  const handleAddCriterion = useCallback(() => {
+    if (!selectedCategory) {
+      setShowCategoryWarning(true);
+      setTimeout(() => setShowCategoryWarning(false), 3000);
+      return;
+    }
+
+    if (inputValue.trim() && activeCriteria.length < 7) {
+      const newCriterion = {
+        id: Date.now().toString(),
+        text: inputValue.trim(),
+        category: selectedCategory
+      };
+      setActiveCriteria(prev => [...prev, newCriterion]);
+      setInputValue('');
+      setShowCategoryWarning(false);
+      setIsCalculating(false);
+      onCriteriaChange?.([...activeCriteria, newCriterion].map(c => c.text));
+    }
+  }, [inputValue, selectedCategory, activeCriteria, onCriteriaChange]);
+
+  const handleRemoveCriterion = useCallback((id: string) => {
+    setActiveCriteria(prev => {
+      const newCriteria = prev.filter(c => c.id !== id);
+      onCriteriaChange?.(newCriteria.map(c => c.text));
+      return newCriteria;
+    });
+    setIsCalculating(false);
+  }, [onCriteriaChange]);
+
+  // Memoize sample articles transformation
+  const transformedSampleArticles = useMemo(() => {
+    return sampleArticlesData.map(article => ({
+      title: article.title,
+      abstract: article.abstract,
+      answers: [
+        article["Answer 1"] || '',
+        article["Answer 2"] || '',
+        article["Answer 3"] || '',
+        article["Answer 4"] || '',
+        article["Answer 5"] || '',
+        article["Answer 6"] || ''
+      ],
+      justifications: [
+        article["Justification 1"] || '',
+        article["Justification 2"] || '',
+        article["Justification 3"] || '',
+        article["Justification 4"] || '',
+        article["Justification 5"] || '',
+        article["Justification 6"] || ''
+      ]
+    }));
+  }, [sampleArticlesData]);
+
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      handleAddCriterion();
+    }
+  };
+
+  const truncateText = (text: string, maxLength: number = 50) => {
+    return text.length > maxLength ? `${text.substring(0, maxLength)}...` : text;
+  };
+
+  const handleApply = () => {
+    if (activeCriteria.length > 0 && !isCalculating && !hasCalculated) {
+      setIsCalculating(true);
+    }
+  };
+
+  const handleCalculationComplete = () => {
+    setIsCalculating(false);
+    setHasCalculated(true);
+  };
+
+  // Reset hasCalculated when criteria change
+  useEffect(() => {
+    setHasCalculated(false);
+  }, [activeCriteria.length]);
 
   return (
     <div className="relative flex flex-col h-full">
@@ -370,7 +387,7 @@ const CriteriaSelection: React.FC<CriteriaSelectionProps> = ({ onCriteriaChange 
         {/* Results section */}
         <h2 className="text-xl font-bold text-gray-900 mb-4">Results on 20 papers</h2>
         <SampleTable 
-          articles={sampleArticles}
+          articles={transformedSampleArticles}
           criteria={activeCriteria.map(c => truncateText(c.text, 30))}
           isCalculating={isCalculating}
           onCalculationComplete={handleCalculationComplete}

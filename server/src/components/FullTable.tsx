@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useRef } from 'react';
+import React, { useState, useMemo, useRef, useCallback } from 'react';
 import { IoMdInformationCircle, IoMdSearch } from "react-icons/io";
 import { IoCalendarOutline } from "react-icons/io5";
 import { SCREENING_CRITERIA } from '../utils/mockData';
@@ -141,13 +141,17 @@ const FullTable: React.FC<FullTableProps> = ({
     currentAnswer: string;
     position: { x: number; y: number };
   } | null>(null);
+  const [tooltipState, setTooltipState] = useState<{
+    visible: boolean;
+    position: { x: number; y: number };
+    criteriaIndex: number;
+  }>({
+    visible: false,
+    position: { x: 0, y: 0 },
+    criteriaIndex: 0
+  });
 
-  const STATUS_OPTIONS = [
-    { value: 'all', label: 'All Status' },
-    { value: 'included', label: 'Included' },
-    { value: 'excluded', label: 'Excluded' },
-    { value: 'unsure', label: 'Unsure' },
-  ];
+  const tableContainerRef = useRef<HTMLDivElement>(null);
 
   const getAnswerColor = (answer: string) => {
     switch (answer.toLowerCase()) {
@@ -175,42 +179,114 @@ const FullTable: React.FC<FullTableProps> = ({
     }
   };
 
-  // Add state for tooltip
-  const [tooltipState, setTooltipState] = useState<{
-    visible: boolean;
-    position: { x: number; y: number };
-    criteriaIndex: number;
-  }>({
-    visible: false,
-    position: { x: 0, y: 0 },
-    criteriaIndex: 0
-  });
+  // Memoize expensive computations
+  const memoizedStatusOptions = useMemo(() => [
+    { value: 'all', label: 'All Status' },
+    { value: 'included', label: 'Included' },
+    { value: 'excluded', label: 'Excluded' },
+    { value: 'unsure', label: 'Unsure' },
+  ], []);
 
-  // Add a ref for the table container
-  const tableContainerRef = useRef<HTMLDivElement>(null);
-
-  // Add handler for answer changes
-  const handleAnswerChange = (answer: string, note: string) => {
+  // Memoize handlers
+  const handleAnswerChange = useCallback((answer: string, note: string) => {
     if (!editingCell) return;
 
     const { rowIndex, columnIndex } = editingCell;
     const updatedArticles = [...articles];
     const article = { ...updatedArticles[rowIndex] };
 
-    // Update answer
     article.answers[columnIndex] = answer;
     article.manuallyEdited = true;
 
-    // Update comment if note provided
     if (note) {
       article.comment = note;
     }
 
     updatedArticles[rowIndex] = article;
-    // You'll need to implement this handler in the parent component
     onArticlesUpdate(updatedArticles);
     setEditingCell(null);
-  };
+  }, [articles, editingCell, onArticlesUpdate]);
+
+  const handleFilterChange = useCallback((newStatus: string, newSearch: string) => {
+    onFilterChange({ status: newStatus, search: newSearch });
+  }, [onFilterChange]);
+
+  // Memoize filtered articles
+  const filteredArticles = useMemo(() => {
+    return articles.filter(article => {
+      const matchesStatus = statusFilter === 'all' || 
+        getArticleStatus(article.answers).toLowerCase() === statusFilter;
+      
+      const matchesSearch = !searchQuery || 
+        article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        article.abstract.toLowerCase().includes(searchQuery.toLowerCase());
+
+      return matchesStatus && matchesSearch;
+    });
+  }, [articles, statusFilter, searchQuery]);
+
+  // Memoize table rows to prevent unnecessary re-renders
+  const TableRow = useCallback(({ article, rowIndex }: { article: Article; rowIndex: number }) => {
+    const status = getArticleStatus(article.answers);
+    const causeInfo = getCauseInfo(article.answers, SCREENING_CRITERIA);
+
+    return (
+      <tr className={`bg-white ${ROW_HEIGHT}`}>
+        <td className={`px-6 text-sm text-[#5C5C5C] font-semibold border-b border-r border-gray-200 ${ROW_HEIGHT}`}>
+          <div className="truncate" title={article.title}>
+            {article.title}
+          </div>
+        </td>
+        <td className={`px-2 text-sm border-b border-r border-gray-200 ${ROW_HEIGHT}`}>
+          <div className="flex justify-center">
+            <button
+              onClick={() => setSelectedArticle(article)}
+              className="text-[#0076F5] hover:text-[#0056b3] underline text-center text-s whitespace-nowrap"
+            >
+              Abstract
+            </button>
+          </div>
+        </td>
+        <td 
+          className={`text-sm border-b border-r border-gray-200 text-center ${ROW_HEIGHT} relative ${
+            article.answers.length > 0 ? getStatusStyle(getArticleStatus(article.answers)) : ''
+          }`}
+        >
+          <div className="h-full flex items-center justify-center font-medium">
+            <div className="relative">
+              {article.answers.length > 0 && getArticleStatus(article.answers)}
+              {article.manuallyEdited && (
+                <div className="absolute -top-1 -right-5">
+                  <BsStars className="w-3 h-3 text-black" />
+                </div>
+              )}
+            </div>
+          </div>
+        </td>
+        <td className={`px-6 text-sm border-b border-r border-gray-200 ${ROW_HEIGHT}`}>
+          <div className="flex items-center gap-2">
+            {(() => {
+              const causeInfo = getCauseInfo(article.answers, SCREENING_CRITERIA);
+              if (!causeInfo) return null;
+
+              return (
+                <>
+                  <div className={`w-2 h-2 rounded-full ${causeInfo.dotColor}`} />
+                  <div className="flex items-center gap-1 bg-white rounded-md border border-gray-300 px-2 py-1">
+                    {causeInfo.categories.map((category, i) => (
+                      <div key={i} className="w-4 h-4">
+                        {getCategoryIcon(category)}
+                      </div>
+                    ))}
+                  </div>
+                </>
+              );
+            })()}
+          </div>
+        </td>
+      </tr>
+    );
+  }, []);
 
   return (
     <div className="space-y-4">
@@ -233,7 +309,7 @@ const FullTable: React.FC<FullTableProps> = ({
           onChange={(e) => onFilterChange({ status: e.target.value, search: searchQuery })}
           className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#068EF1] w-40"
         >
-          {STATUS_OPTIONS.map(option => (
+          {memoizedStatusOptions.map((option: { value: string; label: string }) => (
             <option key={option.value} value={option.value}>
               {option.label}
             </option>
@@ -282,61 +358,12 @@ const FullTable: React.FC<FullTableProps> = ({
                   </tr>
                 </thead>
                 <tbody className="bg-white">
-                  {articles.map((article, rowIndex) => (
-                    <tr key={rowIndex} className={`bg-white ${ROW_HEIGHT}`}>
-                      <td className={`px-6 text-sm text-[#5C5C5C] font-semibold border-b border-r border-gray-200 ${ROW_HEIGHT}`}>
-                        <div className="truncate" title={article.title}>
-                          {article.title}
-                        </div>
-                      </td>
-                      <td className={`px-2 text-sm border-b border-r border-gray-200 ${ROW_HEIGHT}`}>
-                        <div className="flex justify-center">
-                          <button
-                            onClick={() => setSelectedArticle(article)}
-                            className="text-[#0076F5] hover:text-[#0056b3] underline text-center text-s whitespace-nowrap"
-                          >
-                            Abstract
-                          </button>
-                        </div>
-                      </td>
-                      <td 
-                        className={`text-sm border-b border-r border-gray-200 text-center ${ROW_HEIGHT} relative ${
-                          article.answers.length > 0 ? getStatusStyle(getArticleStatus(article.answers)) : ''
-                        }`}
-                      >
-                        <div className="h-full flex items-center justify-center font-medium">
-                          <div className="relative">
-                            {article.answers.length > 0 && getArticleStatus(article.answers)}
-                            {article.manuallyEdited && (
-                              <div className="absolute -top-1 -right-5">
-                                <BsStars className="w-3 h-3 text-black" />
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      </td>
-                      <td className={`px-6 text-sm border-b border-r border-gray-200 ${ROW_HEIGHT}`}>
-                        <div className="flex items-center gap-2">
-                          {(() => {
-                            const causeInfo = getCauseInfo(article.answers, SCREENING_CRITERIA);
-                            if (!causeInfo) return null;
-
-                            return (
-                              <>
-                                <div className={`w-2 h-2 rounded-full ${causeInfo.dotColor}`} />
-                                <div className="flex items-center gap-1 bg-white rounded-md border border-gray-300 px-2 py-1">
-                                  {causeInfo.categories.map((category, i) => (
-                                    <div key={i} className="w-4 h-4">
-                                      {getCategoryIcon(category)}
-                                    </div>
-                                  ))}
-                                </div>
-                              </>
-                            );
-                          })()}
-                        </div>
-                      </td>
-                    </tr>
+                  {filteredArticles.map((article, rowIndex) => (
+                    <TableRow 
+                      key={article.pubmed_id || rowIndex}
+                      article={article}
+                      rowIndex={rowIndex}
+                    />
                   ))}
                 </tbody>
               </table>
@@ -483,4 +510,5 @@ const FullTable: React.FC<FullTableProps> = ({
   );
 };
 
-export default FullTable; 
+// Memoize the entire component
+export default React.memo(FullTable); 
