@@ -47,10 +47,10 @@ const CRITERIA_CATEGORIES: {
   {
     group: "Main criteria", 
     items: [
-      { value: "Language", icon: LanguageIcon  },
-      { value: "Publication", icon: PublicationIcon  },
-      { value: "Scope", icon: ScopeIcon  },
-      { value: "Device", icon: DeviceIcon }
+      { value: "Study type", icon: LanguageIcon  },
+      { value: "Quality", icon: PublicationIcon  },
+      { value: "Evidence", icon: ScopeIcon  },
+      { value: "Methodology", icon: DeviceIcon }
     ]
   },
   {

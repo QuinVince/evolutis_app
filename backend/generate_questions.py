@@ -35,15 +35,15 @@ def main():
         model = "open-mistral-7b"
 
         prompt = '''You are an assistant for a medical reviewer conducting a systematic literature review in the domain
-        of medical devices. 
+        of HEOR. 
         Based on the following description, generate a list of follow-up questions that will help you better
          understand the research needs and generate a more accurate PubMed query. 
          The questions should be clear, concise, and aimed at clarifying the research scope. 
          Topics are useful of a high expertise level, then propose very relevant and expert questions to clarify the research scope.
          Ask maximum 5 questions, that cannot exceed 30 words each
 
-         Include systematically a question about the body part related to the medical device, if it relevant only.
-         Among relevant questions, ones that help to understand the PICO (population, intervention, comparison, outcome) can be useful
+         
+        Among relevant questions, ones that help to understand the PICO (population, intervention, comparison, outcome) can be useful
         Exclude questions about study type and timeframe
         Questions can be adressed directly to the author: "About what type are you interested in ?"
         Description:

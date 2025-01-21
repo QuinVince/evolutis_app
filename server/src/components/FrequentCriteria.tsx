@@ -42,10 +42,10 @@ const FrequentCriteria: React.FC<FrequentCriteriaProps> = ({
 
   const categoryButtons = [
     { label: "All", count: 140 },
-    { label: "Language", count: FREQUENT_CRITERIA.categoryCounts.Language },
-    { label: "Publication", count: FREQUENT_CRITERIA.categoryCounts.Publication },
-    { label: "Scope", count: FREQUENT_CRITERIA.categoryCounts.Scope },
-    { label: "Device", count: FREQUENT_CRITERIA.categoryCounts.Device }
+    { label: "Study Type", count: FREQUENT_CRITERIA.categoryCounts['Study Type'] },
+    { label: "Quality", count: FREQUENT_CRITERIA.categoryCounts.Quality },
+    { label: "Evidence", count: FREQUENT_CRITERIA.categoryCounts.Evidence },
+    { label: "Methodology", count: FREQUENT_CRITERIA.categoryCounts.Methodology }
   ];
 
   // Check if a criterion is already added by comparing its text

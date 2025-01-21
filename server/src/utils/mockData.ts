@@ -6,38 +6,38 @@ export const mockDuplicatePairs: DuplicatePair[] = [
   { 
     id: 1, 
     article1: {
-      title: "Efficacy of Upadacitinib in Severe Alopecia Areata: A Clinical Trial",
-      abstract: "This study examines the effects of upadacitinib on hair regrowth in adults with severe alopecia areata. The research, conducted over a 24-week period, involved 500 participants aged 18-65 who were randomly assigned to either a upadacitinib treatment group or a placebo control group."
+      title: "Systematic Review and Meta-analysis of Upadacitinib in Severe Alopecia Areata",
+      abstract: "This systematic review and meta-analysis examines the efficacy and safety of upadacitinib in severe alopecia areata. The analysis included 12 randomized controlled trials with 3,500 participants, synthesizing evidence on hair regrowth, quality of life, and adverse events using GRADE methodology."
     },
     article2: {
-      title: "Efficacy of Upadacitinib in Severe Alopecia Areata: A Clinical Trial Analysis",
-      abstract: "This comprehensive study investigates the impact of upadacitinib on hair regrowth among adults with severe alopecia areata. Over a 24-week period, 500 participants between 18 and 65 years old were randomly divided into a upadacitinib treatment group and a placebo control group to assess the effects of the medication on hair regrowth and disease progression."
+      title: "Systematic Review and Meta-analysis: Upadacitinib for Severe Alopecia Areata",
+      abstract: "This comprehensive systematic review and meta-analysis evaluates the effectiveness and safety profile of upadacitinib in severe alopecia areata treatment. The study synthesized data from 12 randomized controlled trials involving 3,500 participants, analyzing outcomes including hair regrowth, quality of life measures, and adverse events using GRADE methodology."
     },
     proximityScore: 0.95
   },
   { 
     id: 2, 
     article1: {
-      title: "Upadacitinib for Treatment-Resistant Alopecia Areata",
-      abstract: "This randomized controlled trial evaluates the efficacy of upadacitinib in treating treatment-resistant alopecia areata. The study included 200 participants with confirmed treatment-resistant AA, comparing upadacitinib interventions with standard care over a 52-week period."
+      title: "Network Meta-analysis of JAK Inhibitors in Treatment-Resistant Alopecia Areata",
+      abstract: "This network meta-analysis compares the relative efficacy of different JAK inhibitors, including upadacitinib, in treatment-resistant alopecia areata. The analysis synthesized evidence from 15 randomized trials with 4,000 participants, providing hierarchical rankings of treatments based on efficacy and safety profiles."
     },
     article2: {
-      title: "Upadacitinib in Treatment-Resistant Alopecia Areata: A Clinical Trial",
-      abstract: "This clinical trial investigates the effectiveness of upadacitinib as a treatment for treatment-resistant alopecia areata. Two hundred individuals diagnosed with treatment-resistant AA were randomly assigned to either a upadacitinib intervention group or a control group receiving standard care, with outcomes assessed over a 52-week period."
+      title: "JAK Inhibitors in Treatment-Resistant Alopecia Areata: A Network Meta-analysis",
+      abstract: "This comprehensive network meta-analysis evaluates the comparative effectiveness of JAK inhibitors, with focus on upadacitinib, in treatment-resistant alopecia areata. The study analyzed data from 15 randomized trials encompassing 4,000 participants, establishing treatment hierarchies based on efficacy and safety outcomes."
     },
     proximityScore: 0.98
   },
   { 
     id: 3, 
     article1: {
-      title: "Quality of Life Improvements with Upadacitinib in Alopecia Areata",
-      abstract: "This study investigates the impact of upadacitinib on quality of life metrics in patients with alopecia areata. The research involved 300 participants who received upadacitinib treatment over a 12-month period, with regular assessments of quality of life scores and patient-reported outcomes."
+      title: "Evidence Synthesis of Quality of Life Outcomes with Upadacitinib in Alopecia Areata",
+      abstract: "This systematic review synthesizes evidence on quality of life outcomes in patients treated with upadacitinib for alopecia areata. The analysis included 20 studies with 5,000 participants, using standardized mean differences to pool quality of life measures and patient-reported outcomes."
     },
     article2: {
-      title: "Quality of Life Outcomes with Upadacitinib in Alopecia Areata Treatment",
-      abstract: "This study investigates the impact of upadacitinib on quality of life measures in patients with alopecia areata. The research involved 300 participants who received upadacitinib treatment over a 12-month period, with regular assessments of quality of life metrics and patient-reported outcomes."
+      title: "Quality of Life with Upadacitinib in Alopecia Areata: A Systematic Review and Evidence Synthesis",
+      abstract: "This systematic review comprehensively analyzes quality of life outcomes in patients receiving upadacitinib for alopecia areata. The study synthesized data from 20 studies involving 5,000 participants, employing standardized mean differences to aggregate quality of life metrics and patient-reported outcomes."
     },
-    proximityScore: 1.0
+    proximityScore: 0.97
   },
   { 
     id: 4, 
@@ -104,95 +104,95 @@ export const mockDuplicatePairs: DuplicatePair[] = [
 export const mockDocuments: Document[] = [
   {
     id: 1,
-    title: "Upadacitinib and JAK Inhibition in Alopecia Areata Treatment",
-    abstract: "Selective inhibition of JAK1 by upadacitinib represents an important advance in the treatment of severe alopecia areata. This comprehensive review examines the mechanism of action, efficacy, and safety profile of upadacitinib in treating AA, with particular focus on its role in immune modulation and hair follicle regeneration.",
+    title: "Systematic Review and Meta-analysis of JAK Inhibition in Alopecia Areata Treatment",
+    abstract: "This systematic review and meta-analysis comprehensively examines the role of JAK inhibition, particularly upadacitinib, in treating alopecia areata. Following PRISMA guidelines, we synthesized evidence from 25 randomized controlled trials involving 6,000 participants, providing pooled estimates of efficacy, safety, and quality of life outcomes.",
     date: "2024-01-15",
     authors: ["Chang, A.H.", "Brownstone, N.D.", "Hsu, S."],
     citationCount: 45,
     selected: false,
     abstractExpanded: false,
-    studyType: 'Narrative review',
+    studyType: 'Meta-analysis',
     pico: {
-      population: "Patients with severe alopecia areata",
-      intervention: "Upadacitinib treatment",
-      comparator: "Standard treatment or placebo",
-      outcome: "Hair regrowth and disease progression",
+      population: "Patients with alopecia areata in randomized controlled trials",
+      intervention: "JAK inhibitors, primarily upadacitinib",
+      comparator: "Placebo or other systemic treatments",
+      outcome: "Pooled efficacy, safety, and quality of life measures",
       expanded: false
     },
     pubmedLink: "https://pubmed.ncbi.nlm.nih.gov/39258033/"
   },
   {
     id: 2,
-    title: "Safety Profile of Long-Term Upadacitinib Use in Alopecia Areata",
-    abstract: "This systematic review examines the long-term safety of upadacitinib in treating alopecia areata. The analysis includes 30 clinical trials and observational studies with a total of 3,000 participants, investigating outcomes such as adverse events, infections, and potential complications over extended treatment periods.",
+    title: "Network Meta-analysis of Systemic Treatments for Alopecia Areata",
+    abstract: "This network meta-analysis provides a comprehensive comparison of systemic treatments for alopecia areata, with special focus on JAK inhibitors including upadacitinib. Following Cochrane methodology, we analyzed 30 randomized trials with 7,000 participants to establish treatment hierarchies and comparative effectiveness.",
     date: "2024-02-01",
     authors: ["Smith, J.", "Johnson, M."],
-    citationCount: 23,
+    citationCount: 38,
     selected: false,
     abstractExpanded: false,
     studyType: 'Meta-analysis',
     pico: {
-      population: "Individuals with alopecia areata",
-      intervention: "Long-term upadacitinib treatment",
-      comparator: "Other JAK inhibitors or standard treatments",
-      outcome: "Safety profile and adverse events",
+      population: "Alopecia areata patients in comparative trials",
+      intervention: "All systemic treatments including upadacitinib",
+      comparator: "Network of all available treatments",
+      outcome: "Comparative efficacy and safety rankings",
       expanded: false
     },
     pubmedLink: "https://pubmed.ncbi.nlm.nih.gov/"
   },
   {
     id: 3,
-    title: "Pediatric Applications of Upadacitinib in Alopecia Areata",
-    abstract: "This randomized controlled trial investigates the effects of upadacitinib in pediatric patients with severe alopecia areata. The study included 150 children aged 12-17 who were assigned to either a upadacitinib treatment group or a placebo control group for 48 weeks. Outcomes measured included hair regrowth, safety profile, and quality of life measures.",
-    date: "2023-06-10",
+    title: "Evidence Synthesis: Pediatric Applications of JAK Inhibitors in Alopecia Areata",
+    abstract: "This systematic review synthesizes evidence on JAK inhibitors, including upadacitinib, in pediatric alopecia areata. Following PRISMA-Children guidelines, we analyzed 10 studies with 800 pediatric participants, providing structured assessment of efficacy, safety, and age-specific considerations.",
+    date: "2023-12-10",
     authors: ["Wilson, T.", "Taylor, M.", "Anderson, K."],
-    citationCount: 87,
+    citationCount: 32,
     selected: false,
     abstractExpanded: false,
-    studyType: 'RCT',
+    studyType: 'Systematic Review',
     pico: {
-      population: "Pediatric patients with severe alopecia areata",
-      intervention: "Upadacitinib",
-      comparator: "Placebo",
-      outcome: "Hair regrowth and safety profile",
+      population: "Pediatric patients with alopecia areata",
+      intervention: "JAK inhibitors including upadacitinib",
+      comparator: "Standard care or other treatments",
+      outcome: "Efficacy and safety in pediatric population",
       expanded: false
     },
     pubmedLink: "https://pubmed.ncbi.nlm.nih.gov/"
   },
   {
     id: 4,
-    title: "Long-Term Efficacy of Upadacitinib in Alopecia Areata: A 5-Year Follow-Up Study",
-    abstract: "This long-term follow-up study evaluates the safety and efficacy of upadacitinib in patients with alopecia areata over a 5-year period. The study includes data from 2,500 patients who participated in the initial phase III trials and continued treatment in the open-label extension phase.",
-    date: "2023-03-22",
+    title: "Mixed-Methods Systematic Review of Quality of Life in Alopecia Treatments",
+    abstract: "This mixed-methods systematic review combines quantitative and qualitative evidence on quality of life outcomes in alopecia areata treatments, with focus on JAK inhibitors including upadacitinib. Following JBI methodology, we synthesized data from 40 studies, including 15 qualitative studies.",
+    date: "2023-11-22",
     authors: ["Thomas, R.", "Moore, J.", "Jackson, L."],
-    citationCount: 110,
+    citationCount: 28,
     selected: false,
     abstractExpanded: false,
-    studyType: 'Cohort study',
+    studyType: 'Systematic Review',
     pico: {
-      population: "Patients with alopecia areata",
-      intervention: "Long-term upadacitinib treatment",
-      comparator: "Historical data and initial trial results",
-      outcome: "Long-term safety profile and efficacy measures",
+      population: "Alopecia areata patients with quality of life data",
+      intervention: "All treatments including upadacitinib",
+      comparator: "Various treatment options",
+      outcome: "Quality of life and patient experiences",
       expanded: false
     },
     pubmedLink: "https://pubmed.ncbi.nlm.nih.gov/"
   },
   {
     id: 5,
-    title: "Upadacitinib's Effect on Quality of Life and Mental Health in Alopecia Areata",
-    abstract: "This observational study investigates the impact of upadacitinib on quality of life and mental health in patients with alopecia areata. The research involved 200 patients treated with upadacitinib and 200 matched controls receiving other treatments, analyzing changes in quality of life scores and psychological well-being over a 2-year period.",
-    date: "2023-07-05",
+    title: "Umbrella Review of JAK Inhibitors in Autoimmune Conditions",
+    abstract: "This umbrella review synthesizes evidence from systematic reviews and meta-analyses of JAK inhibitors across autoimmune conditions, including alopecia areata. We evaluated 25 systematic reviews, assessing methodological quality using AMSTAR-2 and providing overview of efficacy and safety profiles.",
+    date: "2023-10-15",
     authors: ["White, H.", "Harris, P.", "Clark, S."],
-    citationCount: 95,
+    citationCount: 42,
     selected: false,
     abstractExpanded: false,
-    studyType: 'Case-control study',
+    studyType: 'Systematic Review',
     pico: {
-      population: "Patients with alopecia areata",
-      intervention: "Upadacitinib treatment",
-      comparator: "Other standard treatments",
-      outcome: "Quality of life and mental health measures",
+      population: "Patients with autoimmune conditions including alopecia",
+      intervention: "JAK inhibitors including upadacitinib",
+      comparator: "Various by condition",
+      outcome: "Cross-condition efficacy and safety patterns",
       expanded: false
     },
     pubmedLink: "https://pubmed.ncbi.nlm.nih.gov/"
@@ -298,39 +298,39 @@ export const mockDocuments: Document[] = [
 export const mockProjects = [
   {
     id: "project-1",
-    name: "Upadacitinib in Alopecia Treatment Review",
+    name: "Systematic Reviews of Upadacitinib in Alopecia",
     status: "in_progress" as const,
     author: "Chang A.H.",
     createdAt: "2024-01-15T10:00:00.000Z",
     queryCount: 2,
-    tags: ["Alopecia", "JAK Inhibitors", "Clinical Trials"]
+    tags: ["Systematic Review", "Meta-analysis", "Evidence Synthesis"]
   },
   {
     id: "project-2",
-    name: "Alopecia Treatment Safety Analysis",
+    name: "Meta-analysis of Upadacitinib Safety",
     status: "done" as const,
     author: "Brownstone N.D.",
     createdAt: "2024-02-01T09:00:00.000Z",
     queryCount: 2,
-    tags: ["Drug Safety", "Side Effects", "Clinical Outcomes"]
+    tags: ["Meta-analysis", "Safety", "Evidence Synthesis"]
   },
   {
     id: "project-3",
-    name: "Pediatric Alopecia Treatment Review",
+    name: "Evidence Synthesis: Pediatric Alopecia Treatment",
     status: "done" as const,
     author: "Wilson T.",
     createdAt: "2023-11-15T09:00:00.000Z",
     queryCount: 2,
-    tags: ["Pediatric", "Alopecia", "Treatment Outcomes"]
+    tags: ["Evidence Synthesis", "Pediatric", "Systematic Review"]
   },
   {
     id: "project-4",
-    name: "Quality of Life in Alopecia Treatment",
+    name: "Quality of Life Meta-analysis in Alopecia",
     status: "in_progress" as const,
     author: "White H.",
     createdAt: "2024-01-15T10:00:00.000Z",
     queryCount: 1,
-    tags: ["Quality of Life", "Mental Health", "Patient Outcomes"]
+    tags: ["Meta-analysis", "Quality of Life", "Evidence Synthesis"]
   }
 ];
 
@@ -339,7 +339,7 @@ export const mockPipelines = [
   {
     id: "pipeline-1",
     projectId: "project-1",
-    name: "Upadacitinib Efficacy Analysis",
+    name: "Systematic Review Analysis",
     fileScreening: "in_progress" as const,
     totalFiles: 156,
     duplicates: 12,
@@ -349,65 +349,19 @@ export const mockPipelines = [
     currentStep: "screening" as const,
     screeningStep: "generator" as const,
     queryData: {
-      description: "Investigating upadacitinib efficacy in alopecia areata treatment",
-      query: "(upadacitinib OR JAK1 inhibitor) AND (alopecia areata) AND (efficacy OR treatment outcome)",
-      projectTitle: "Upadacitinib in Alopecia Treatment Review",
+      description: "Analyzing systematic reviews and meta-analyses of upadacitinib in alopecia areata",
+      query: "(upadacitinib) AND (alopecia areata) AND (systematic review OR meta-analysis OR evidence synthesis)",
+      projectTitle: "Systematic Reviews of Upadacitinib in Alopecia",
       projectId: "project-1",
       questions: [
-        "What is the efficacy of upadacitinib in treating alopecia areata?",
-        "How does upadacitinib compare to other JAK inhibitors?",
-        "What are the main challenges in upadacitinib treatment?"
+        "What is the pooled efficacy of upadacitinib across systematic reviews?",
+        "How consistent are safety findings across meta-analyses?",
+        "What are the evidence gaps identified in existing syntheses?"
       ],
       answers: {
-        "What is the efficacy of upadacitinib in treating alopecia areata?": "Studies show significant improvement in hair regrowth with varying response rates",
-        "How does upadacitinib compare to other JAK inhibitors?": "Comparative studies indicate unique benefits and safety profile",
-        "What are the main challenges in upadacitinib treatment?": "Long-term safety concerns and treatment resistance in some patients"
-      },
-      pubmedQuery: JSON.stringify({
-        subqueries: [
-          {
-            content: 'upadacitinib OR JAK1 inhibitor',
-            operator: 'AND'
-          },
-          {
-            content: 'alopecia areata',
-            operator: 'AND'
-          },
-          {
-            content: 'efficacy OR treatment outcome',
-            operator: 'AND'
-          }
-        ]
-      }),
-      generatedQuery: true
-    }
-  },
-  {
-    id: "pipeline-2",
-    projectId: "project-1",
-    name: "Safety Profile Analysis",
-    fileScreening: "in_progress" as const,
-    totalFiles: 89,
-    duplicates: 7,
-    fileSelection: 82,
-    criteria: 4,
-    lastModified: "2024-02-22T11:20:00.000Z",
-    currentStep: "criteria" as const,
-    screeningStep: "generator" as const,
-    queryData: {
-      description: "Analyzing safety profile of upadacitinib in alopecia areata treatment",
-      query: "(upadacitinib) AND (alopecia areata) AND (safety OR adverse effects OR side effects)",
-      projectTitle: "Upadacitinib in Alopecia Treatment Review",
-      projectId: "project-1",
-      questions: [
-        "What are the common adverse effects of upadacitinib in alopecia treatment?",
-        "How does the safety profile compare to other treatments?",
-        "What are the long-term safety implications?"
-      ],
-      answers: {
-        "What are the common adverse effects of upadacitinib in alopecia treatment?": "Common effects include upper respiratory infections and acne",
-        "How does the safety profile compare to other treatments?": "Generally favorable compared to other systemic treatments",
-        "What are the long-term safety implications?": "Ongoing studies are evaluating long-term safety data"
+        "What is the pooled efficacy of upadacitinib across systematic reviews?": "Meta-analyses show consistent efficacy with pooled response rates of 60-80%",
+        "How consistent are safety findings across meta-analyses?": "Safety profiles are consistent across reviews with well-documented adverse events",
+        "What are the evidence gaps identified in existing syntheses?": "Long-term data and pediatric populations are commonly identified gaps"
       },
       pubmedQuery: JSON.stringify({
         subqueries: [
@@ -420,7 +374,53 @@ export const mockPipelines = [
             operator: 'AND'
           },
           {
-            content: 'safety OR adverse effects OR side effects',
+            content: 'systematic review OR meta-analysis OR evidence synthesis',
+            operator: 'AND'
+          }
+        ]
+      }),
+      generatedQuery: true
+    }
+  },
+  {
+    id: "pipeline-2",
+    projectId: "project-1",
+    name: "Evidence Quality Assessment",
+    fileScreening: "in_progress" as const,
+    totalFiles: 89,
+    duplicates: 7,
+    fileSelection: 82,
+    criteria: 4,
+    lastModified: "2024-02-22T11:20:00.000Z",
+    currentStep: "criteria" as const,
+    screeningStep: "generator" as const,
+    queryData: {
+      description: "Assessing quality of evidence in systematic reviews of upadacitinib for alopecia",
+      query: "(upadacitinib) AND (alopecia areata) AND (GRADE OR evidence quality OR PRISMA)",
+      projectTitle: "Systematic Reviews of Upadacitinib in Alopecia",
+      projectId: "project-1",
+      questions: [
+        "What is the quality of evidence in existing systematic reviews?",
+        "How well do reviews adhere to PRISMA guidelines?",
+        "What methodological improvements are needed?"
+      ],
+      answers: {
+        "What is the quality of evidence in existing systematic reviews?": "Most reviews provide moderate to high quality evidence with clear GRADE assessments",
+        "How well do reviews adhere to PRISMA guidelines?": "Adherence varies, with recent reviews showing better compliance",
+        "What methodological improvements are needed?": "Better handling of heterogeneity and more comprehensive risk of bias assessments"
+      },
+      pubmedQuery: JSON.stringify({
+        subqueries: [
+          {
+            content: 'upadacitinib',
+            operator: 'AND'
+          },
+          {
+            content: 'alopecia areata',
+            operator: 'AND'
+          },
+          {
+            content: 'GRADE OR evidence quality OR PRISMA',
             operator: 'AND'
           }
         ]
@@ -668,38 +668,38 @@ export const SCREENING_CRITERIA = [
   {
     id: 1,
     shortName: "C1",
-    category: "Scope",
-    description: "I want to select articles where the population studied is adult patients with alopecia areata"
+    category: "Study Type",
+    description: "I want to select only systematic reviews, meta-analyses, and high-quality evidence syntheses"
   },
   {
     id: 2,
     shortName: "C2",
-    category: "Treatment",
-    description: "I want to select articles where upadacitinib is used as a treatment for alopecia areata. If no mention of dosage, mark as uncertain"
+    category: "Quality",
+    description: "I want to select articles that follow PRISMA guidelines for systematic reviews and meta-analyses. If methodology is unclear, mark as uncertain"
   },
   {
     id: 3,
     shortName: "C3",
     category: "Outcomes",
-    description: "I want to select articles where at least one of the following outcomes is evaluated:\n• Hair regrowth measurements\n• Quality of life scores\n• Comparison with other treatments\n• Safety and adverse events\n• Treatment duration and follow-up"
+    description: "I want to select articles where at least one of the following is synthesized:\n• Pooled efficacy data of upadacitinib in alopecia\n• Systematic assessment of safety outcomes\n• Meta-analyzed quality of life measures\n• Network meta-analysis comparing treatments\n• Comprehensive evidence grading"
   },
   {
     id: 4,
     shortName: "C4",
     category: "Publication",
-    description: "I want to exclude case reports, laboratory studies, and animal studies. I only want articles reporting clinical data on humans."
+    description: "I want to exclude primary studies, narrative reviews, and opinion pieces. Only include systematic reviews, meta-analyses, and evidence syntheses."
   },
   {
     id: 5,
     shortName: "C5",
-    category: "Treatment",
-    description: "I want to exclude documents that report data on topical JAK inhibitors only. I'm only interested in systemic treatments or their comparison."
+    category: "Analysis",
+    description: "I want to select articles that include quantitative synthesis (meta-analysis) where possible, or structured qualitative synthesis when meta-analysis is not feasible"
   },
   {
     id: 6,
     shortName: "C6",
     category: "Language",
-    description: "I want to include articles in English only."
+    description: "I want to include only systematic reviews and meta-analyses published in English"
   }
 ];
 
@@ -707,45 +707,45 @@ export const FREQUENT_CRITERIA = {
   all: [
     {
       id: 1,
-      category: "Language",
-      text: "I want to include articles in English only",
+      category: "Study Type",
+      text: "I want to select only systematic reviews and meta-analyses",
       usageCount: 145
     },
     {
       id: 2,
-      category: "Scope",
-      text: "I want to select articles where the population studied is adult patients with alopecia areata",
-      usageCount: 100
+      category: "Quality",
+      text: "I want to select articles following PRISMA guidelines",
+      usageCount: 120
     },
     {
       id: 3,
-      category: "Scope",
-      text: "I want to select articles where the population studied is pediatric patients with alopecia areata",
-      usageCount: 85
+      category: "Analysis",
+      text: "I want to select articles with quantitative synthesis",
+      usageCount: 110
     },
     {
       id: 4,
-      category: "Treatment",
-      text: "I want to select articles where JAK inhibitors are used as treatment",
+      category: "Evidence",
+      text: "I want to select articles with comprehensive evidence grading",
       usageCount: 95
     },
     {
       id: 5,
       category: "Publication",
-      text: "I want to exclude case reports and animal studies",
+      text: "I want to exclude primary studies and narrative reviews",
       usageCount: 89
     },
     {
       id: 6,
-      category: "Publication",
-      text: "I want to include only clinical trials and systematic reviews",
+      category: "Methodology",
+      text: "I want to include only reviews with clear methodology",
       usageCount: 78
     }
   ],
   categoryCounts: {
-    "Language": 12,
-    "Publication": 16,
-    "Scope": 16,
-    "Device": 16
+    "Study Type": 16,
+    "Quality": 14,
+    "Evidence": 10,
+    "Methodology": 8
   }
 };

@@ -106,10 +106,10 @@ const getCauseInfo = (answers: string[], criteria: typeof SCREENING_CRITERIA) =>
 
   // Sort categories in specified order
   const orderMap = {
-    'Language': 1,
-    'Publication': 2,
-    'Scope': 3,
-    'Device': 4
+    'Study type': 1,
+    'Quality': 2,
+    'Evidence': 3,
+    'Methodology': 4
   };
 
   const sortedCategories = Array.from(categories).sort((a, b) => 
