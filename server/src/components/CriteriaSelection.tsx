@@ -8,6 +8,8 @@ import { IoNewspaperOutline } from "react-icons/io5";
 import { HiOutlineCheckCircle } from "react-icons/hi2";
 import { PiToolboxBold } from "react-icons/pi";
 import { GrDocumentMissing } from "react-icons/gr";
+import { HiOutlineLightBulb } from "react-icons/hi";
+import FrequentCriteria from './FrequentCriteria';
 
 
 
@@ -69,6 +71,7 @@ const CriteriaSelection: React.FC<CriteriaSelectionProps> = ({ onCriteriaChange 
   const [showTipsTooltip, setShowTipsTooltip] = useState(false);
   const [showCategoryDropdown, setShowCategoryDropdown] = useState(false);
   const [showCategoryWarning, setShowCategoryWarning] = useState(false);
+  const [showFrequentCriteria, setShowFrequentCriteria] = useState(false);
   
   // Define getApplyButtonState before using it in useMemo
   const getApplyButtonState = () => {
@@ -190,6 +193,18 @@ const CriteriaSelection: React.FC<CriteriaSelectionProps> = ({ onCriteriaChange 
     setHasCalculated(false);
   }, [activeCriteria.length]);
 
+  // Add handler for frequent criteria
+  const handleAddFrequentCriteria = useCallback((text: string, category: string) => {
+    const newCriterion = {
+      id: Date.now().toString(),
+      text,
+      category
+    };
+    setActiveCriteria(prev => [...prev, newCriterion]);
+    onCriteriaChange?.([...activeCriteria, newCriterion].map(c => c.text));
+    setSelectedCategory(category);
+  }, [activeCriteria, onCriteriaChange]);
+
   return (
     <div className="relative flex flex-col h-full">
       <div className="flex-1 pb-20">
@@ -303,38 +318,10 @@ const CriteriaSelection: React.FC<CriteriaSelectionProps> = ({ onCriteriaChange 
                   <div className="w-px h-6 bg-gray-300 mx-2" />
 
                   <button
-                    onClick={() => setShowTipsTooltip(!showTipsTooltip)}
-                    className="p-2 text-gray-500 hover:text-[#068EF1] transition-colors relative"
+                    onClick={() => setShowFrequentCriteria(true)}
+                    className="p-2 bg-white border border-gray-300 rounded-lg text-gray-500 hover:text-[#068EF1] hover:border-[#068EF1] transition-colors relative"
                   >
-                    <IoInformationCircleOutline className="w-5 h-5" />
-                    {showTipsTooltip && (
-                      <div className="absolute bottom-full right-0 mb-2 w-96 bg-white text-sm rounded-xl shadow-xl border border-[#068EF1]/20 p-6 z-50">
-                        <div className="space-y-3">
-                          <div className="flex items-center gap-2 border-b border-gray-100 pb-2">
-                            <IoInformationCircleOutline className="w-5 h-5 text-[#068EF1]" />
-                            <h3 className="font-semibold text-[#068EF1]">Tips for writing criteria</h3>
-                          </div>
-                          <ul className="space-y-2">
-                            <li className="flex items-start gap-2">
-                              <div className="w-1.5 h-1.5 rounded-full bg-[#068EF1] mt-2" />
-                              <span>Be specific and clear in your criteria definition</span>
-                            </li>
-                            <li className="flex items-start gap-2">
-                              <div className="w-1.5 h-1.5 rounded-full bg-[#068EF1] mt-2" />
-                              <span>Use measurable terms when possible</span>
-                            </li>
-                            <li className="flex items-start gap-2">
-                              <div className="w-1.5 h-1.5 rounded-full bg-[#068EF1] mt-2" />
-                              <span>Consider both inclusion and exclusion criteria</span>
-                            </li>
-                            <li className="flex items-start gap-2">
-                              <div className="w-1.5 h-1.5 rounded-full bg-[#068EF1] mt-2" />
-                              <span>Avoid ambiguous language</span>
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                    )}
+                    <HiOutlineLightBulb className="w-5 h-5" />
                   </button>
                 </div>
               </div>
@@ -410,6 +397,14 @@ const CriteriaSelection: React.FC<CriteriaSelectionProps> = ({ onCriteriaChange 
           </button>
         </div>
       </div>
+
+      {/* Add FrequentCriteria component */}
+      <FrequentCriteria
+        isOpen={showFrequentCriteria}
+        onClose={() => setShowFrequentCriteria(false)}
+        onAddCriteria={handleAddFrequentCriteria}
+        activeCriteriaTexts={activeCriteria.map(c => c.text)}
+      />
     </div>
   );
 };

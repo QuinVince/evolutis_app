@@ -703,3 +703,50 @@ The complications and/or revision rates are reported`
     description: "I want to include articles in French or English only."
   }
 ];
+
+export const FREQUENT_CRITERIA = {
+  all: [
+    {
+      id: 1,
+      category: "Language",
+      text: "I want to include articles in English only",
+      usageCount: 145
+    },
+    {
+      id: 2,
+      category: "Scope",
+      text: "I want to select articles where the population studied is adult having a hip arthroplasty",
+      usageCount: 100
+    },
+    {
+      id: 3,
+      category: "Scope",
+      text: "I want to select articles where the population studied is adult having a knee arthroplasty",
+      usageCount: 99
+    },
+    {
+      id: 4,
+      category: "Device",
+      text: "I want to select articles where a total hip arthroplasty is performed",
+      usageCount: 67
+    },
+    {
+      id: 5,
+      category: "Publication",
+      text: "I want to exclude case reports, surgical techniques, and mechanical studies",
+      usageCount: 89
+    },
+    {
+      id: 6,
+      category: "Publication",
+      text: "I want to include only clinical trials and systematic reviews",
+      usageCount: 78
+    }
+  ],
+  categoryCounts: {
+    "Language": 12,
+    "Publication": 16,
+    "Scope": 16,
+    "Device": 16
+  }
+};
