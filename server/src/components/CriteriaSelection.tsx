@@ -2,9 +2,9 @@ import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { FaTimes,FaChevronDown } from 'react-icons/fa';
 import SampleTable from './SampleTable';
 import sampleArticlesData from '../assets/sample_articles.json';
-import { IoInformationCircleOutline } from "react-icons/io5";
-import { HiLanguage } from "react-icons/hi2";
 import { IoNewspaperOutline } from "react-icons/io5";
+import { MdSearch  } from "react-icons/md";
+import { FaRegCheckCircle } from "react-icons/fa";
 import { HiOutlineCheckCircle } from "react-icons/hi2";
 import { PiToolboxBold } from "react-icons/pi";
 import { GrDocumentMissing } from "react-icons/gr";
@@ -34,9 +34,9 @@ interface CriteriaCategory {
 }
 
 // Define icons outside to prevent re-creation on each render
-const LanguageIcon = <HiLanguage className="w-4 h-4 text-gray-800" />;
-const PublicationIcon = <IoNewspaperOutline className="w-4 h-4 text-gray-800" />;
-const ScopeIcon = <HiOutlineCheckCircle className="w-4 h-4 text-gray-800" />;
+const LanguageIcon = <IoNewspaperOutline  className="w-4 h-4 text-gray-800" />;
+const PublicationIcon = <FaRegCheckCircle className="w-4 h-4 text-gray-800" />;
+const ScopeIcon = <MdSearch  className="w-4 h-4 text-gray-800" />;
 const DeviceIcon = <PiToolboxBold className="w-4 h-4 text-gray-800" />;
 const UnusableDataIcon = <GrDocumentMissing className="w-4 h-4 text-gray-800" />;
 

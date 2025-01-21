@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
-import { HiLanguage } from "react-icons/hi2";
+import { MdSearch  } from "react-icons/md";
 import { IoNewspaperOutline } from "react-icons/io5";
+import { FaRegCheckCircle } from "react-icons/fa";
 import { HiOutlineCheckCircle } from "react-icons/hi2";
 import { PiToolboxBold } from "react-icons/pi";
 import { IoMdSearch } from "react-icons/io";
@@ -25,10 +26,10 @@ const FrequentCriteria: React.FC<FrequentCriteriaProps> = ({
 
   // Category icons mapping
   const categoryIcons = {
-    "Language": <HiLanguage className="w-4 h-4 text-gray-800" />,
-    "Publication": <IoNewspaperOutline className="w-4 h-4 text-gray-800" />,
-    "Scope": <HiOutlineCheckCircle className="w-4 h-4 text-gray-800" />,
-    "Device": <PiToolboxBold className="w-4 h-4 text-gray-800" />
+    "Study Type": <IoNewspaperOutline  className="w-4 h-4 text-gray-800" />,
+    "Quality": <FaRegCheckCircle className="w-4 h-4 text-gray-800" />,
+    "Evidence": <MdSearch className="w-4 h-4 text-gray-800" />,
+    "Methodology": <PiToolboxBold className="w-4 h-4 text-gray-800" />
   };
 
   // Filter criteria based on category and search query

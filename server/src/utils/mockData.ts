@@ -431,7 +431,7 @@ export const mockPipelines = [
   {
     id: "pipeline-3",
     projectId: "project-2",
-    name: "Long-term Safety Analysis",
+    name: "Safety Meta-analysis",
     fileScreening: "completed" as const,
     totalFiles: 234,
     duplicates: 18,
@@ -441,19 +441,19 @@ export const mockPipelines = [
     currentStep: "abstract" as const,
     screeningStep: "generator" as const,
     queryData: {
-      description: "Evaluating long-term safety of upadacitinib in alopecia areata",
-      query: "(upadacitinib) AND (alopecia areata) AND (long-term safety OR adverse effects OR complications)",
-      projectTitle: "Alopecia Treatment Safety Analysis",
+      description: "Meta-analysis of safety outcomes for upadacitinib in alopecia areata",
+      query: "(upadacitinib) AND (alopecia areata) AND (safety OR adverse events OR risk assessment) AND (meta-analysis OR systematic review)",
+      projectTitle: "Meta-analysis of Upadacitinib Safety",
       projectId: "project-2",
       questions: [
-        "What are the long-term safety outcomes of upadacitinib in alopecia areata?",
-        "How do long-term adverse effects compare to other treatments?",
-        "What are the implications for patient monitoring and management?"
+        "What is the pooled safety profile of upadacitinib across studies?",
+        "Are there specific patient subgroups with higher risk of adverse events?",
+        "How does the safety profile compare to other JAK inhibitors?"
       ],
       answers: {
-        "What are the long-term safety outcomes of upadacitinib in alopecia areata?": "Studies show manageable safety profile with specific monitoring needs",
-        "How do long-term adverse effects compare to other treatments?": "Comparable or favorable safety profile compared to other systemic treatments",
-        "What are the implications for patient monitoring and management?": "Regular monitoring of specific parameters recommended, with individualized follow-up"
+        "What is the pooled safety profile of upadacitinib across studies?": "Meta-analyses show consistent safety profile with well-characterized adverse events",
+        "Are there specific patient subgroups with higher risk of adverse events?": "Elderly patients and those with comorbidities show slightly higher risk profiles",
+        "How does the safety profile compare to other JAK inhibitors?": "Comparable safety profile to other JAK inhibitors with some unique characteristics"
       },
       pubmedQuery: JSON.stringify({
         subqueries: [
@@ -466,7 +466,11 @@ export const mockPipelines = [
             operator: 'AND'
           },
           {
-            content: 'long-term safety OR adverse effects OR complications',
+            content: 'safety OR adverse events OR risk assessment',
+            operator: 'AND'
+          },
+          {
+            content: 'meta-analysis OR systematic review',
             operator: 'AND'
           }
         ]
@@ -477,7 +481,7 @@ export const mockPipelines = [
   {
     id: "pipeline-4",
     projectId: "project-2",
-    name: "Device-Related Infections",
+    name: "Comparative Safety Analysis",
     fileScreening: "completed" as const,
     totalFiles: 178,
     duplicates: 15,
@@ -487,32 +491,36 @@ export const mockPipelines = [
     currentStep: "abstract" as const,
     screeningStep: "generator" as const,
     queryData: {
-      description: "Analysis of infection risks in implantable medical devices",
-      query: "(implantable medical device) AND (infection OR bacterial colonization) AND (prevention OR risk factors)",
-      projectTitle: "Implantable Medical Devices Safety",
+      description: "Comparative analysis of safety profiles between different JAK inhibitors in alopecia areata",
+      query: "(upadacitinib OR baricitinib OR tofacitinib) AND (alopecia areata) AND (comparative safety OR adverse events) AND (systematic review OR meta-analysis)",
+      projectTitle: "Meta-analysis of Upadacitinib Safety",
       projectId: "project-2",
       questions: [
-        "What are the main factors contributing to infection risks in implantable medical devices?",
-        "How effective are prevention measures in reducing infection risks in implantable medical devices?",
-        "What are the implications of infection risks in implantable medical device design?"
+        "How does the safety profile of upadacitinib compare to other JAK inhibitors?",
+        "Are there differences in specific adverse event rates between treatments?",
+        "What are the implications for treatment selection based on safety profiles?"
       ],
       answers: {
-        "What are the main factors contributing to infection risks in implantable medical devices?": "Various factors, including bacterial colonization, patient factors, and device design",
-        "How effective are prevention measures in reducing infection risks in implantable medical devices?": "Studies show varying degrees of effectiveness, with some devices achieving minimal infection rates",
-        "What are the implications of infection risks in implantable medical device design?": "Infection risks are crucial in implantable medical device design, as they ensure patient safety and device longevity"
+        "How does the safety profile of upadacitinib compare to other JAK inhibitors?": "Network meta-analyses show comparable overall safety with some treatment-specific differences",
+        "Are there differences in specific adverse event rates between treatments?": "Each JAK inhibitor shows unique patterns of specific adverse events",
+        "What are the implications for treatment selection based on safety profiles?": "Safety profiles can guide personalized treatment selection based on patient characteristics"
       },
       pubmedQuery: JSON.stringify({
         subqueries: [
           {
-            content: 'implantable medical device',
+            content: 'upadacitinib OR baricitinib OR tofacitinib',
             operator: 'AND'
           },
           {
-            content: 'infection OR bacterial colonization',
+            content: 'alopecia areata',
             operator: 'AND'
           },
           {
-            content: 'prevention OR risk factors',
+            content: 'comparative safety OR adverse events',
+            operator: 'AND'
+          },
+          {
+            content: 'systematic review OR meta-analysis',
             operator: 'AND'
           }
         ]
@@ -523,7 +531,7 @@ export const mockPipelines = [
   {
     id: "pipeline-5",
     projectId: "project-3",
-    name: "Hip Implant Durability",
+    name: "Pediatric Evidence Synthesis",
     fileScreening: "completed" as const,
     totalFiles: 145,
     duplicates: 12,
@@ -533,32 +541,36 @@ export const mockPipelines = [
     currentStep: "abstract" as const,
     screeningStep: "generator" as const,
     queryData: {
-      description: "Long-term durability assessment of hip replacement implants",
-      query: "(hip replacement OR hip arthroplasty) AND (longevity OR durability OR wear) AND (long-term outcomes)",
-      projectTitle: "Orthopedic Implants Longevity",
+      description: "Synthesizing evidence on JAK inhibitors in pediatric alopecia areata",
+      query: "(upadacitinib OR JAK inhibitors) AND (alopecia areata) AND (pediatric OR adolescent OR children) AND (systematic review OR meta-analysis)",
+      projectTitle: "Evidence Synthesis: Pediatric Alopecia Treatment",
       projectId: "project-3",
       questions: [
-        "What factors contribute to the longevity of hip replacement implants?",
-        "How effective are materials in enhancing hip replacement implant durability?",
-        "What are the implications of hip replacement implant durability for long-term outcomes?"
+        "What is the evidence quality for JAK inhibitors in pediatric alopecia?",
+        "How do treatment outcomes differ in pediatric populations?",
+        "What are the specific safety considerations for young patients?"
       ],
       answers: {
-        "What factors contribute to the longevity of hip replacement implants?": "Various factors, including material selection, implant design, and patient factors",
-        "How effective are materials in enhancing hip replacement implant durability?": "Studies show varying degrees of effectiveness, with some materials achieving long-term durability",
-        "What are the implications of hip replacement implant durability for long-term outcomes?": "Hip replacement implant durability is crucial for long-term outcomes, as it ensures patient safety and device longevity"
+        "What is the evidence quality for JAK inhibitors in pediatric alopecia?": "Limited but growing evidence base with moderate quality studies",
+        "How do treatment outcomes differ in pediatric populations?": "Generally favorable outcomes with age-specific response patterns",
+        "What are the specific safety considerations for young patients?": "Growth and development monitoring needed with long-term use"
       },
       pubmedQuery: JSON.stringify({
         subqueries: [
           {
-            content: 'hip replacement OR hip arthroplasty',
+            content: 'upadacitinib OR JAK inhibitors',
             operator: 'AND'
           },
           {
-            content: 'longevity OR durability OR wear',
+            content: 'alopecia areata',
             operator: 'AND'
           },
           {
-            content: 'long-term outcomes',
+            content: 'pediatric OR adolescent OR children',
+            operator: 'AND'
+          },
+          {
+            content: 'systematic review OR meta-analysis',
             operator: 'AND'
           }
         ]
@@ -568,93 +580,47 @@ export const mockPipelines = [
   },
   {
     id: "pipeline-6",
-    projectId: "project-3",
-    name: "Material Innovation Impact",
-    fileScreening: "completed" as const,
+    projectId: "project-4",
+    name: "Quality of Life Meta-analysis",
+    fileScreening: "in_progress" as const,
     totalFiles: 167,
     duplicates: 14,
     fileSelection: 153,
     criteria: 5,
-    lastModified: "2023-12-20T16:45:00.000Z",
+    lastModified: "2024-01-15T16:45:00.000Z",
     currentStep: "abstract" as const,
     screeningStep: "generator" as const,
     queryData: {
-      description: "Impact of new materials on orthopedic implant performance",
-      query: "(orthopedic implant) AND (material innovation OR new materials) AND (performance OR outcomes)",
-      projectTitle: "Orthopedic Implants Longevity",
-      projectId: "project-3",
-      questions: [
-        "What are the main factors contributing to the performance of orthopedic implants?",
-        "How effective are new materials in enhancing orthopedic implant performance?",
-        "What are the implications of material innovation in orthopedic implant design?"
-      ],
-      answers: {
-        "What are the main factors contributing to the performance of orthopedic implants?": "Various factors, including material selection, implant design, and patient factors",
-        "How effective are new materials in enhancing orthopedic implant performance?": "Studies show varying degrees of effectiveness, with some materials achieving improved performance",
-        "What are the implications of material innovation in orthopedic implant design?": "Material innovation is crucial in orthopedic implant design, as it ensures patient safety and device longevity"
-      },
-      pubmedQuery: JSON.stringify({
-        subqueries: [
-          {
-            content: 'orthopedic implant',
-            operator: 'AND'
-          },
-          {
-            content: 'material innovation OR new materials',
-            operator: 'AND'
-          },
-          {
-            content: 'performance OR outcomes',
-            operator: 'AND'
-          }
-        ]
-      }),
-      generatedQuery: true
-    }
-  },
-  {
-    id: "pipeline-7",
-    projectId: "project-4",
-    name: "Knee Surgery Outcomes",
-    fileScreening: "in_progress" as const,
-    totalFiles: 187,
-    duplicates: 15,
-    fileSelection: 172,
-    criteria: 6,
-    lastModified: "2024-02-15T13:30:00.000Z",
-    currentStep: "screening" as const,
-    screeningStep: "generator" as const,
-    queryData: {
-      description: "Comparative analysis of minimally invasive versus traditional knee surgery techniques and outcomes",
-      query: "(knee surgery OR knee arthroplasty OR knee replacement) AND (minimally invasive OR arthroscopic) AND (outcomes OR recovery OR complications)",
-      projectTitle: "Knee Surgery Techniques Review",
+      description: "Meta-analysis of quality of life outcomes in alopecia areata treatments",
+      query: "(upadacitinib OR JAK inhibitors) AND (alopecia areata) AND (quality of life OR patient reported outcomes) AND (meta-analysis OR systematic review)",
+      projectTitle: "Quality of Life Meta-analysis in Alopecia",
       projectId: "project-4",
       questions: [
-        "What are the key differences in outcomes between minimally invasive and traditional knee surgery?",
-        "How do recovery times compare between different surgical techniques?",
-        "What are the complication rates associated with each approach?"
+        "What is the pooled effect of treatments on quality of life?",
+        "How do different quality of life measures compare?",
+        "What aspects of quality of life show the most improvement?"
       ],
       answers: {
-        "What are the key differences in outcomes between minimally invasive and traditional knee surgery?": "Studies show differences in post-operative pain, scarring, and initial recovery period, with minimally invasive techniques generally showing faster early recovery",
-        "How do recovery times compare between different surgical techniques?": "Minimally invasive approaches typically show 20-30% faster return to daily activities, though long-term outcomes are similar",
-        "What are the complication rates associated with each approach?": "Traditional approaches show more wound-related complications, while minimally invasive techniques have higher rates of component positioning challenges"
+        "What is the pooled effect of treatments on quality of life?": "Significant improvements across multiple quality of life domains",
+        "How do different quality of life measures compare?": "Various instruments show consistent positive effects with some variation",
+        "What aspects of quality of life show the most improvement?": "Social functioning and emotional well-being show strongest effects"
       },
       pubmedQuery: JSON.stringify({
         subqueries: [
           {
-            content: 'knee surgery OR knee arthroplasty OR knee replacement',
+            content: 'upadacitinib OR JAK inhibitors',
             operator: 'AND'
           },
           {
-            content: 'minimally invasive OR arthroscopic',
+            content: 'alopecia areata',
             operator: 'AND'
           },
           {
-            content: 'outcomes OR recovery OR complications',
+            content: 'quality of life OR patient reported outcomes',
             operator: 'AND'
           },
           {
-            content: 'randomized controlled trial OR systematic review OR meta-analysis',
+            content: 'meta-analysis OR systematic review',
             operator: 'AND'
           }
         ]
@@ -713,33 +679,45 @@ export const FREQUENT_CRITERIA = {
     },
     {
       id: 2,
+      category: "Study Type", 
+      text: "I want to include only evidence syntheses and systematic reviews",
+      usageCount: 132
+    },
+    {
+      id: 3,
       category: "Quality",
       text: "I want to select articles following PRISMA guidelines",
       usageCount: 120
     },
     {
-      id: 3,
-      category: "Analysis",
-      text: "I want to select articles with quantitative synthesis",
-      usageCount: 110
+      id: 4,
+      category: "Quality",
+      text: "I want to include only high quality systematic reviews with clear reporting",
+      usageCount: 115
     },
     {
-      id: 4,
+      id: 5,
       category: "Evidence",
       text: "I want to select articles with comprehensive evidence grading",
       usageCount: 95
     },
     {
-      id: 5,
-      category: "Publication",
-      text: "I want to exclude primary studies and narrative reviews",
-      usageCount: 89
+      id: 6,
+      category: "Evidence",
+      text: "I want to include studies with clear evidence synthesis methods",
+      usageCount: 92
     },
     {
-      id: 6,
+      id: 7,
       category: "Methodology",
       text: "I want to include only reviews with clear methodology",
       usageCount: 78
+    },
+    {
+      id: 8,
+      category: "Methodology", 
+      text: "I want to select studies with reproducible methods and analysis",
+      usageCount: 75
     }
   ],
   categoryCounts: {

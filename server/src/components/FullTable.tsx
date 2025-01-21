@@ -3,9 +3,9 @@ import { IoMdInformationCircle, IoMdSearch } from "react-icons/io";
 import { IoCalendarOutline } from "react-icons/io5";
 import { SCREENING_CRITERIA } from '../utils/mockData';
 import CriteriaTooltip from './CriteriaTooltip';
-import { HiLanguage } from "react-icons/hi2";
+import { MdSearch  } from "react-icons/md";
+import { FaRegCheckCircle } from "react-icons/fa";
 import { IoNewspaperOutline } from "react-icons/io5";
-import { HiOutlineCheckCircle } from "react-icons/hi2";
 import { PiToolboxBold } from "react-icons/pi";
 import { GrDocumentMissing } from "react-icons/gr";
 import { BsStars } from "react-icons/bs";
@@ -71,11 +71,11 @@ const getStatusStyle = (status: Status): string => {
 const getCategoryIcon = (category: string) => {
   switch (category) {
     case 'Language':
-      return <HiLanguage className="w-4 h-4 text-gray-800" />;
+      return <IoNewspaperOutline  className="w-4 h-4 text-gray-800" />;
     case 'Publication':
-      return <IoNewspaperOutline className="w-4 h-4 text-gray-800" />;
+      return <FaRegCheckCircle className="w-4 h-4 text-gray-800" />;
     case 'Scope':
-      return <HiOutlineCheckCircle className="w-4 h-4 text-gray-800" />;
+      return <MdSearch className="w-4 h-4 text-gray-800" />;
     case 'Device':
       return <PiToolboxBold className="w-4 h-4 text-gray-800" />;
     case 'Flags':
