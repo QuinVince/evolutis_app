@@ -5,7 +5,7 @@ import { FiPlusCircle } from "react-icons/fi";
 import { useDispatch, useSelector } from 'react-redux';
 import { setCurrentProjectTitle } from '../store/querySlice';
 import { deleteProject } from '../store/projectSlice';
-import logo from '../utils/evolutis-logo.png';
+import logo from '../utils/quinten-health-logo.png';
 import iconHome from '../utils/icon-home.png';
 import { RootState } from '../store/store';
 import { Project } from '../store/projectSlice';

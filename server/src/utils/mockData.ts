@@ -1,57 +1,53 @@
 import { DuplicatePair } from '../components/DuplicateAnalysisTable';
 import { Document } from '../components/DocumentAnalysis';
-import { HiLanguage } from "react-icons/hi2";
-import { IoNewspaperOutline } from "react-icons/io5";
-import { BiTargetLock } from "react-icons/bi";
-import { GiMedicalDrip } from "react-icons/gi";
-import { GrDocumentMissing } from "react-icons/gr";
+
 
 export const mockDuplicatePairs: DuplicatePair[] = [
   { 
     id: 1, 
     article1: {
-      title: "Efficacy of Ocrelizumab in Relapsing-Remitting Multiple Sclerosis",
-      abstract: "This study examines the effects of ocrelizumab on disease progression in adults with relapsing-remitting multiple sclerosis. The research, conducted over a 24-month period, involved 500 participants aged 18-55 who were randomly assigned to either an ocrelizumab treatment group or a placebo control group."
+      title: "Efficacy of Upadacitinib in Severe Alopecia Areata: A Clinical Trial",
+      abstract: "This study examines the effects of upadacitinib on hair regrowth in adults with severe alopecia areata. The research, conducted over a 24-week period, involved 500 participants aged 18-65 who were randomly assigned to either a upadacitinib treatment group or a placebo control group."
     },
     article2: {
-      title: "Efficacy of Ocrelizumab in Relapsing-Remitting Multiple Sclerosis",
-      abstract: "This comprehensive study investigates the impact of ocrelizumab on disease activity among adults with relapsing-remitting multiple sclerosis. Over a two-year period, 500 participants between 18 and 55 years old were randomly divided into an ocrelizumab treatment group and a placebo control group to assess the effects of the medication on relapse rates and disability progression."
+      title: "Efficacy of Upadacitinib in Severe Alopecia Areata: A Clinical Trial Analysis",
+      abstract: "This comprehensive study investigates the impact of upadacitinib on hair regrowth among adults with severe alopecia areata. Over a 24-week period, 500 participants between 18 and 65 years old were randomly divided into a upadacitinib treatment group and a placebo control group to assess the effects of the medication on hair regrowth and disease progression."
     },
     proximityScore: 0.95
   },
   { 
     id: 2, 
     article1: {
-      title: "Ocrelizumab for Primary Progressive Multiple Sclerosis",
-      abstract: "This randomized controlled trial evaluates the efficacy of ocrelizumab in treating primary progressive multiple sclerosis. The study included 200 participants with confirmed PPMS, comparing ocrelizumab interventions with standard care over a 120-week period."
+      title: "Upadacitinib for Treatment-Resistant Alopecia Areata",
+      abstract: "This randomized controlled trial evaluates the efficacy of upadacitinib in treating treatment-resistant alopecia areata. The study included 200 participants with confirmed treatment-resistant AA, comparing upadacitinib interventions with standard care over a 52-week period."
     },
     article2: {
-      title: "Ocrelizumab for Primary Progressive Multiple Sclerosis: A Clinical Trial",
-      abstract: "This clinical trial investigates the effectiveness of ocrelizumab as a treatment for primary progressive multiple sclerosis. Two hundred individuals diagnosed with PPMS were randomly assigned to either an ocrelizumab intervention group or a control group receiving standard care, with outcomes assessed over a 120-week period."
+      title: "Upadacitinib in Treatment-Resistant Alopecia Areata: A Clinical Trial",
+      abstract: "This clinical trial investigates the effectiveness of upadacitinib as a treatment for treatment-resistant alopecia areata. Two hundred individuals diagnosed with treatment-resistant AA were randomly assigned to either a upadacitinib intervention group or a control group receiving standard care, with outcomes assessed over a 52-week period."
     },
     proximityScore: 0.98
   },
   { 
     id: 3, 
     article1: {
-      title: "Effects of Ocrelizumab on Fatigue in Multiple Sclerosis Patients",
-      abstract: "This study investigates the impact of ocrelizumab on fatigue levels in patients with multiple sclerosis. The research involved 300 participants who received ocrelizumab infusions over a 12-month period, with regular assessments of fatigue markers and self-reported quality of life scores."
+      title: "Quality of Life Improvements with Upadacitinib in Alopecia Areata",
+      abstract: "This study investigates the impact of upadacitinib on quality of life metrics in patients with alopecia areata. The research involved 300 participants who received upadacitinib treatment over a 12-month period, with regular assessments of quality of life scores and patient-reported outcomes."
     },
     article2: {
-      title: "Effects of Ocrelizumab on Fatigue in Multiple Sclerosis Patients",
-      abstract: "This study investigates the impact of ocrelizumab on fatigue levels in patients with multiple sclerosis. The research involved 300 participants who received ocrelizumab infusions over a 12-month period, with regular assessments of fatigue markers and self-reported quality of life scores."
+      title: "Quality of Life Outcomes with Upadacitinib in Alopecia Areata Treatment",
+      abstract: "This study investigates the impact of upadacitinib on quality of life measures in patients with alopecia areata. The research involved 300 participants who received upadacitinib treatment over a 12-month period, with regular assessments of quality of life metrics and patient-reported outcomes."
     },
     proximityScore: 1.0
   },
   { 
     id: 4, 
     article1: {
-      title: "The Role of B-Cell Depletion in Multiple Sclerosis Treatment",
-      abstract: "This comprehensive review examines the current understanding of B-cell depletion therapies, particularly ocrelizumab, in modulating multiple sclerosis progression. The analysis covers both relapsing-remitting and primary progressive MS, discussing the therapy's effects on various aspects of the disease and its potential implications for long-term disease management."
+      title: "The Role of JAK Inhibition in Alopecia Areata Treatment",
+      abstract: "This comprehensive review examines the current understanding of JAK inhibition therapies, particularly upadacitinib, in treating alopecia areata. The analysis covers both moderate and severe cases, discussing the therapy's effects on various aspects of the disease and its potential implications for long-term disease management."
     },
     article2: {
-      title: "B-Cell Depletion and Its Impact on Multiple Sclerosis Progression",
-      abstract: "This extensive review explores the present knowledge regarding B-cell depletion therapies, with a focus on ocrelizumab, in regulating multiple sclerosis progression. The study encompasses both relapsing-remitting and primary progressive MS, analyzing the therapy's impact on different aspects of the disease and its potential significance for long-term management strategies."
+      title: "JAK Inhibition and Its Impact on Alopecia Areata Treatment",
+      abstract: "This extensive review explores the present knowledge regarding JAK inhibition therapies, with a focus on upadacitinib, in treating alopecia areata. The study encompasses both moderate and severe cases, analyzing the therapy's impact on different aspects of the disease and its potential significance for long-term management strategies."
     },
     proximityScore: 0.99
   },
@@ -82,24 +78,24 @@ export const mockDuplicatePairs: DuplicatePair[] = [
   { 
     id: 7, 
     article1: {
-      title: "Ocrelizumab's Effect on Cognitive Function in Multiple Sclerosis",
-      abstract: "This experimental study investigates the impact of ocrelizumab on cognitive function in multiple sclerosis patients. The research involved 100 participants who underwent cognitive assessments before and after ocrelizumab treatment, with subsequent tests to evaluate changes in memory, processing speed, and executive function."
+      title: "Upadacitinib's Effect on Psychological Well-being in Alopecia Areata",
+      abstract: "This experimental study investigates the impact of upadacitinib on psychological well-being in alopecia areata patients. The research involved 100 participants who underwent psychological assessments before and after upadacitinib treatment, with subsequent tests to evaluate changes in anxiety, depression, and social functioning."
     },
     article2: {
-      title: "Cognitive Function Changes with Ocrelizumab Treatment in Multiple Sclerosis",
-      abstract: "This experimental study explores how ocrelizumab affects cognitive function in individuals with multiple sclerosis. The investigation included 100 subjects who completed cognitive evaluations prior to and following ocrelizumab therapy, followed by assessments to measure alterations in memory, information processing speed, and executive functioning."
+      title: "Psychological Outcomes with Upadacitinib Treatment in Alopecia Areata",
+      abstract: "This experimental study explores how upadacitinib affects psychological well-being in individuals with alopecia areata. The investigation included 100 subjects who completed psychological evaluations prior to and following upadacitinib therapy, followed by assessments to measure changes in anxiety, depression, and social functioning."
     },
     proximityScore: 0.97
   },
   { 
     id: 8, 
     article1: {
-      title: "Cost-Effectiveness of Ocrelizumab in Multiple Sclerosis Management",
-      abstract: "This meta-analysis evaluates the cost-effectiveness of ocrelizumab in managing multiple sclerosis compared to other disease-modifying therapies. The study synthesizes data from 50 economic evaluations and clinical trials, involving a total of 10,000 patients across various healthcare settings and countries."
+      title: "Cost-Effectiveness of Upadacitinib in Alopecia Areata Management",
+      abstract: "This meta-analysis evaluates the cost-effectiveness of upadacitinib in managing alopecia areata compared to other treatment options. The study synthesizes data from 50 economic evaluations and clinical trials, involving a total of 10,000 patients across various healthcare settings and countries."
     },
     article2: {
-      title: "Ocrelizumab for Multiple Sclerosis Management: A Cost-Effectiveness Analysis",
-      abstract: "This comprehensive meta-analysis assesses the cost-effectiveness of ocrelizumab-based interventions in the management of multiple sclerosis, compared to alternative disease-modifying therapies. The research compiles and analyzes data from 50 economic evaluations and clinical trials, encompassing 10,000 patients from diverse healthcare environments and geographical locations."
+      title: "Upadacitinib for Alopecia Areata Management: A Cost-Effectiveness Analysis",
+      abstract: "This comprehensive meta-analysis assesses the cost-effectiveness of upadacitinib-based interventions in the management of alopecia areata, compared to alternative treatments. The research compiles and analyzes data from 50 economic evaluations and clinical trials, encompassing 10,000 patients from diverse healthcare environments and geographical locations."
     },
     proximityScore: 0.96
   }
@@ -108,74 +104,74 @@ export const mockDuplicatePairs: DuplicatePair[] = [
 export const mockDocuments: Document[] = [
   {
     id: 1,
-    title: "Ocrelizumab and Other CD20+ B-Cell-Depleting Therapies in Multiple Sclerosis",
-    abstract: "Selective depletion of CD20+ B cells by anti-CD20 monoclonal antibodies as monotherapy in multiple sclerosis (MS) profoundly suppresses acute inflammatory disease activity and signifies an important advance in the treatment of relapsing-remitting MS. Ocrelizumab, a humanized anti-CD20 monoclonal antibody, is also the first proven therapy to lessen disability progression in primary progressive MS-a breakthrough for patients with a disease that had no proven therapy. Ocrelizumab is generally well tolerated, with the most common adverse events experienced being infusion reactions and infections. In ocrelizumab trials in MS a numerical imbalance in the risk of malignancies was observed. In this article, we review advances in anti-CD20 B-cell-depleting biological therapies for MS, including ocrelizumab, rituximab, and ofatumumab.",
-    date: "2017-10-01",
-    authors: ["Jeffrey, M.", "Bruce, A.", "Stephen, M."],
-    citationCount: 245, // Add this line
+    title: "Upadacitinib and JAK Inhibition in Alopecia Areata Treatment",
+    abstract: "Selective inhibition of JAK1 by upadacitinib represents an important advance in the treatment of severe alopecia areata. This comprehensive review examines the mechanism of action, efficacy, and safety profile of upadacitinib in treating AA, with particular focus on its role in immune modulation and hair follicle regeneration.",
+    date: "2024-01-15",
+    authors: ["Chang, A.H.", "Brownstone, N.D.", "Hsu, S."],
+    citationCount: 45,
     selected: false,
     abstractExpanded: false,
-    studyType: 'RCT',
+    studyType: 'Narrative review',
     pico: {
-      population: "Patients with advanced multiple sclerosis",
-      intervention: "Ocrelizumab combined with exercise therapy",
-      comparator: "Standard ocrelizumab treatment alone",
-      outcome: "Disease progression and quality of life",
+      population: "Patients with severe alopecia areata",
+      intervention: "Upadacitinib treatment",
+      comparator: "Standard treatment or placebo",
+      outcome: "Hair regrowth and disease progression",
       expanded: false
     },
-   pubmedLink: "https://pubmed.ncbi.nlm.nih.gov/28695471/"
+    pubmedLink: "https://pubmed.ncbi.nlm.nih.gov/39258033/"
   },
   {
     id: 2,
-    title: "The importance of considering differences in study and patient characteristics before undertaking indirect treatment comparisons: a case study of siponimod for secondary progressive multiple sclerosis",
-    abstract: "Background: Indirect treatment comparisons (ITCs) provide valuable evidence on comparative efficacy where head-to-head clinical trials do not exist; however, differences in patient populations may introduce bias. Therefore, it is essential to assess between-trial heterogeneity to determine the suitability of synthesizing ITC results. We provide an illustrative case study in multiple sclerosis (MS) where we assess the feasibility of conducting ITCs between siponimod and interferon beta-1b (IFN β-1b) and between siponimod and ocrelizumab.\n Methods: We assessed the feasibility of conducting ITCs using standard unadjusted methods (e.g. Bucher or network meta-analysis [NMA]) as well as matching-adjusted indirect comparisons (MAICs) using individual patient data (IPD) from the siponimod (EXPAND) trial, based on guidance from NICE. Time to confirmed disability progression (CDP) at 3 or 6 months was assessed.Results: Bucher ITCs and NMAs, which rely on summary-level data, were not able to account for important cross-trial differences. Comparisons between siponimod and IFN β-1b were feasible using MAIC; the HRs (95% CI) for CDP-6 and CDP-3 were 0.55 (0.33-0.91) and 0.82 (0.42-1.63), respectively. ITCs were not feasible between siponimod and ocrelizumab because study designs and patient populations were too dissimilar to conduct a reliable ITC.Conclusions: This study highlights the importance of conducting a detailed feasibility assessment before undertaking ITCs to illuminate when excessive between-trial heterogeneity would cause biased results. MAIC was performed for siponimod and IFN β-1b in the absence of a head-to-head trial and was considered a more valid approach than a traditional ITC to examine comparative effectiveness.",
-    date: "2023-04-02",
-    authors: ["Brown, E.", "Davis, M."],
-    citationCount: 123, // Add this line
+    title: "Safety Profile of Long-Term Upadacitinib Use in Alopecia Areata",
+    abstract: "This systematic review examines the long-term safety of upadacitinib in treating alopecia areata. The analysis includes 30 clinical trials and observational studies with a total of 3,000 participants, investigating outcomes such as adverse events, infections, and potential complications over extended treatment periods.",
+    date: "2024-02-01",
+    authors: ["Smith, J.", "Johnson, M."],
+    citationCount: 23,
     selected: false,
     abstractExpanded: false,
     studyType: 'Meta-analysis',
     pico: {
-      population: "Individuals with relapsing-remitting multiple sclerosis",
-      intervention: "Ocrelizumab",
-      comparator: "Placebo or other disease-modifying therapies",
-      outcome: "Relapse rates and disease progression",
+      population: "Individuals with alopecia areata",
+      intervention: "Long-term upadacitinib treatment",
+      comparator: "Other JAK inhibitors or standard treatments",
+      outcome: "Safety profile and adverse events",
       expanded: false
     },
-   pubmedLink: "https://pubmed.ncbi.nlm.nih.gov/32216597/"
+    pubmedLink: "https://pubmed.ncbi.nlm.nih.gov/"
   },
   {
     id: 3,
-    title: "The Impact of Ocrelizumab on Brain Atrophy in Primary Progressive Multiple Sclerosis",
-    abstract: "This randomized controlled trial investigates the effects of ocrelizumab on brain atrophy rates in primary progressive multiple sclerosis. The study included 150 adults with PPMS who were assigned to either an ocrelizumab treatment group or a placebo control group for 96 weeks. Outcomes measured included changes in brain volume, disability progression, and cognitive function.",
+    title: "Pediatric Applications of Upadacitinib in Alopecia Areata",
+    abstract: "This randomized controlled trial investigates the effects of upadacitinib in pediatric patients with severe alopecia areata. The study included 150 children aged 12-17 who were assigned to either a upadacitinib treatment group or a placebo control group for 48 weeks. Outcomes measured included hair regrowth, safety profile, and quality of life measures.",
     date: "2023-06-10",
     authors: ["Wilson, T.", "Taylor, M.", "Anderson, K."],
-    citationCount: 187, // Add this line
+    citationCount: 87,
     selected: false,
     abstractExpanded: false,
     studyType: 'RCT',
     pico: {
-      population: "Adults with primary progressive multiple sclerosis",
-      intervention: "Ocrelizumab",
+      population: "Pediatric patients with severe alopecia areata",
+      intervention: "Upadacitinib",
       comparator: "Placebo",
-      outcome: "Brain atrophy rates and disability progression",
+      outcome: "Hair regrowth and safety profile",
       expanded: false
     },
     pubmedLink: "https://pubmed.ncbi.nlm.nih.gov/"
   },
   {
     id: 4,
-    title: "Long-Term Safety and Efficacy of Ocrelizumab in Multiple Sclerosis: A 5-Year Follow-Up Study",
-    abstract: "This long-term follow-up study evaluates the safety and efficacy of ocrelizumab in patients with multiple sclerosis over a 5-year period. The study includes data from 2,500 patients with relapsing-remitting and primary progressive MS who participated in the initial phase III trials and continued treatment in the open-label extension phase.",
+    title: "Long-Term Efficacy of Upadacitinib in Alopecia Areata: A 5-Year Follow-Up Study",
+    abstract: "This long-term follow-up study evaluates the safety and efficacy of upadacitinib in patients with alopecia areata over a 5-year period. The study includes data from 2,500 patients who participated in the initial phase III trials and continued treatment in the open-label extension phase.",
     date: "2023-03-22",
     authors: ["Thomas, R.", "Moore, J.", "Jackson, L."],
-    citationCount: 210, // Add this line
+    citationCount: 110,
     selected: false,
     abstractExpanded: false,
     studyType: 'Cohort study',
     pico: {
-      population: "Patients with relapsing-remitting and primary progressive multiple sclerosis",
-      intervention: "Long-term ocrelizumab treatment",
+      population: "Patients with alopecia areata",
+      intervention: "Long-term upadacitinib treatment",
       comparator: "Historical data and initial trial results",
       outcome: "Long-term safety profile and efficacy measures",
       expanded: false
@@ -184,117 +180,117 @@ export const mockDocuments: Document[] = [
   },
   {
     id: 5,
-    title: "Ocrelizumab's Effect on Fatigue and Cognitive Function in Multiple Sclerosis",
-    abstract: "This observational study investigates the impact of ocrelizumab on fatigue levels and cognitive function in patients with multiple sclerosis. The research involved 200 MS patients treated with ocrelizumab and 200 matched controls receiving other disease-modifying therapies, analyzing changes in fatigue scores and cognitive performance over a 2-year period.",
+    title: "Upadacitinib's Effect on Quality of Life and Mental Health in Alopecia Areata",
+    abstract: "This observational study investigates the impact of upadacitinib on quality of life and mental health in patients with alopecia areata. The research involved 200 patients treated with upadacitinib and 200 matched controls receiving other treatments, analyzing changes in quality of life scores and psychological well-being over a 2-year period.",
     date: "2023-07-05",
     authors: ["White, H.", "Harris, P.", "Clark, S."],
-    citationCount: 150, // Add this line
+    citationCount: 95,
     selected: false,
     abstractExpanded: false,
     studyType: 'Case-control study',
     pico: {
-      population: "Patients with multiple sclerosis",
-      intervention: "Ocrelizumab treatment",
-      comparator: "Other disease-modifying therapies",
-      outcome: "Changes in fatigue levels and cognitive function",
+      population: "Patients with alopecia areata",
+      intervention: "Upadacitinib treatment",
+      comparator: "Other standard treatments",
+      outcome: "Quality of life and mental health measures",
       expanded: false
     },
-   pubmedLink: "https://pubmed.ncbi.nlm.nih.gov/"
+    pubmedLink: "https://pubmed.ncbi.nlm.nih.gov/"
   },
   {
     id: 6,
-    title: "Ocrelizumab in Pediatric Multiple Sclerosis: A Pilot Study",
-    abstract: "This pilot study investigates the safety and efficacy of ocrelizumab in pediatric patients with multiple sclerosis. The study included 30 patients aged 10-17 with relapsing-remitting MS, who received weight-based dosing of ocrelizumab over 24 weeks. Primary outcomes included safety profile and changes in relapse rate.",
+    title: "Upadacitinib in Adolescent Alopecia Areata: A Pilot Study",
+    abstract: "This pilot study investigates the safety and efficacy of upadacitinib in adolescent patients with alopecia areata. The study included 30 patients aged 12-17 with severe AA, who received weight-based dosing of upadacitinib over 24 weeks. Primary outcomes included safety profile and hair regrowth assessment.",
     date: "2023-08-20",
     authors: ["Rodriguez, C.", "Lee, S.", "Patel, A."],
-    citationCount: 100, // Add this line
+    citationCount: 55,
     selected: false,
     abstractExpanded: false,
     studyType: 'Case series',
     pico: {
-      population: "Pediatric patients with relapsing-remitting multiple sclerosis",
-      intervention: "Weight-based ocrelizumab treatment",
+      population: "Adolescent patients with severe alopecia areata",
+      intervention: "Weight-based upadacitinib treatment",
       comparator: "Historical controls",
-      outcome: "Safety profile and relapse rate",
+      outcome: "Safety profile and hair regrowth",
       expanded: false
     },
-  pubmedLink: "https://pubmed.ncbi.nlm.nih.gov/"
+    pubmedLink: "https://pubmed.ncbi.nlm.nih.gov/"
   },
   {
     id: 7,
-    title: "Ocrelizumab and Pregnancy Outcomes in Multiple Sclerosis: A Retrospective Analysis",
-    abstract: "This retrospective study examines pregnancy outcomes in women with multiple sclerosis who were exposed to ocrelizumab before or during pregnancy. The study analyzed data from 150 pregnancies in women who received ocrelizumab within 6 months prior to conception or during pregnancy.",
+    title: "Upadacitinib and Pregnancy Outcomes in Alopecia Areata: A Retrospective Analysis",
+    abstract: "This retrospective study examines pregnancy outcomes in women with alopecia areata who were exposed to upadacitinib before or during pregnancy. The study analyzed data from 150 pregnancies in women who received upadacitinib within 6 months prior to conception or during pregnancy.",
     date: "2023-09-05",
     authors: ["Garcia, M.", "Thompson, R.", "Chen, L."],
-    citationCount: 130, // Add this line
+    citationCount: 78,
     selected: false,
     abstractExpanded: false,
     studyType: 'Cohort study',
     pico: {
-      population: "Pregnant women with multiple sclerosis exposed to ocrelizumab",
-      intervention: "Ocrelizumab exposure",
-      comparator: "General MS population pregnancy outcomes",
+      population: "Pregnant women with alopecia areata exposed to upadacitinib",
+      intervention: "Upadacitinib exposure",
+      comparator: "General alopecia areata population pregnancy outcomes",
       outcome: "Pregnancy and fetal outcomes, postpartum disease activity",
       expanded: false
     },
-   pubmedLink: "https://pubmed.ncbi.nlm.nih.gov/"
+    pubmedLink: "https://pubmed.ncbi.nlm.nih.gov/"
   },
   {
     id: 8,
-    title: "Comparative Effectiveness of Ocrelizumab vs Natalizumab in Highly Active Relapsing Multiple Sclerosis",
-    abstract: "This head-to-head study compares the effectiveness of ocrelizumab and natalizumab in patients with highly active relapsing multiple sclerosis. The study included 300 patients randomized to receive either ocrelizumab or natalizumab over 2 years.",
+    title: "Comparative Effectiveness of Upadacitinib vs Baricitinib in Severe Alopecia Areata",
+    abstract: "This head-to-head study compares the effectiveness of upadacitinib and baricitinib in patients with severe alopecia areata. The study included 300 patients randomized to receive either upadacitinib or baricitinib over 2 years.",
     date: "2023-10-12",
     authors: ["Kim, J.", "Novak, I.", "Fernandez, O."],
-    citationCount: 170, // Add this line
+    citationCount: 92,
     selected: false,
     abstractExpanded: false,
     studyType: 'RCT',
     pico: {
-      population: "Patients with highly active relapsing multiple sclerosis",
-      intervention: "Ocrelizumab",
-      comparator: "Natalizumab",
-      outcome: "Relapse rate and disability progression",
+      population: "Patients with severe alopecia areata",
+      intervention: "Upadacitinib",
+      comparator: "Baricitinib",
+      outcome: "Hair regrowth and treatment response",
       expanded: false
     },
-   pubmedLink: "https://pubmed.ncbi.nlm.nih.gov/"
+    pubmedLink: "https://pubmed.ncbi.nlm.nih.gov/"
   },
   {
     id: 9,
-    title: "Long-term Effects of Ocrelizumab on Disability in Primary Progressive Multiple Sclerosis",
-    abstract: "This extension study evaluates the long-term effects of ocrelizumab on disability progression in patients with primary progressive multiple sclerosis. The study followed 500 patients from the original phase III trial for an additional 5 years.",
+    title: "Long-term Effects of Upadacitinib on Disease Progression in Severe Alopecia Areata",
+    abstract: "This extension study evaluates the long-term effects of upadacitinib on disease progression in patients with severe alopecia areata. The study followed 500 patients from the original phase III trial for an additional 5 years.",
     date: "2023-11-18",
     authors: ["Smith, A.", "Jones, B.", "Williams, C."],
-    citationCount: 140, // Add this line
+    citationCount: 85,
     selected: false,
     abstractExpanded: false,
     studyType: 'Cohort study',
     pico: {
-      population: "Patients with primary progressive multiple sclerosis",
-      intervention: "Long-term ocrelizumab treatment",
-      comparator: "Historical data from untreated PPMS cohorts",
-      outcome: "Time to confirmed disability progression",
+      population: "Patients with severe alopecia areata",
+      intervention: "Long-term upadacitinib treatment",
+      comparator: "Historical data from untreated severe AA cohorts",
+      outcome: "Long-term disease progression and treatment response",
       expanded: false
     },
-   pubmedLink: "https://pubmed.ncbi.nlm.nih.gov/"
+    pubmedLink: "https://pubmed.ncbi.nlm.nih.gov/"
   },
   {
     id: 10,
-    title: "Ocrelizumab and Risk of Infections: A Comprehensive Safety Analysis",
-    abstract: "This comprehensive safety analysis focuses on the risk of infections associated with ocrelizumab treatment in multiple sclerosis. The study pooled data from clinical trials and post-marketing surveillance, including over 5000 patients treated with ocrelizumab.",
+    title: "Upadacitinib and Risk of Infections in Alopecia Areata: A Comprehensive Safety Analysis",
+    abstract: "This comprehensive safety analysis focuses on the risk of infections associated with upadacitinib treatment in alopecia areata. The study pooled data from clinical trials and post-marketing surveillance, including over 5000 patients treated with upadacitinib.",
     date: "2023-12-01",
     authors: ["Brown, E.", "Miller, F.", "Davis, G."],
-    citationCount: 160, // Add this line
+    citationCount: 88,
     selected: false,
     abstractExpanded: false,
     studyType: 'Meta-analysis',
     pico: {
-      population: "Multiple sclerosis patients treated with ocrelizumab",
-      intervention: "Ocrelizumab treatment",
-      comparator: "Other MS treatments and general population",
+      population: "Alopecia areata patients treated with upadacitinib",
+      intervention: "Upadacitinib treatment",
+      comparator: "Other AA treatments and general population",
       outcome: "Incidence and types of infections",
       expanded: false
     },
-   pubmedLink: "https://pubmed.ncbi.nlm.nih.gov/"
+    pubmedLink: "https://pubmed.ncbi.nlm.nih.gov/"
   }
 ];
 
@@ -302,39 +298,39 @@ export const mockDocuments: Document[] = [
 export const mockProjects = [
   {
     id: "project-1",
-    name: "Smart Prosthetic Limbs Review",
+    name: "Upadacitinib in Alopecia Treatment Review",
     status: "in_progress" as const,
-    author: "Fanny M.",
-    createdAt: "2024-11-15T10:00:00.000Z",
+    author: "Chang A.H.",
+    createdAt: "2024-01-15T10:00:00.000Z",
     queryCount: 2,
-    tags: ["Prosthetics", "Neural Interface", "Smart Devices"]
+    tags: ["Alopecia", "JAK Inhibitors", "Clinical Trials"]
   },
   {
     id: "project-2",
-    name: "Implantable Medical Devices Safety",
+    name: "Alopecia Treatment Safety Analysis",
     status: "done" as const,
-    author: "Fanny M.",
-    createdAt: "2024-10-01T09:00:00.000Z",
+    author: "Brownstone N.D.",
+    createdAt: "2024-02-01T09:00:00.000Z",
     queryCount: 2,
-    tags: ["Medical Devices", "Safety", "Clinical Trials"]
+    tags: ["Drug Safety", "Side Effects", "Clinical Outcomes"]
   },
   {
     id: "project-3",
-    name: "Orthopedic Implants Longevity",
+    name: "Pediatric Alopecia Treatment Review",
     status: "done" as const,
-    author: "Fanny M.",
+    author: "Wilson T.",
     createdAt: "2023-11-15T09:00:00.000Z",
     queryCount: 2,
-    tags: ["Orthopedics", "Implants", "Long-term Outcomes"]
+    tags: ["Pediatric", "Alopecia", "Treatment Outcomes"]
   },
   {
     id: "project-4",
-    name: "Knee Surgery",
+    name: "Quality of Life in Alopecia Treatment",
     status: "in_progress" as const,
-    author: "Fanny M.",
-    createdAt: "2024-12-15T10:00:00.000Z",
+    author: "White H.",
+    createdAt: "2024-01-15T10:00:00.000Z",
     queryCount: 1,
-    tags: ["Orthopedics", "Surgery", "Clinical Outcomes"]
+    tags: ["Quality of Life", "Mental Health", "Patient Outcomes"]
   }
 ];
 
@@ -343,42 +339,42 @@ export const mockPipelines = [
   {
     id: "pipeline-1",
     projectId: "project-1",
-    name: "Neural Interface Integration",
+    name: "Upadacitinib Efficacy Analysis",
     fileScreening: "in_progress" as const,
     totalFiles: 156,
     duplicates: 12,
     fileSelection: 144,
     criteria: 5,
-    lastModified: "2024-01-20T15:30:00.000Z",
+    lastModified: "2024-02-20T15:30:00.000Z",
     currentStep: "screening" as const,
     screeningStep: "generator" as const,
     queryData: {
-      description: "Investigating neural interface integration in smart prosthetic limbs",
-      query: "(prosthetic OR artificial limb) AND (neural interface OR brain computer interface) AND (integration OR control)",
-      projectTitle: "Smart Prosthetic Limbs Review",
+      description: "Investigating upadacitinib efficacy in alopecia areata treatment",
+      query: "(upadacitinib OR JAK1 inhibitor) AND (alopecia areata) AND (efficacy OR treatment outcome)",
+      projectTitle: "Upadacitinib in Alopecia Treatment Review",
       projectId: "project-1",
       questions: [
-        "What types of neural interfaces are being used in prosthetic limbs?",
-        "How effective is the integration between neural interfaces and prosthetic control?",
-        "What are the main challenges in neural interface implementation?"
+        "What is the efficacy of upadacitinib in treating alopecia areata?",
+        "How does upadacitinib compare to other JAK inhibitors?",
+        "What are the main challenges in upadacitinib treatment?"
       ],
       answers: {
-        "What types of neural interfaces are being used in prosthetic limbs?": "Both invasive and non-invasive neural interfaces, including EEG-based and implanted electrodes",
-        "How effective is the integration between neural interfaces and prosthetic control?": "Studies show varying degrees of success, with response times approaching natural movement",
-        "What are the main challenges in neural interface implementation?": "Signal stability, long-term biocompatibility, and processing speed"
+        "What is the efficacy of upadacitinib in treating alopecia areata?": "Studies show significant improvement in hair regrowth with varying response rates",
+        "How does upadacitinib compare to other JAK inhibitors?": "Comparative studies indicate unique benefits and safety profile",
+        "What are the main challenges in upadacitinib treatment?": "Long-term safety concerns and treatment resistance in some patients"
       },
       pubmedQuery: JSON.stringify({
         subqueries: [
           {
-            content: 'prosthetic OR artificial limb',
+            content: 'upadacitinib OR JAK1 inhibitor',
             operator: 'AND'
           },
           {
-            content: 'neural interface OR brain computer interface',
+            content: 'alopecia areata',
             operator: 'AND'
           },
           {
-            content: 'integration OR control',
+            content: 'efficacy OR treatment outcome',
             operator: 'AND'
           }
         ]
@@ -389,38 +385,42 @@ export const mockPipelines = [
   {
     id: "pipeline-2",
     projectId: "project-1",
-    name: "Sensory Feedback Analysis",
+    name: "Safety Profile Analysis",
     fileScreening: "in_progress" as const,
     totalFiles: 89,
     duplicates: 7,
     fileSelection: 82,
     criteria: 4,
-    lastModified: "2024-01-22T11:20:00.000Z",
+    lastModified: "2024-02-22T11:20:00.000Z",
     currentStep: "criteria" as const,
     screeningStep: "generator" as const,
     queryData: {
-      description: "Analyzing sensory feedback mechanisms in advanced prosthetics",
-      query: "(prosthetic limb OR artificial limb) AND (sensory feedback OR haptic feedback OR tactile sensation)",
-      projectTitle: "Smart Prosthetic Limbs Review",
+      description: "Analyzing safety profile of upadacitinib in alopecia areata treatment",
+      query: "(upadacitinib) AND (alopecia areata) AND (safety OR adverse effects OR side effects)",
+      projectTitle: "Upadacitinib in Alopecia Treatment Review",
       projectId: "project-1",
       questions: [
-        "What sensory feedback mechanisms are used in advanced prosthetics?",
-        "How effective are haptic and tactile sensations in prosthetic control?",
-        "What are the implications of sensory feedback in prosthetic design?"
+        "What are the common adverse effects of upadacitinib in alopecia treatment?",
+        "How does the safety profile compare to other treatments?",
+        "What are the long-term safety implications?"
       ],
       answers: {
-        "What sensory feedback mechanisms are used in advanced prosthetics?": "Various sensory feedback mechanisms, including touch sensors, pressure sensors, and strain gauges",
-        "How effective are haptic and tactile sensations in prosthetic control?": "Studies show varying degrees of effectiveness, with some prosthetics achieving natural sensation",
-        "What are the implications of sensory feedback in prosthetic design?": "Sensory feedback is crucial for prosthetic design, as it enhances user experience and functionality"
+        "What are the common adverse effects of upadacitinib in alopecia treatment?": "Common effects include upper respiratory infections and acne",
+        "How does the safety profile compare to other treatments?": "Generally favorable compared to other systemic treatments",
+        "What are the long-term safety implications?": "Ongoing studies are evaluating long-term safety data"
       },
       pubmedQuery: JSON.stringify({
         subqueries: [
           {
-            content: 'prosthetic limb OR artificial limb',
+            content: 'upadacitinib',
             operator: 'AND'
           },
           {
-            content: 'sensory feedback OR haptic feedback OR tactile sensation',
+            content: 'alopecia areata',
+            operator: 'AND'
+          },
+          {
+            content: 'safety OR adverse effects OR side effects',
             operator: 'AND'
           }
         ]
@@ -431,7 +431,7 @@ export const mockPipelines = [
   {
     id: "pipeline-3",
     projectId: "project-2",
-    name: "Cardiac Device Safety",
+    name: "Long-term Safety Analysis",
     fileScreening: "completed" as const,
     totalFiles: 234,
     duplicates: 18,
@@ -441,28 +441,32 @@ export const mockPipelines = [
     currentStep: "abstract" as const,
     screeningStep: "generator" as const,
     queryData: {
-      description: "Safety evaluation of implantable cardiac devices",
-      query: "(implantable cardiac device OR pacemaker OR defibrillator) AND (safety OR adverse effects OR complications)",
-      projectTitle: "Implantable Medical Devices Safety",
+      description: "Evaluating long-term safety of upadacitinib in alopecia areata",
+      query: "(upadacitinib) AND (alopecia areata) AND (long-term safety OR adverse effects OR complications)",
+      projectTitle: "Alopecia Treatment Safety Analysis",
       projectId: "project-2",
       questions: [
-        "What safety measures are implemented in implantable cardiac devices?",
-        "How effective are adverse effects and complications in implantable cardiac devices?",
-        "What are the implications of safety in implantable cardiac device design?"
+        "What are the long-term safety outcomes of upadacitinib in alopecia areata?",
+        "How do long-term adverse effects compare to other treatments?",
+        "What are the implications for patient monitoring and management?"
       ],
       answers: {
-        "What safety measures are implemented in implantable cardiac devices?": "Various safety measures, including patient monitoring, device testing, and patient education",
-        "How effective are adverse effects and complications in implantable cardiac devices?": "Studies show varying degrees of effectiveness, with some devices achieving minimal adverse effects",
-        "What are the implications of safety in implantable cardiac device design?": "Safety is crucial in implantable cardiac device design, as it ensures patient safety and device longevity"
+        "What are the long-term safety outcomes of upadacitinib in alopecia areata?": "Studies show manageable safety profile with specific monitoring needs",
+        "How do long-term adverse effects compare to other treatments?": "Comparable or favorable safety profile compared to other systemic treatments",
+        "What are the implications for patient monitoring and management?": "Regular monitoring of specific parameters recommended, with individualized follow-up"
       },
       pubmedQuery: JSON.stringify({
         subqueries: [
           {
-            content: 'implantable cardiac device OR pacemaker OR defibrillator',
+            content: 'upadacitinib',
             operator: 'AND'
           },
           {
-            content: 'safety OR adverse effects OR complications',
+            content: 'alopecia areata',
+            operator: 'AND'
+          },
+          {
+            content: 'long-term safety OR adverse effects OR complications',
             operator: 'AND'
           }
         ]
@@ -665,42 +669,37 @@ export const SCREENING_CRITERIA = [
     id: 1,
     shortName: "C1",
     category: "Scope",
-    description: "I want to select articles where the population studied is adult having a hip arthroplasty"
+    description: "I want to select articles where the population studied is adult patients with alopecia areata"
   },
   {
     id: 2,
     shortName: "C2",
-    category: "Device",
-    description: "I want to select articles where a total hip arthroplasty is performed using a cementless revision stem in the indication of a revision total hip arthroplasty or complex primary total hip arthroplasty (bone defect for example). If no mention of the stem, mark as uncertain"
+    category: "Treatment",
+    description: "I want to select articles where upadacitinib is used as a treatment for alopecia areata. If no mention of dosage, mark as uncertain"
   },
   {
     id: 3,
     shortName: "C3",
-    category: "Flags",
-    description: `I want to select articles where at least one of the following outcomes is evaluated:
-• A clinical score used in orthopaedics
-• A survival rate
-• A comparison with a group using another type of device
-• A radiological evaluation
-The complications and/or revision rates are reported`
+    category: "Outcomes",
+    description: "I want to select articles where at least one of the following outcomes is evaluated:\n• Hair regrowth measurements\n• Quality of life scores\n• Comparison with other treatments\n• Safety and adverse events\n• Treatment duration and follow-up"
   },
   {
     id: 4,
     shortName: "C4",
     category: "Publication",
-    description: "I only want to exclude cadaver studies, case reports, surgical techniques, mechanical or in-vivo studies, finite element studies. I only want articles reporting or gathering clinical data on humans."
+    description: "I want to exclude case reports, laboratory studies, and animal studies. I only want articles reporting clinical data on humans."
   },
   {
     id: 5,
     shortName: "C5",
-    category: "Device",
-    description: "I want to exclude documents that report data on modular stems only. I'm only interested in monoblock ones or its comparison to another type."
+    category: "Treatment",
+    description: "I want to exclude documents that report data on topical JAK inhibitors only. I'm only interested in systemic treatments or their comparison."
   },
   {
     id: 6,
     shortName: "C6",
     category: "Language",
-    description: "I want to include articles in French or English only."
+    description: "I want to include articles in English only."
   }
 ];
 
@@ -715,25 +714,25 @@ export const FREQUENT_CRITERIA = {
     {
       id: 2,
       category: "Scope",
-      text: "I want to select articles where the population studied is adult having a hip arthroplasty",
+      text: "I want to select articles where the population studied is adult patients with alopecia areata",
       usageCount: 100
     },
     {
       id: 3,
       category: "Scope",
-      text: "I want to select articles where the population studied is adult having a knee arthroplasty",
-      usageCount: 99
+      text: "I want to select articles where the population studied is pediatric patients with alopecia areata",
+      usageCount: 85
     },
     {
       id: 4,
-      category: "Device",
-      text: "I want to select articles where a total hip arthroplasty is performed",
-      usageCount: 67
+      category: "Treatment",
+      text: "I want to select articles where JAK inhibitors are used as treatment",
+      usageCount: 95
     },
     {
       id: 5,
       category: "Publication",
-      text: "I want to exclude case reports, surgical techniques, and mechanical studies",
+      text: "I want to exclude case reports and animal studies",
       usageCount: 89
     },
     {
