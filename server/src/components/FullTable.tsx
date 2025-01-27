@@ -3,9 +3,9 @@ import { IoMdInformationCircle, IoMdSearch } from "react-icons/io";
 import { IoCalendarOutline } from "react-icons/io5";
 import { SCREENING_CRITERIA } from '../utils/mockData';
 import CriteriaTooltip from './CriteriaTooltip';
-import { MdSearch  } from "react-icons/md";
-import { FaRegCheckCircle } from "react-icons/fa";
+import { HiLanguage } from "react-icons/hi2";
 import { IoNewspaperOutline } from "react-icons/io5";
+import { HiOutlineCheckCircle } from "react-icons/hi2";
 import { PiToolboxBold } from "react-icons/pi";
 import { GrDocumentMissing } from "react-icons/gr";
 import { BsStars } from "react-icons/bs";
@@ -71,11 +71,11 @@ const getStatusStyle = (status: Status): string => {
 const getCategoryIcon = (category: string) => {
   switch (category) {
     case 'Language':
-      return <IoNewspaperOutline  className="w-4 h-4 text-gray-800" />;
+      return <HiLanguage className="w-4 h-4 text-gray-800" />;
     case 'Publication':
-      return <FaRegCheckCircle className="w-4 h-4 text-gray-800" />;
+      return <IoNewspaperOutline className="w-4 h-4 text-gray-800" />;
     case 'Scope':
-      return <MdSearch className="w-4 h-4 text-gray-800" />;
+      return <HiOutlineCheckCircle className="w-4 h-4 text-gray-800" />;
     case 'Device':
       return <PiToolboxBold className="w-4 h-4 text-gray-800" />;
     case 'Flags':
@@ -106,10 +106,10 @@ const getCauseInfo = (answers: string[], criteria: typeof SCREENING_CRITERIA) =>
 
   // Sort categories in specified order
   const orderMap = {
-    'Study type': 1,
-    'Quality': 2,
-    'Evidence': 3,
-    'Methodology': 4
+    'Language': 1,
+    'Publication': 2,
+    'Scope': 3,
+    'Device': 4
   };
 
   const sortedCategories = Array.from(categories).sort((a, b) => 
