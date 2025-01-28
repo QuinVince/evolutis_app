@@ -640,19 +640,19 @@ export const SCREENING_CRITERIA = [
   {
     id: 2,
     shortName: "C2",
-    category: "Quality",
+    category: "Analysis",
     description: "I want to select articles that follow PRISMA guidelines for systematic reviews and meta-analyses. If methodology is unclear, mark as uncertain"
   },
   {
     id: 3,
     shortName: "C3",
-    category: "Outcomes",
+    category: "Analysis",
     description: "I want to select articles where at least one of the following is synthesized:\n• Pooled efficacy data of upadacitinib in alopecia\n• Systematic assessment of safety outcomes\n• Meta-analyzed quality of life measures\n• Network meta-analysis comparing treatments\n• Comprehensive evidence grading"
   },
   {
     id: 4,
     shortName: "C4",
-    category: "Publication",
+    category: "Study Type",
     description: "I want to exclude primary studies, narrative reviews, and opinion pieces. Only include systematic reviews, meta-analyses, and evidence syntheses."
   },
   {

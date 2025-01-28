@@ -74,9 +74,9 @@ const getCategoryIcon = (category: string) => {
       return <HiLanguage className="w-4 h-4 text-gray-800" />;
     case 'Publication':
       return <IoNewspaperOutline className="w-4 h-4 text-gray-800" />;
-    case 'Scope':
+    case 'Analysis':
       return <HiOutlineCheckCircle className="w-4 h-4 text-gray-800" />;
-    case 'Device':
+    case 'Study Type':
       return <PiToolboxBold className="w-4 h-4 text-gray-800" />;
     case 'Flags':
       return <GrDocumentMissing className="w-4 h-4 text-gray-800" />;
