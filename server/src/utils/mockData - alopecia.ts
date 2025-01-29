@@ -6,48 +6,48 @@ export const mockDuplicatePairs: DuplicatePair[] = [
   { 
     id: 1, 
     article1: {
-      title: "Systematic Review and Meta-analysis of Vorasidenib in IDH-Mutant Gliomas",
-      abstract: "This systematic review and meta-analysis examines the efficacy and safety of vorasidenib in IDH1/2-mutant gliomas. The analysis included 8 clinical trials with 1,200 participants, synthesizing evidence on tumor response, progression-free survival, and adverse events using GRADE methodology."
+      title: "Systematic Review and Meta-analysis of Upadacitinib in Severe Alopecia Areata",
+      abstract: "This systematic review and meta-analysis examines the efficacy and safety of upadacitinib in severe alopecia areata. The analysis included 12 randomized controlled trials with 3,500 participants, synthesizing evidence on hair regrowth, quality of life, and adverse events using GRADE methodology."
     },
     article2: {
-      title: "Meta-analysis and Systematic Review: Vorasidenib for IDH-Mutant Gliomas",
-      abstract: "This comprehensive systematic review and meta-analysis evaluates the effectiveness and safety profile of vorasidenib in IDH1/2-mutant glioma treatment. The study synthesized data from 8 clinical trials involving 1,200 participants, analyzing outcomes including tumor response, progression-free survival, and adverse events using GRADE methodology."
+      title: "Systematic Review and Meta-analysis: Upadacitinib for Severe Alopecia Areata",
+      abstract: "This comprehensive systematic review and meta-analysis evaluates the effectiveness and safety profile of upadacitinib in severe alopecia areata treatment. The study synthesized data from 12 randomized controlled trials involving 3,500 participants, analyzing outcomes including hair regrowth, quality of life measures, and adverse events using GRADE methodology."
     },
     proximityScore: 0.95
   },
   { 
     id: 2, 
     article1: {
-      title: "Network Meta-analysis of IDH Inhibitors in Low-Grade Gliomas",
-      abstract: "This network meta-analysis compares the relative efficacy of different IDH inhibitors, including vorasidenib, in low-grade gliomas. The analysis synthesized evidence from 12 randomized trials with 2,500 participants, providing hierarchical rankings of treatments based on efficacy and safety profiles."
+      title: "Network Meta-analysis of JAK Inhibitors in Treatment-Resistant Alopecia Areata",
+      abstract: "This network meta-analysis compares the relative efficacy of different JAK inhibitors, including upadacitinib, in treatment-resistant alopecia areata. The analysis synthesized evidence from 15 randomized trials with 4,000 participants, providing hierarchical rankings of treatments based on efficacy and safety profiles."
     },
     article2: {
-      title: "IDH Inhibitors in Low-Grade Gliomas: A Network Meta-analysis",
-      abstract: "This comprehensive network meta-analysis evaluates the comparative effectiveness of IDH inhibitors, with focus on vorasidenib, in low-grade gliomas. The study analyzed data from 12 randomized trials encompassing 2,500 participants, establishing treatment hierarchies based on efficacy and safety outcomes."
+      title: "JAK Inhibitors in Treatment-Resistant Alopecia Areata: A Network Meta-analysis",
+      abstract: "This comprehensive network meta-analysis evaluates the comparative effectiveness of JAK inhibitors, with focus on upadacitinib, in treatment-resistant alopecia areata. The study analyzed data from 15 randomized trials encompassing 4,000 participants, establishing treatment hierarchies based on efficacy and safety outcomes."
     },
     proximityScore: 0.98
   },
   { 
     id: 3, 
     article1: {
-      title: "Quality of Life Outcomes with Vorasidenib in IDH-Mutant Gliomas",
-      abstract: "This systematic review synthesizes evidence on quality of life outcomes in patients treated with vorasidenib for IDH-mutant gliomas. The analysis included 15 studies with 2,000 participants, using standardized mean differences to pool quality of life measures and patient-reported outcomes."
+      title: "Evidence Synthesis of Quality of Life Outcomes with Upadacitinib in Alopecia Areata",
+      abstract: "This systematic review synthesizes evidence on quality of life outcomes in patients treated with upadacitinib for alopecia areata. The analysis included 20 studies with 5,000 participants, using standardized mean differences to pool quality of life measures and patient-reported outcomes."
     },
     article2: {
-      title: "Quality of Life with Vorasidenib in IDH-Mutant Gliomas: A Systematic Review",
-      abstract: "This systematic review comprehensively analyzes quality of life outcomes in patients receiving vorasidenib for IDH-mutant gliomas. The study synthesized data from 15 studies involving 2,000 participants, employing standardized mean differences to aggregate quality of life metrics and patient-reported outcomes."
+      title: "Quality of Life with Upadacitinib in Alopecia Areata: A Systematic Review and Evidence Synthesis",
+      abstract: "This systematic review comprehensively analyzes quality of life outcomes in patients receiving upadacitinib for alopecia areata. The study synthesized data from 20 studies involving 5,000 participants, employing standardized mean differences to aggregate quality of life metrics and patient-reported outcomes."
     },
     proximityScore: 0.97
   },
   { 
     id: 4, 
     article1: {
-      title: "The Role of IDH Inhibition in Brain Tumor Treatment",
-      abstract: "This comprehensive review examines the current understanding of IDH inhibition therapies, particularly vorasidenib, in treating brain tumors. The analysis covers both low-grade and high-grade gliomas, discussing the therapy's effects on various aspects of the disease and its potential implications for long-term disease management."
+      title: "The Role of JAK Inhibition in Alopecia Areata Treatment",
+      abstract: "This comprehensive review examines the current understanding of JAK inhibition therapies, particularly upadacitinib, in treating alopecia areata. The analysis covers both moderate and severe cases, discussing the therapy's effects on various aspects of the disease and its potential implications for long-term disease management."
     },
     article2: {
-      title: "IDH Inhibition and Its Impact on Brain Tumor Treatment",
-      abstract: "This extensive review explores the present knowledge regarding IDH inhibition therapies, with a focus on vorasidenib, in treating brain tumors. The study encompasses both low-grade and high-grade gliomas, analyzing the therapy's impact on different aspects of the disease and its potential significance for long-term management strategies."
+      title: "JAK Inhibition and Its Impact on Alopecia Areata Treatment",
+      abstract: "This extensive review explores the present knowledge regarding JAK inhibition therapies, with a focus on upadacitinib, in treating alopecia areata. The study encompasses both moderate and severe cases, analyzing the therapy's impact on different aspects of the disease and its potential significance for long-term management strategies."
     },
     proximityScore: 0.99
   },
@@ -78,24 +78,24 @@ export const mockDuplicatePairs: DuplicatePair[] = [
   { 
     id: 7, 
     article1: {
-      title: "Vorasidenib's Effect on Cognitive Function in Glioma Patients",
-      abstract: "This experimental study investigates the impact of vorasidenib on cognitive function in glioma patients. The research involved 150 participants who underwent cognitive assessments before and after vorasidenib treatment, with subsequent tests to evaluate changes in memory, attention, and executive functioning."
+      title: "Upadacitinib's Effect on Psychological Well-being in Alopecia Areata",
+      abstract: "This experimental study investigates the impact of upadacitinib on psychological well-being in alopecia areata patients. The research involved 100 participants who underwent psychological assessments before and after upadacitinib treatment, with subsequent tests to evaluate changes in anxiety, depression, and social functioning."
     },
     article2: {
-      title: "Cognitive Outcomes with Vorasidenib Treatment in Glioma Patients",
-      abstract: "This experimental study explores how vorasidenib affects cognitive function in individuals with gliomas. The investigation included 150 subjects who completed cognitive evaluations prior to and following vorasidenib therapy, followed by assessments to measure changes in memory, attention, and executive functioning."
+      title: "Psychological Outcomes with Upadacitinib Treatment in Alopecia Areata",
+      abstract: "This experimental study explores how upadacitinib affects psychological well-being in individuals with alopecia areata. The investigation included 100 subjects who completed psychological evaluations prior to and following upadacitinib therapy, followed by assessments to measure changes in anxiety, depression, and social functioning."
     },
     proximityScore: 0.97
   },
   { 
     id: 8, 
     article1: {
-      title: "Cost-Effectiveness of Vorasidenib in IDH-Mutant Glioma Management",
-      abstract: "This meta-analysis evaluates the cost-effectiveness of vorasidenib in managing IDH-mutant gliomas compared to other treatment options. The study synthesizes data from 30 economic evaluations and clinical trials, involving a total of 5,000 patients across various healthcare settings and countries."
+      title: "Cost-Effectiveness of Upadacitinib in Alopecia Areata Management",
+      abstract: "This meta-analysis evaluates the cost-effectiveness of upadacitinib in managing alopecia areata compared to other treatment options. The study synthesizes data from 50 economic evaluations and clinical trials, involving a total of 10,000 patients across various healthcare settings and countries."
     },
     article2: {
-      title: "Vorasidenib for IDH-Mutant Glioma Management: A Cost-Effectiveness Analysis",
-      abstract: "This comprehensive meta-analysis assesses the cost-effectiveness of vorasidenib-based interventions in the management of IDH-mutant gliomas, compared to alternative treatments. The research compiles and analyzes data from 30 economic evaluations and clinical trials, encompassing 5,000 patients from diverse healthcare environments and geographical locations."
+      title: "Upadacitinib for Alopecia Areata Management: A Cost-Effectiveness Analysis",
+      abstract: "This comprehensive meta-analysis assesses the cost-effectiveness of upadacitinib-based interventions in the management of alopecia areata, compared to alternative treatments. The research compiles and analyzes data from 50 economic evaluations and clinical trials, encompassing 10,000 patients from diverse healthcare environments and geographical locations."
     },
     proximityScore: 0.96
   }
@@ -104,8 +104,8 @@ export const mockDuplicatePairs: DuplicatePair[] = [
 export const mockDocuments: Document[] = [
   {
     id: 1,
-    title: "Systematic Review and Meta-analysis of IDH Inhibition in Glioma Treatment",
-    abstract: "This systematic review and meta-analysis comprehensively examines the role of IDH inhibition, particularly vorasidenib, in treating IDH-mutant gliomas. Following PRISMA guidelines, we synthesized evidence from 15 clinical trials involving 3,000 participants, providing pooled estimates of efficacy, safety, and survival outcomes.",
+    title: "Systematic Review and Meta-analysis of JAK Inhibition in Alopecia Areata Treatment",
+    abstract: "This systematic review and meta-analysis comprehensively examines the role of JAK inhibition, particularly upadacitinib, in treating alopecia areata. Following PRISMA guidelines, we synthesized evidence from 25 randomized controlled trials involving 6,000 participants, providing pooled estimates of efficacy, safety, and quality of life outcomes.",
     date: "2024-01-15",
     authors: ["Chang, A.H.", "Brownstone, N.D.", "Hsu, S."],
     citationCount: 45,
@@ -113,18 +113,18 @@ export const mockDocuments: Document[] = [
     abstractExpanded: false,
     studyType: 'Meta-analysis',
     pico: {
-      population: "Patients with IDH1/2-mutant gliomas in clinical trials",
-      intervention: "IDH inhibitors, primarily vorasidenib",
-      comparator: "Placebo or standard treatments",
-      outcome: "Pooled efficacy, safety, and survival measures",
+      population: "Patients with alopecia areata in randomized controlled trials",
+      intervention: "JAK inhibitors, primarily upadacitinib",
+      comparator: "Placebo or other systemic treatments",
+      outcome: "Pooled efficacy, safety, and quality of life measures",
       expanded: false
     },
     pubmedLink: "https://pubmed.ncbi.nlm.nih.gov/39258033/"
   },
   {
     id: 2,
-    title: "Network Meta-analysis of Targeted Therapies for Low-Grade Gliomas",
-    abstract: "This network meta-analysis provides a comprehensive comparison of targeted therapies for low-grade gliomas, with special focus on IDH inhibitors including vorasidenib. Following Cochrane methodology, we analyzed 20 randomized trials with 4,000 participants to establish treatment hierarchies and comparative effectiveness.",
+    title: "Network Meta-analysis of Systemic Treatments for Alopecia Areata",
+    abstract: "This network meta-analysis provides a comprehensive comparison of systemic treatments for alopecia areata, with special focus on JAK inhibitors including upadacitinib. Following Cochrane methodology, we analyzed 30 randomized trials with 7,000 participants to establish treatment hierarchies and comparative effectiveness.",
     date: "2024-02-01",
     authors: ["Smith, J.", "Johnson, M."],
     citationCount: 38,
@@ -132,8 +132,8 @@ export const mockDocuments: Document[] = [
     abstractExpanded: false,
     studyType: 'Meta-analysis',
     pico: {
-      population: "Low-grade glioma patients in comparative trials",
-      intervention: "All targeted treatments including vorasidenib",
+      population: "Alopecia areata patients in comparative trials",
+      intervention: "All systemic treatments including upadacitinib",
       comparator: "Network of all available treatments",
       outcome: "Comparative efficacy and safety rankings",
       expanded: false
@@ -298,7 +298,7 @@ export const mockDocuments: Document[] = [
 export const mockProjects = [
   {
     id: "project-1",
-    name: "Systematic Reviews of Vorasidenib in Gliomas",
+    name: "Systematic Reviews of Upadacitinib in Alopecia",
     status: "in_progress" as const,
     author: "Chang A.H.",
     createdAt: "2024-01-15T10:00:00.000Z",
@@ -307,7 +307,7 @@ export const mockProjects = [
   },
   {
     id: "project-2",
-    name: "Meta-analysis of Vorasidenib Safety in Brain Tumors",
+    name: "Meta-analysis of Upadacitinib Safety",
     status: "done" as const,
     author: "Brownstone N.D.",
     createdAt: "2024-02-01T09:00:00.000Z",
@@ -316,7 +316,7 @@ export const mockProjects = [
   },
   {
     id: "project-3",
-    name: "Evidence Synthesis: Pediatric Glioma Treatment",
+    name: "Evidence Synthesis: Pediatric Alopecia Treatment",
     status: "done" as const,
     author: "Wilson T.",
     createdAt: "2023-11-15T09:00:00.000Z",
@@ -325,7 +325,7 @@ export const mockProjects = [
   },
   {
     id: "project-4",
-    name: "Quality of Life Meta-analysis in Brain Tumors",
+    name: "Quality of Life Meta-analysis in Alopecia",
     status: "in_progress" as const,
     author: "White H.",
     createdAt: "2024-01-15T10:00:00.000Z",
@@ -349,36 +349,32 @@ export const mockPipelines = [
     currentStep: "screening" as const,
     screeningStep: "generator" as const,
     queryData: {
-      description: "Analyzing systematic reviews and meta-analyses of vorasidenib in IDH-mutant gliomas",
-      query: "(vorasidenib OR VORANIGO) AND (glioma OR astrocytoma OR oligodendroglioma) AND (IDH1 OR IDH2) AND (systematic review OR meta-analysis)",
-      projectTitle: "Systematic Reviews of Vorasidenib in Gliomas",
+      description: "Analyzing systematic reviews and meta-analyses of upadacitinib in alopecia areata",
+      query: "(upadacitinib) AND (alopecia areata) AND (systematic review OR meta-analysis OR evidence synthesis)",
+      projectTitle: "Systematic Reviews of Upadacitinib in Alopecia",
       projectId: "project-1",
       questions: [
-        "Which specific types of IDH-mutant gliomas would you like to focus on in this analysis?",
-        "What particular aspects of vorasidenib treatment would you like the systematic reviews to address?",
-        "Are there specific outcome measures you want to prioritize in the analysis?"
+        "What is the pooled efficacy of upadacitinib across systematic reviews?",
+        "How consistent are safety findings across meta-analyses?",
+        "What are the evidence gaps identified in existing syntheses?"
       ],
       answers: {
-        "Which specific types of IDH-mutant gliomas would you like to focus on in this analysis?": "Both low-grade and high-grade gliomas with confirmed IDH1 or IDH2 mutations",
-        "What particular aspects of vorasidenib treatment would you like the systematic reviews to address?": "Primary focus on treatment efficacy, progression-free survival, and treatment-related adverse events",
-        "Are there specific outcome measures you want to prioritize in the analysis?": "Prioritize tumor response rates, quality of life metrics, and long-term survival outcomes"
+        "What is the pooled efficacy of upadacitinib across systematic reviews?": "Meta-analyses show consistent efficacy with pooled response rates of 60-80%",
+        "How consistent are safety findings across meta-analyses?": "Safety profiles are consistent across reviews with well-documented adverse events",
+        "What are the evidence gaps identified in existing syntheses?": "Long-term data and pediatric populations are commonly identified gaps"
       },
       pubmedQuery: JSON.stringify({
         subqueries: [
           {
-            content: 'vorasidenib OR VORANIGO',
+            content: 'upadacitinib',
             operator: 'AND'
           },
           {
-            content: 'glioma OR astrocytoma OR oligodendroglioma',
+            content: 'alopecia areata',
             operator: 'AND'
           },
           {
-            content: 'IDH1 OR IDH2',
-            operator: 'AND'
-          },
-          {
-            content: 'systematic review OR meta-analysis',
+            content: 'systematic review OR meta-analysis OR evidence synthesis',
             operator: 'AND'
           }
         ]
@@ -399,28 +395,28 @@ export const mockPipelines = [
     currentStep: "criteria" as const,
     screeningStep: "generator" as const,
     queryData: {
-      description: "Assessing quality of evidence in systematic reviews of vorasidenib for gliomas",
-      query: "(vorasidenib) AND (glioma OR brain tumor) AND (GRADE OR evidence quality OR PRISMA)",
-      projectTitle: "Systematic Reviews of Vorasidenib in Gliomas",
+      description: "Assessing quality of evidence in systematic reviews of upadacitinib for alopecia",
+      query: "(upadacitinib) AND (alopecia areata) AND (GRADE OR evidence quality OR PRISMA)",
+      projectTitle: "Systematic Reviews of Upadacitinib in Alopecia",
       projectId: "project-1",
       questions: [
-        "Which quality assessment tools would you like to use for evaluating the evidence?",
-        "What specific aspects of methodology should be prioritized in the quality assessment?",
-        "Are there particular types of bias you want to focus on in the evaluation?"
+        "What is the quality of evidence in existing systematic reviews?",
+        "How well do reviews adhere to PRISMA guidelines?",
+        "What methodological improvements are needed?"
       ],
       answers: {
-        "Which quality assessment tools would you like to use for evaluating the evidence?": "Use GRADE methodology as primary tool, supplemented by AMSTAR-2 for systematic review quality",
-        "What specific aspects of methodology should be prioritized in the quality assessment?": "Focus on randomization methods, allocation concealment, and completeness of outcome reporting",
-        "Are there particular types of bias you want to focus on in the evaluation?": "Prioritize assessment of selection bias, reporting bias, and industry sponsorship bias"
+        "What is the quality of evidence in existing systematic reviews?": "Most reviews provide moderate to high quality evidence with clear GRADE assessments",
+        "How well do reviews adhere to PRISMA guidelines?": "Adherence varies, with recent reviews showing better compliance",
+        "What methodological improvements are needed?": "Better handling of heterogeneity and more comprehensive risk of bias assessments"
       },
       pubmedQuery: JSON.stringify({
         subqueries: [
           {
-            content: 'vorasidenib',
+            content: 'upadacitinib',
             operator: 'AND'
           },
           {
-            content: 'glioma OR brain tumor',
+            content: 'alopecia areata',
             operator: 'AND'
           },
           {
@@ -445,28 +441,28 @@ export const mockPipelines = [
     currentStep: "abstract" as const,
     screeningStep: "generator" as const,
     queryData: {
-      description: "Meta-analysis of safety outcomes for vorasidenib in IDH-mutant gliomas",
-      query: "(vorasidenib OR VORANIGO) AND (glioma OR brain tumor) AND (safety OR adverse events OR risk assessment) AND (meta-analysis OR systematic review)",
-      projectTitle: "Meta-analysis of Vorasidenib Safety in Brain Tumors",
+      description: "Meta-analysis of safety outcomes for upadacitinib in alopecia areata",
+      query: "(upadacitinib) AND (alopecia areata) AND (safety OR adverse events OR risk assessment) AND (meta-analysis OR systematic review)",
+      projectTitle: "Meta-analysis of Upadacitinib Safety",
       projectId: "project-2",
       questions: [
-        "Which specific safety outcomes should be prioritized in the analysis?",
-        "What timeframe of adverse events should be considered?",
-        "Are there particular patient subgroups you want to analyze separately?"
+        "What is the pooled safety profile of upadacitinib across studies?",
+        "Are there specific patient subgroups with higher risk of adverse events?",
+        "How does the safety profile compare to other JAK inhibitors?"
       ],
       answers: {
-        "Which specific safety outcomes should be prioritized in the analysis?": "Focus on grade 3-4 adverse events, treatment discontinuations, and specific neurological complications",
-        "What timeframe of adverse events should be considered?": "Include both acute events (within first 6 months) and long-term follow-up (up to 2 years)",
-        "Are there particular patient subgroups you want to analyze separately?": "Analyze elderly patients (>65 years) and those with comorbidities as separate subgroups"
+        "What is the pooled safety profile of upadacitinib across studies?": "Meta-analyses show consistent safety profile with well-characterized adverse events",
+        "Are there specific patient subgroups with higher risk of adverse events?": "Elderly patients and those with comorbidities show slightly higher risk profiles",
+        "How does the safety profile compare to other JAK inhibitors?": "Comparable safety profile to other JAK inhibitors with some unique characteristics"
       },
       pubmedQuery: JSON.stringify({
         subqueries: [
           {
-            content: 'vorasidenib OR VORANIGO',
+            content: 'upadacitinib',
             operator: 'AND'
           },
           {
-            content: 'glioma OR brain tumor',
+            content: 'alopecia areata',
             operator: 'AND'
           },
           {
@@ -545,28 +541,28 @@ export const mockPipelines = [
     currentStep: "abstract" as const,
     screeningStep: "generator" as const,
     queryData: {
-      description: "Synthesizing evidence on IDH inhibitors in pediatric gliomas",
-      query: "(vorasidenib OR IDH inhibitors) AND (glioma OR brain tumor) AND (pediatric OR adolescent OR children) AND (systematic review OR meta-analysis)",
-      projectTitle: "Evidence Synthesis: Pediatric Glioma Treatment",
+      description: "Synthesizing evidence on JAK inhibitors in pediatric alopecia areata",
+      query: "(upadacitinib OR JAK inhibitors) AND (alopecia areata) AND (pediatric OR adolescent OR children) AND (systematic review OR meta-analysis)",
+      projectTitle: "Evidence Synthesis: Pediatric Alopecia Treatment",
       projectId: "project-3",
       questions: [
-        "What age ranges should be included in the pediatric population analysis?",
-        "Which specific pediatric safety parameters should be monitored?",
-        "What developmental outcomes should be included in the assessment?"
+        "What is the evidence quality for JAK inhibitors in pediatric alopecia?",
+        "How do treatment outcomes differ in pediatric populations?",
+        "What are the specific safety considerations for young patients?"
       ],
       answers: {
-        "What age ranges should be included in the pediatric population analysis?": "Include patients aged 12-17 years, as per current approval for vorasidenib",
-        "Which specific pediatric safety parameters should be monitored?": "Monitor growth parameters, neurocognitive development, and endocrine function",
-        "What developmental outcomes should be included in the assessment?": "Include school performance, physical development milestones, and age-appropriate functional assessments"
+        "What is the evidence quality for JAK inhibitors in pediatric alopecia?": "Limited but growing evidence base with moderate quality studies",
+        "How do treatment outcomes differ in pediatric populations?": "Generally favorable outcomes with age-specific response patterns",
+        "What are the specific safety considerations for young patients?": "Growth and development monitoring needed with long-term use"
       },
       pubmedQuery: JSON.stringify({
         subqueries: [
           {
-            content: 'vorasidenib OR IDH inhibitors',
+            content: 'upadacitinib OR JAK inhibitors',
             operator: 'AND'
           },
           {
-            content: 'glioma OR brain tumor',
+            content: 'alopecia areata',
             operator: 'AND'
           },
           {
@@ -595,28 +591,28 @@ export const mockPipelines = [
     currentStep: "abstract" as const,
     screeningStep: "generator" as const,
     queryData: {
-      description: "Meta-analysis of quality of life outcomes in brain tumor treatments",
-      query: "(vorasidenib OR IDH inhibitors) AND (glioma OR brain tumor) AND (quality of life OR patient reported outcomes) AND (meta-analysis OR systematic review)",
-      projectTitle: "Quality of Life Meta-analysis in Brain Tumors",
+      description: "Meta-analysis of quality of life outcomes in alopecia areata treatments",
+      query: "(upadacitinib OR JAK inhibitors) AND (alopecia areata) AND (quality of life OR patient reported outcomes) AND (meta-analysis OR systematic review)",
+      projectTitle: "Quality of Life Meta-analysis in Alopecia",
       projectId: "project-4",
       questions: [
-        "Which quality of life assessment tools should be included?",
-        "What specific domains of daily functioning are most important to assess?",
-        "How should treatment-related symptoms be incorporated into the analysis?"
+        "What is the pooled effect of treatments on quality of life?",
+        "How do different quality of life measures compare?",
+        "What aspects of quality of life show the most improvement?"
       ],
       answers: {
-        "Which quality of life assessment tools should be included?": "Use EORTC QLQ-C30 and BN20 as primary measures, supplemented with FACT-Br when available",
-        "What specific domains of daily functioning are most important to assess?": "Prioritize cognitive function, physical independence, and social/family relationships",
-        "How should treatment-related symptoms be incorporated into the analysis?": "Include symptom burden scores and their impact on daily activities, focusing on neurological symptoms"
+        "What is the pooled effect of treatments on quality of life?": "Significant improvements across multiple quality of life domains",
+        "How do different quality of life measures compare?": "Various instruments show consistent positive effects with some variation",
+        "What aspects of quality of life show the most improvement?": "Social functioning and emotional well-being show strongest effects"
       },
       pubmedQuery: JSON.stringify({
         subqueries: [
           {
-            content: 'vorasidenib OR IDH inhibitors',
+            content: 'upadacitinib OR JAK inhibitors',
             operator: 'AND'
           },
           {
-            content: 'glioma OR brain tumor',
+            content: 'alopecia areata',
             operator: 'AND'
           },
           {
@@ -639,37 +635,37 @@ export const SCREENING_CRITERIA = [
     id: 1,
     shortName: "C1",
     category: "Study Type",
-    description: "I want to select only systematic reviews, meta-analyses, and evidence syntheses that evaluate IDH-mutant gliomas or brain tumors, with a focus on IDH inhibitors including vorasidenib"
+    description: "I want to select only systematic reviews, meta-analyses, and high-quality evidence syntheses"
   },
   {
     id: 2,
     shortName: "C2",
     category: "Analysis",
-    description: "I want to select articles that follow PRISMA guidelines and include clear methodology for data synthesis, with explicit reporting of search strategies, inclusion criteria, and quality assessment methods for brain tumor treatments"
+    description: "I want to select articles that follow PRISMA guidelines for systematic reviews and meta-analyses. If methodology is unclear, mark as uncertain"
   },
   {
     id: 3,
     shortName: "C3",
-    category: "Sample Size",
-    description: "I want to select only systematic reviews and meta-analyses with a minimum total sample size of 200 participants across included studies to ensure adequate statistical power"
+    category: "Analysis",
+    description: "I want to select articles where at least one of the following is synthesized:\n• Pooled efficacy data of upadacitinib in alopecia\n• Systematic assessment of safety outcomes\n• Meta-analyzed quality of life measures\n• Network meta-analysis comparing treatments\n• Comprehensive evidence grading"
   },
   {
     id: 4,
     shortName: "C4",
     category: "Study Type",
-    description: "I want to exclude primary clinical trials, case reports, and narrative reviews. Only include systematic reviews, meta-analyses, and structured evidence syntheses focused on IDH-mutant gliomas and brain tumors"
+    description: "I want to exclude primary studies, narrative reviews, and opinion pieces. Only include systematic reviews, meta-analyses, and evidence syntheses."
   },
   {
     id: 5,
     shortName: "C5",
     category: "Analysis",
-    description: "I want to select articles that include quantitative synthesis (meta-analysis) of clinical outcomes where possible, or structured qualitative synthesis when meta-analysis is not feasible, specifically for brain tumor treatments and IDH inhibitor therapies"
+    description: "I want to select articles that include quantitative synthesis (meta-analysis) where possible, or structured qualitative synthesis when meta-analysis is not feasible"
   },
   {
     id: 6,
     shortName: "C6",
     category: "Language",
-    description: "I want to include only systematic reviews and meta-analyses published in English, ensuring comprehensive coverage of international research on brain tumor treatments and IDH inhibitors"
+    description: "I want to include only systematic reviews and meta-analyses published in English"
   }
 ];
 
@@ -678,55 +674,49 @@ export const FREQUENT_CRITERIA = {
     {
       id: 1,
       category: "Study Type",
-      text: "I want to select only systematic reviews and meta-analyses of IDH-mutant glioma treatments",
+      text: "I want to select only systematic reviews and meta-analyses",
       usageCount: 145
     },
     {
       id: 2,
       category: "Study Type", 
-      text: "I want to include only evidence syntheses and systematic reviews of brain tumor therapies",
+      text: "I want to include only evidence syntheses and systematic reviews",
       usageCount: 132
     },
     {
       id: 3,
       category: "Quality",
-      text: "I want to select articles following PRISMA guidelines for brain tumor research",
+      text: "I want to select articles following PRISMA guidelines",
       usageCount: 120
     },
     {
       id: 4,
       category: "Quality",
-      text: "I want to include only high quality systematic reviews of IDH inhibitor treatments",
+      text: "I want to include only high quality systematic reviews with clear reporting",
       usageCount: 115
     },
     {
       id: 5,
       category: "Evidence",
-      text: "I want to select articles with comprehensive evidence grading for brain tumor therapies",
+      text: "I want to select articles with comprehensive evidence grading",
       usageCount: 95
     },
     {
       id: 6,
       category: "Evidence",
-      text: "I want to include studies with clear evidence synthesis methods for glioma treatments",
+      text: "I want to include studies with clear evidence synthesis methods",
       usageCount: 92
     },
     {
       id: 7,
       category: "Methodology",
-      text: "I want to include only reviews with clear methodology for brain tumor research",
+      text: "I want to include only reviews with clear methodology",
       usageCount: 78
     },
     {
       id: 8,
       category: "Methodology", 
-      text: "I want to select studies with reproducible methods for IDH inhibitor analysis",
-      usageCount: 75
-    },
-    {
-      id: 9,
-      category: "Methodology", 
-      text: "I want to select only systematic reviews and meta-analyses with a minimum total sample size of 200 participants",
+      text: "I want to select studies with reproducible methods and analysis",
       usageCount: 75
     }
   ],

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { FaTimes,FaChevronDown } from 'react-icons/fa';
 import SampleTable from './SampleTable';
-import sampleArticlesData from '../assets/sample_articles.json';
+import sampleArticlesData from '../assets/sample_articles_vorasidenib.json';
 import { IoInformationCircleOutline } from "react-icons/io5";
 import { HiLanguage } from "react-icons/hi2";
 import { IoNewspaperOutline } from "react-icons/io5";
