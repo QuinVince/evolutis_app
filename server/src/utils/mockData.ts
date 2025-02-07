@@ -354,14 +354,14 @@ export const mockPipelines = [
       projectTitle: "Systematic Reviews of Upadacitinib in Alopecia",
       projectId: "project-1",
       questions: [
-        "What is the pooled efficacy of upadacitinib across systematic reviews?",
-        "How consistent are safety findings across meta-analyses?",
-        "What are the evidence gaps identified in existing syntheses?"
+        "Which years of publication should we include?",
+        "Should we include only high-quality systematic reviews?",
+        "Are you interested in specific outcome measures?"
       ],
       answers: {
-        "What is the pooled efficacy of upadacitinib across systematic reviews?": "Meta-analyses show consistent efficacy with pooled response rates of 60-80%",
-        "How consistent are safety findings across meta-analyses?": "Safety profiles are consistent across reviews with well-documented adverse events",
-        "What are the evidence gaps identified in existing syntheses?": "Long-term data and pediatric populations are commonly identified gaps"
+        "Which years of publication should we include?": "Focus on 2022-2024 to capture recent evidence",
+        "Should we include only high-quality systematic reviews?": "Yes, include only reviews following PRISMA guidelines with clear methodology",
+        "Are you interested in specific outcome measures?": "Focus on SALT score improvements and quality of life measures"
       },
       pubmedQuery: JSON.stringify({
         subqueries: [
@@ -400,14 +400,14 @@ export const mockPipelines = [
       projectTitle: "Systematic Reviews of Upadacitinib in Alopecia",
       projectId: "project-1",
       questions: [
-        "What is the quality of evidence in existing systematic reviews?",
-        "How well do reviews adhere to PRISMA guidelines?",
-        "What methodological improvements are needed?"
+        "Which quality assessment tools should we focus on?",
+        "Should we include reviews without risk of bias assessment?",
+        "Do you want to include non-English reviews?"
       ],
       answers: {
-        "What is the quality of evidence in existing systematic reviews?": "Most reviews provide moderate to high quality evidence with clear GRADE assessments",
-        "How well do reviews adhere to PRISMA guidelines?": "Adherence varies, with recent reviews showing better compliance",
-        "What methodological improvements are needed?": "Better handling of heterogeneity and more comprehensive risk of bias assessments"
+        "Which quality assessment tools should we focus on?": "GRADE and AMSTAR-2 are preferred",
+        "Should we include reviews without risk of bias assessment?": "No, exclude reviews without formal risk assessment",
+        "Do you want to include non-English reviews?": "No, English-language reviews only"
       },
       pubmedQuery: JSON.stringify({
         subqueries: [
@@ -446,14 +446,14 @@ export const mockPipelines = [
       projectTitle: "Meta-analysis of Upadacitinib Safety",
       projectId: "project-2",
       questions: [
-        "What is the pooled safety profile of upadacitinib across studies?",
-        "Are there specific patient subgroups with higher risk of adverse events?",
-        "How does the safety profile compare to other JAK inhibitors?"
+        "Which safety outcomes are most important?",
+        "What is the minimum follow-up period needed?",
+        "Should we include case reports of adverse events?"
       ],
       answers: {
-        "What is the pooled safety profile of upadacitinib across studies?": "Meta-analyses show consistent safety profile with well-characterized adverse events",
-        "Are there specific patient subgroups with higher risk of adverse events?": "Elderly patients and those with comorbidities show slightly higher risk profiles",
-        "How does the safety profile compare to other JAK inhibitors?": "Comparable safety profile to other JAK inhibitors with some unique characteristics"
+        "Which safety outcomes are most important?": "Serious infections, cardiovascular events, and malignancies",
+        "What is the minimum follow-up period needed?": "At least 24 weeks of safety data",
+        "Should we include case reports of adverse events?": "No, focus on systematic reviews and meta-analyses only"
       },
       pubmedQuery: JSON.stringify({
         subqueries: [
@@ -496,14 +496,14 @@ export const mockPipelines = [
       projectTitle: "Meta-analysis of Upadacitinib Safety",
       projectId: "project-2",
       questions: [
-        "How does the safety profile of upadacitinib compare to other JAK inhibitors?",
-        "Are there differences in specific adverse event rates between treatments?",
-        "What are the implications for treatment selection based on safety profiles?"
+        "Which JAK inhibitors should we compare?",
+        "Are indirect comparisons acceptable?",
+        "Should we focus on specific patient subgroups?"
       ],
       answers: {
-        "How does the safety profile of upadacitinib compare to other JAK inhibitors?": "Network meta-analyses show comparable overall safety with some treatment-specific differences",
-        "Are there differences in specific adverse event rates between treatments?": "Each JAK inhibitor shows unique patterns of specific adverse events",
-        "What are the implications for treatment selection based on safety profiles?": "Safety profiles can guide personalized treatment selection based on patient characteristics"
+        "Which JAK inhibitors should we compare?": "Upadacitinib, baricitinib, and tofacitinib",
+        "Are indirect comparisons acceptable?": "Yes, through network meta-analyses",
+        "Should we focus on specific patient subgroups?": "Adults with moderate-to-severe disease"
       },
       pubmedQuery: JSON.stringify({
         subqueries: [
@@ -546,14 +546,14 @@ export const mockPipelines = [
       projectTitle: "Evidence Synthesis: Pediatric Alopecia Treatment",
       projectId: "project-3",
       questions: [
-        "What is the evidence quality for JAK inhibitors in pediatric alopecia?",
-        "How do treatment outcomes differ in pediatric populations?",
-        "What are the specific safety considerations for young patients?"
+        "What age range should we focus on?",
+        "Which efficacy outcomes are priority?",
+        "Should we include ongoing trials?"
       ],
       answers: {
-        "What is the evidence quality for JAK inhibitors in pediatric alopecia?": "Limited but growing evidence base with moderate quality studies",
-        "How do treatment outcomes differ in pediatric populations?": "Generally favorable outcomes with age-specific response patterns",
-        "What are the specific safety considerations for young patients?": "Growth and development monitoring needed with long-term use"
+        "What age range should we focus on?": "Children and adolescents aged 12-17 years",
+        "Which efficacy outcomes are priority?": "SALT score and quality of life measures",
+        "Should we include ongoing trials?": "Yes, include registered clinical trials"
       },
       pubmedQuery: JSON.stringify({
         subqueries: [
@@ -596,14 +596,14 @@ export const mockPipelines = [
       projectTitle: "Quality of Life Meta-analysis in Alopecia",
       projectId: "project-4",
       questions: [
-        "What is the pooled effect of treatments on quality of life?",
-        "How do different quality of life measures compare?",
-        "What aspects of quality of life show the most improvement?"
+        "Which QoL assessment tools should we include?",
+        "What is the minimum sample size needed?",
+        "Should we include non-validated measures?"
       ],
       answers: {
-        "What is the pooled effect of treatments on quality of life?": "Significant improvements across multiple quality of life domains",
-        "How do different quality of life measures compare?": "Various instruments show consistent positive effects with some variation",
-        "What aspects of quality of life show the most improvement?": "Social functioning and emotional well-being show strongest effects"
+        "Which QoL assessment tools should we include?": "DLQI and Skindex-16 are primary measures",
+        "What is the minimum sample size needed?": "Studies with at least 50 participants",
+        "Should we include non-validated measures?": "No, only validated QoL instruments"
       },
       pubmedQuery: JSON.stringify({
         subqueries: [

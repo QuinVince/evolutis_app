@@ -1,4 +1,4 @@
-1.Rmove localhost in path an axios API call
+1.Remove localhost in path an axios API call
 2.Update path to backend folder in app.py
 3.Suppress .env / update secrets
 4.Update python import if needed
