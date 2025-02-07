@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { FaTimes,FaChevronDown } from 'react-icons/fa';
 import SampleTable from './SampleTable';
-import sampleArticlesData from '../assets/sample_articles.json';
+import sampleArticlesData from '../assets/sample_articles_v2.json';
 import { IoInformationCircleOutline } from "react-icons/io5";
 import { HiLanguage } from "react-icons/hi2";
 import { IoNewspaperOutline } from "react-icons/io5";
@@ -36,8 +36,8 @@ interface CriteriaCategory {
 // Define icons outside to prevent re-creation on each render
 const LanguageIcon = <HiLanguage className="w-4 h-4 text-gray-800" />;
 const PublicationIcon = <IoNewspaperOutline className="w-4 h-4 text-gray-800" />;
-const ScopeIcon = <HiOutlineCheckCircle className="w-4 h-4 text-gray-800" />;
-const DeviceIcon = <PiToolboxBold className="w-4 h-4 text-gray-800" />;
+const AnalysisIcon = <HiOutlineCheckCircle className="w-4 h-4 text-gray-800" />;
+const ScopeIcon = <PiToolboxBold className="w-4 h-4 text-gray-800" />;
 const UnusableDataIcon = <GrDocumentMissing className="w-4 h-4 text-gray-800" />;
 
 const CRITERIA_CATEGORIES: {
@@ -49,14 +49,14 @@ const CRITERIA_CATEGORIES: {
     items: [
       { value: "Language", icon: LanguageIcon  },
       { value: "Publication", icon: PublicationIcon  },
-      { value: "Scope", icon: ScopeIcon  },
-      { value: "Device", icon: DeviceIcon }
+      { value: "Analysis", icon: AnalysisIcon  },
+      { value: "Scope", icon: ScopeIcon }
     ]
   },
   {
     group: "Flags",
     items: [
-      { value: "Other", icon: UnusableDataIcon  }
+      { value: "Flags", icon: UnusableDataIcon  }
     ]
   }
 ];
@@ -152,17 +152,13 @@ const CriteriaSelection: React.FC<CriteriaSelectionProps> = ({ onCriteriaChange 
         article["Answer 1"] || '',
         article["Answer 2"] || '',
         article["Answer 3"] || '',
-        article["Answer 4"] || '',
-        article["Answer 5"] || '',
-        article["Answer 6"] || ''
+        article["Answer 4"] || ''
       ],
       justifications: [
         article["Justification 1"] || '',
         article["Justification 2"] || '',
         article["Justification 3"] || '',
-        article["Justification 4"] || '',
-        article["Justification 5"] || '',
-        article["Justification 6"] || ''
+        article["Justification 4"] || ''
       ]
     }));
   }, [sampleArticlesData]);

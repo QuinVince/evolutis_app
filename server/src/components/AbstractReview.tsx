@@ -1,11 +1,10 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { FaPlus, FaTimes } from 'react-icons/fa';
-import { FiPlusCircle  } from "react-icons/fi";
 import FullTable, { getArticleStatus } from './FullTable';
-import sampleArticlesData from '../assets/sample_articles_full.json';
-import { IoMdSearch } from "react-icons/io";
+import sampleArticlesData from '../assets/sample_articles_full_v2.json';
 import StatusCounter from './StatusCounter';
 import { HiOutlineDownload } from 'react-icons/hi';
+
 
 interface FileFilteringTempProps {
   onCriteriaChange?: (criteria: string[]) => void;
@@ -27,6 +26,7 @@ interface Article {
   pubmed_id?: number;
   date?: string;
   manuallyEdited?: boolean;
+  study_type?: 'Meta-analysis' | 'Literature Review' | 'RCT' | 'Cohort Study' | 'Opinion' | 'Case Studies' | 'In Vitro' | 'Veterinary';
 }
 
 const FileFilteringTemp: React.FC<FileFilteringTempProps> = ({ onCriteriaChange }) => {
@@ -37,26 +37,29 @@ const FileFilteringTemp: React.FC<FileFilteringTempProps> = ({ onCriteriaChange 
   const [showCriteria, setShowCriteria] = useState(true);
   
   // Add sampleArticles state
-  const [sampleArticles, setSampleArticles] = useState(
+  const [sampleArticles, setSampleArticles] = useState<Article[]>(
     sampleArticlesData.map(article => ({
       title: article.title,
       abstract: article.abstract,
+      study_type: (article.study_type || 'Literature Review') as Article['study_type'],
       answers: [
         article["Answer 1"] || '',
         article["Answer 2"] || '',
         article["Answer 3"] || '',
-        article["Answer 4"] || '',
-        article["Answer 5"] || '',
-        article["Answer 6"] || ''
+        article["Answer 4"] || ''
       ],
       justifications: [
         article["Justification 1"] || '',
         article["Justification 2"] || '',
         article["Justification 3"] || '',
-        article["Justification 4"] || '',
-        article["Justification 5"] || '',
-        article["Justification 6"] || ''
-      ]
+        article["Justification 4"] || ''
+      ],
+      status: undefined,
+      cause: undefined,
+      comment: undefined,
+      pubmed_id: article.pubmed_id,
+      date: article["publication date"],
+      manuallyEdited: false
     }))
   );
 

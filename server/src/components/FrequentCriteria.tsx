@@ -26,7 +26,7 @@ const FrequentCriteria: React.FC<FrequentCriteriaProps> = ({
 
   // Category icons mapping
   const categoryIcons = {
-    "Study Type": <IoNewspaperOutline  className="w-4 h-4 text-gray-800" />,
+    "Scope": <IoNewspaperOutline  className="w-4 h-4 text-gray-800" />,
     "Quality": <FaRegCheckCircle className="w-4 h-4 text-gray-800" />,
     "Evidence": <MdSearch className="w-4 h-4 text-gray-800" />,
     "Methodology": <PiToolboxBold className="w-4 h-4 text-gray-800" />
@@ -43,7 +43,7 @@ const FrequentCriteria: React.FC<FrequentCriteriaProps> = ({
 
   const categoryButtons = [
     { label: "All", count: 140 },
-    { label: "Study Type", count: FREQUENT_CRITERIA.categoryCounts['Study Type'] },
+    { label: "Scope", count: FREQUENT_CRITERIA.categoryCounts['Scope'] },
     { label: "Quality", count: FREQUENT_CRITERIA.categoryCounts.Quality },
     { label: "Evidence", count: FREQUENT_CRITERIA.categoryCounts.Evidence },
     { label: "Methodology", count: FREQUENT_CRITERIA.categoryCounts.Methodology }

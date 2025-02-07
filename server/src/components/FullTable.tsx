@@ -23,6 +23,7 @@ interface Article {
   pubmed_id?: number;
   date?: string;
   manuallyEdited?: boolean;
+  study_type?: 'Meta-analysis' | 'Literature Review' | 'RCT' | 'Cohort Study' | 'Opinion' | 'Case Studies' | 'In Vitro' | 'Veterinary';
 }
 
 interface FullTableProps {
@@ -39,17 +40,20 @@ type Status = 'Included' | 'Excluded' | 'Unsure';
 
 // Add status determination function
 export const getArticleStatus = (answers: string[]): Status => {
-  // Check if any answer is 'no'
-  if (answers.some(answer => answer.toLowerCase() === 'no')) {
+  // Only consider the first 4 answers
+  const relevantAnswers = answers.slice(0, 4);
+  
+  // If any of the first 4 answers is 'no', the article is excluded
+  if (relevantAnswers.some(answer => answer.toLowerCase() === 'no')) {
     return 'Excluded';
   }
   
-  // Check if all answers are 'yes'
-  if (answers.every(answer => answer.toLowerCase() === 'yes')) {
+  // If all first 4 answers are 'yes', the article is included
+  if (relevantAnswers.length === 4 && relevantAnswers.every(answer => answer.toLowerCase() === 'yes')) {
     return 'Included';
   }
   
-  // Otherwise (if there are any 'uncertain' or empty answers)
+  // All other cases (missing answers, uncertain answers, or mix) are unsure
   return 'Unsure';
 };
 
@@ -67,6 +71,12 @@ const getStatusStyle = (status: Status): string => {
   }
 };
 
+// Add study type styling function
+const getStudyTypeStyle = (type: string): string => {
+  // Use a consistent blue health color for all study types
+  return 'border-2 border-[#800080] font-bold text-[#800080]';
+};
+
 // Add a function to get the icon based on category
 const getCategoryIcon = (category: string) => {
   switch (category) {
@@ -76,7 +86,7 @@ const getCategoryIcon = (category: string) => {
       return <IoNewspaperOutline className="w-4 h-4 text-gray-800" />;
     case 'Analysis':
       return <HiOutlineCheckCircle className="w-4 h-4 text-gray-800" />;
-    case 'Study Type':
+    case 'Scope':
       return <PiToolboxBold className="w-4 h-4 text-gray-800" />;
     case 'Flags':
       return <GrDocumentMissing className="w-4 h-4 text-gray-800" />;
@@ -214,16 +224,17 @@ const FullTable: React.FC<FullTableProps> = ({
   // Memoize filtered articles
   const filteredArticles = useMemo(() => {
     return articles.filter(article => {
-      const matchesStatus = statusFilter === 'all' || 
-        getArticleStatus(article.answers).toLowerCase() === statusFilter;
+      const currentStatus = getArticleStatus(article.answers);
       
-      const matchesSearch = !searchQuery || 
-        article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        article.abstract.toLowerCase().includes(searchQuery.toLowerCase());
-
-      return matchesStatus && matchesSearch;
+      // If filter is 'all', show everything
+      if (statusFilter === 'all') {
+        return true;
+      }
+      
+      // Otherwise, match the exact status
+      return currentStatus.toLowerCase() === statusFilter;
     });
-  }, [articles, statusFilter, searchQuery]);
+  }, [articles, statusFilter]);
 
   // Memoize table rows to prevent unnecessary re-renders
   const TableRow = useCallback(({ article, rowIndex }: { article: Article; rowIndex: number }) => {
@@ -247,14 +258,21 @@ const FullTable: React.FC<FullTableProps> = ({
             </button>
           </div>
         </td>
+        <td className={`px-2 text-sm border-b border-r border-gray-200 ${ROW_HEIGHT}`}>
+          <div className="flex justify-center">
+            <span className="px-3 py-1.5 rounded-full text-xs font-medium border-2 border-[#800080] text-[#800080] whitespace-nowrap bg-white hover:bg-purple-50 transition-colors">
+              {article.study_type || 'Literature Review'}
+            </span>
+          </div>
+        </td>
         <td 
           className={`text-sm border-b border-r border-gray-200 text-center ${ROW_HEIGHT} relative ${
-            article.answers.length > 0 ? getStatusStyle(getArticleStatus(article.answers)) : ''
+            article.answers.length > 0 ? getStatusStyle(status) : ''
           }`}
         >
           <div className="h-full flex items-center justify-center font-medium">
             <div className="relative">
-              {article.answers.length > 0 && getArticleStatus(article.answers)}
+              {article.answers.length > 0 && status}
               {article.manuallyEdited && (
                 <div className="absolute -top-1 -right-5">
                   <BsStars className="w-3 h-3 text-black" />
@@ -266,7 +284,6 @@ const FullTable: React.FC<FullTableProps> = ({
         <td className={`px-6 text-sm border-b border-r border-gray-200 ${ROW_HEIGHT}`}>
           <div className="flex items-center gap-2">
             {(() => {
-              const causeInfo = getCauseInfo(article.answers, SCREENING_CRITERIA);
               if (!causeInfo) return null;
 
               return (
@@ -286,7 +303,7 @@ const FullTable: React.FC<FullTableProps> = ({
         </td>
       </tr>
     );
-  }, []);
+  }, [setSelectedArticle]);
 
   return (
     <div className="space-y-4">
@@ -332,13 +349,14 @@ const FullTable: React.FC<FullTableProps> = ({
       <div className="relative" ref={tableContainerRef}>
         <div className="overflow-hidden rounded-xl border border-gray-200">
           <div className="flex">
-            {/* Fixed columns (Title, Abstract, Status, Cause) */}
+            {/* Fixed columns (Title, Abstract, Study Type, Status, Cause) */}
             <div className="w-[60%] flex-shrink-0 border-r border-gray-200">
               <table className="w-full table-fixed">
                 <colgroup>
-                  <col className="w-[45%]" /> {/* Title */}
+                  <col className="w-[35%]" /> {/* Title */}
                   <col className="w-[13%]" /> {/* Abstract */}
-                  <col className="w-[13%]" /> {/* Status */}
+                  <col className="w-[19%]" /> {/* Study Type */}
+                  <col className="w-[12%]" /> {/* Status */}
                   <col className="w-[20%]" /> {/* Cause */}
                 </colgroup>
                 <thead className="bg-[#E9EDF1]">
@@ -348,6 +366,9 @@ const FullTable: React.FC<FullTableProps> = ({
                     </th>
                     <th className="h-[52px] px-6 text-center text-sm font-bold text-black tracking-wider border-b border-r border-gray-200">
                       Abstract
+                    </th>
+                    <th className="h-[52px] px-6 text-center text-sm font-bold text-black tracking-wider border-b border-r border-gray-200">
+                      Study Type
                     </th>
                     <th className="h-[52px] px-6 text-center text-sm font-bold text-black tracking-wider border-b border-r border-gray-200">
                       Status
@@ -373,8 +394,8 @@ const FullTable: React.FC<FullTableProps> = ({
             <div className="flex-1 overflow-x-auto">
               <table className="w-full table-fixed">
                 <colgroup>
-                  {/* 6 criteria columns */}
-                  {Array(6).fill(0).map((_, i) => (
+                  {/* 4 criteria columns */}
+                  {Array(4).fill(0).map((_, i) => (
                     <col key={i} className="w-[140px]" />
                   ))}
                   {/* Comment column */}
@@ -382,7 +403,7 @@ const FullTable: React.FC<FullTableProps> = ({
                 </colgroup>
                 <thead className="bg-[#E9EDF1]">
                   <tr>
-                    {Array(6).fill(0).map((_, i) => (
+                    {Array(4).fill(0).map((_, i) => (
                       <th 
                         key={i}
                         className="h-[52px] px-2 text-center text-sm font-bold text-black tracking-wider border-b border-r border-gray-200 sticky top-0 relative"
@@ -417,7 +438,7 @@ const FullTable: React.FC<FullTableProps> = ({
                 <tbody className="bg-white">
                   {articles.map((article, rowIndex) => (
                     <tr key={rowIndex} className={`bg-white ${ROW_HEIGHT}`}>
-                      {Array(6).fill(0).map((_, columnIndex) => (
+                      {Array(4).fill(0).map((_, columnIndex) => (
                         <td 
                           key={columnIndex} 
                           className={`px-6 whitespace-nowrap text-sm border-b border-r border-gray-200 ${ROW_HEIGHT} cursor-pointer hover:bg-gray-50`}
@@ -438,7 +459,7 @@ const FullTable: React.FC<FullTableProps> = ({
                             }
                           }}
                         >
-                          <div className="h-full flex items-center">
+                          <div className="h-full flex items-center justify-center">
                             <div className="flex items-center gap-2">
                               <div className="flex items-center gap-1.5">
                                 <div 
